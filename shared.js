@@ -13,6 +13,23 @@ var debugStyle = {align: 'left'};
  'ERR_TIRED',                   //11
  'ERR_NO_BODYPART'              //12
  ];
+ var COOLERRORS = ['OK',            // 0
+ 'NOT MINE!',               // 1
+ 'NO WAY!',                 // 2
+ 'WHO?!',             // 3
+ 'BUSY!',                    // 4
+ '404!',               // 5
+ 'POOR! SAD!',    // 6
+ '403!',          // 7
+ 'FULL!',                    // 8
+ 'TOO FAR!',            // 9
+ 'WHAT?!',            //10
+ 'ZZZZZZ',                   //11
+ 'RAMSEY!'              //12
+ ];
+
+ var ERR_NO_SOURCE = -7281;
+ var ERR_NO_TARGET = -7282;
 
 var getSpawn = function() {
     var i;
@@ -24,15 +41,15 @@ var getSpawn = function() {
 module.exports = {
     creepErr: function(creep, err) {
         var e = 0 - err;
-        creep.say(ERRORS[e]);
+        creep.say(COOLERRORS[e]);
     },
     roomErr: function(room, err) {
         var e = 0 - err;
-        room.visual.text(ERRORS[e], 0.1, 3, debugStyle);
+        room.visual.text(COOLERRORS[e], 0.1, 3, debugStyle);
     },
     structErr: function(structure, err) {
         var e = 0 - err;
-        structure.room.visual.text(ERRORS[e], structure.pos.x + 1, structure.pos.y + 0.25, debugStyle);
+        structure.room.visual.text(COOLERRORS[e], structure.pos.x + 1, structure.pos.y + 0.25, debugStyle);
     },
     getSpawn: getSpawn
 };
