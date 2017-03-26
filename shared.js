@@ -1,5 +1,25 @@
+var currentVersion = '0.0.0.10';
+var setup = function() {
+    if (Memory.setup === undefined) {
+        console.log('Setting up environment');
+        Memory.rooms = {};
+        Memory.flags = {};
+        Memory.spawns = {};
+        Memory.creeps = {};
+        Memory.setup = true;
+    }
+};
+var fixCreepsInMemory = function() {
+    var contain = {};
+    for (var creep in Game.creeps) {
+        contain[creep] = Memory.creeps[creep];
+    }
+    delete Memory.creeps;
+    Memory.creeps = contain;
+    return OK;
+};
 var debugStyle = {align: 'left'};
- var ERRORS = ['OK',            // 0
+var ERRORS = ['OK',             // 0
  'ERR_NOT_OWNER',               // 1
  'ERR_NO_PATH',                 // 2
  'ERR_NAME_EXISTS',             // 3
@@ -13,7 +33,7 @@ var debugStyle = {align: 'left'};
  'ERR_TIRED',                   //11
  'ERR_NO_BODYPART'              //12
  ];
- var COOLERRORS = ['OK',            // 0
+var COOLERRORS = ['OK',            // 0
  'NOT MINE!',               // 1
  'NO WAY!',                 // 2
  'WHO?!',             // 3
@@ -28,8 +48,8 @@ var debugStyle = {align: 'left'};
  'RAMSEY!'              //12
  ];
 
- var ERR_NO_SOURCE = -7281;
- var ERR_NO_TARGET = -7282;
+var ERR_NO_SOURCE = -7281;
+var ERR_NO_TARGET = -7282;
 
 var getSpawn = function() {
     var i;
@@ -51,5 +71,8 @@ module.exports = {
         var e = 0 - err;
         structure.room.visual.text(COOLERRORS[e], structure.pos.x + 1, structure.pos.y + 0.25, debugStyle);
     },
-    getSpawn: getSpawn
+    getSpawn: getSpawn,
+    setup: setup,
+    currentVersion: currentVersion,
+    fixCreepsInMemory: fixCreepsInMemory
 };

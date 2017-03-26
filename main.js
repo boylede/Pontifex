@@ -5,12 +5,11 @@ var roleBuilder = require('role.builder');
 var roleDefective = require('role.defective'); */
 var roles = require('controller.roles');
 var stageController = require('controller.stage');
-var u = require('utils');
 var s = require('shared');
 
 var debugStyle = {align: 'left'};
 module.exports.loop = function () {
-	u.setup();
+	s.setup();
 	var stage = '';
 	var spawn = s.getSpawn();
 	var err = OK;
@@ -18,7 +17,7 @@ module.exports.loop = function () {
 		return OK;
 	}
 	if (Memory.fixedCreeps !== true) {
-		u.fixCreepsInMemory();
+		s.fixCreepsInMemory();
 		Memory.fixedCreeps = true;
 	}
 	for (var r in Game.rooms) {
