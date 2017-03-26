@@ -11,6 +11,7 @@ module.exports.loop = function () {
 	u.setup();
 	var stage = '';
 	var spawn = s.getSpawn();
+	var err = OK;
 	if (spawn === undefined) {
 		return OK;
 	}
@@ -27,14 +28,21 @@ module.exports.loop = function () {
 	}
 
 	var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
+	var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
 	var stageC = stageController.stages[stage];
 
 	if(harvesters.length < stageC.desiredHarvesters) {
-		var err = spawn.createCreep(stageC.harvester, undefined, {role: 'harvester'});
+		err = spawn.createCreep(stageC.harvester, undefined, {role: 'harvester'});
 		if (err != OK) {
 			s.structErr(spawn, err);
 		}
 	}
+	if(upgraders.length < stageC.desiredUpgraders) {
+       err = spawn.createCreep(stageC.upgrader, undefined, {role: 'upgrader', tenured: true, tenuredRole:'upgrader'});
+       if (err != OK) {
+           s.structErr(spawn, err);
+       }
+    }
 	
 	if(spawn.spawning) {
 		var spawningCreep = Game.creeps[spawn.spawning.name];
