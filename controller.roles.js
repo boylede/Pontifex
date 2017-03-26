@@ -1,4 +1,4 @@
-var roles = ['builder', 'harvester', 'upgrader', 'defender'];
+var roles = ['builder', 'harvester', 'upgrader', 'defender', 'defective'];
 var roleModules = {};
 roles.forEach(function(e,i,a) {
   roleModules[e] = require('role.' + e );

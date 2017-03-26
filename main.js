@@ -1,7 +1,9 @@
+/*
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
-var roleDefective = require('role.defective');
+var roleDefective = require('role.defective'); */
+var roles = require('controller.roles');
 var stageController = require('controller.stage');
 var u = require('utils');
 var s = require('shared');
@@ -57,19 +59,11 @@ module.exports.loop = function () {
 		if (creep.ticksToLive < 120) {
 			creep.memory.role = 'defective';
 		}
-		switch (creep.memory.role) {
-			case 'harvester':
-			roleHarvester.run(creep, stageC);
-			break;
-			case 'upgrader':
-			roleUpgrader.run(creep, stageC);
-			break;
-			case 'builder':
-			roleBuilder.run(creep, stageC);
-			break;
-			case 'defective':
-			roleDefective.run(creep, stageC);
-			break;
+		var controller = roles.roles[creep.memory.role];
+		if (controller) {
+			controller.run(creep, stageC);
+		} else {
+			console.log('no controller for ' + creep.memory.role);
 		}
 	}
 };

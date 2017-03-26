@@ -19,7 +19,7 @@ var nerfHerder = {
 			} else {
 				m.source = source.id;
 			}
-		} else if (creep.carry.energy == creep.carryCapacity) {
+		} else if (!m.depositing && creep.carry.energy == creep.carryCapacity) {
 			creep.say('deposit');
 			m.depositing = true;
 			target = getTarget(creep);
@@ -66,7 +66,7 @@ var nerfHerder = {
 				case OK:
 				break;
 				default:
-				console.log('error while depositing');
+				console.log(creep.name + ' could not deposit');
 				s.creepErr(creep, err);
 				break;
 			}
@@ -83,7 +83,7 @@ var nerfHerder = {
 				case OK:
 				break;
 				default:
-				console.log('error while extracting');
+				console.log(creep.name + ' could not extract');
 				s.creepErr(creep, err);
 				break;
 			}
