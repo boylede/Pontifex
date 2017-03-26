@@ -1,16 +1,39 @@
-var changeRole = function(creep, role) {
+var s = require('shared');
+var nerf = require('common.nerfHerder');
+
+var getTarget = function(creep) {
+	return creep.room.controller;
+};
+
+var getSource = function(creep) {
+	var sources = creep.room.find(FIND_STRUCTURES, {
+		filter: (structure) => {
+			return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_CONTAINER) &&
+				structure.energy > 0;
+			}
+	});
+	return sources[0];
+};
+var roleChange = function(creep, reason) {
+	/* KEEP - do not change roles of tenured creeps!
 	if (creep.memory.tenured === true) {
-		creep.say('⚡ ' + role);
+		creep.say('tenured');
 	} else {
 		creep.memory.role = role;
-		creep.say(' ' + role);
-		creep.memory.upgrading = false;
-	}
-	
+		creep.say('new ' + role);
+	}*/
 };
 
 var roleUpgrader = {
 	/** @param {Creep} creep **/
+	run: function(creep, stageC) {
+		return nerf.herd(creep, stageC, getSource, getTarget, roleChange);
+	}
+};
+module.exports = roleUpgrader;
+
+/*
+var roleUpgrader = {
 	run: function(creep, stageController) {
 		var m = creep.memory;
 
@@ -45,5 +68,4 @@ var roleUpgrader = {
 		}
 	}
 };
-
-module.exports = roleUpgrader;
+*/
