@@ -1,6 +1,6 @@
 module.exports = {
 	tasks: [],
-	desiredHarvesters: 1,
+	desiredHarvesters: 2,
 	desiredUpgraders: 1,
 	harvester: [MOVE, CARRY, WORK],
 	upgrader: [MOVE, WORK, CARRY],

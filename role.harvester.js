@@ -1,4 +1,4 @@
-var s = require('shared.creep');
+var s = require('shared');
 
 var roleHarvester = {
 	stop: function(creep) {

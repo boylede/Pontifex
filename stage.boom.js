@@ -4,6 +4,5 @@ module.exports = {
 	desiredDefenders: 10,
 	harvester: [MOVE, MOVE, MOVE, CARRY, WORK, CARRY, WORK],
 	defender: [MOVE, MOVE, ATTACK, MOVE, ATTACK],
-	buildConstructionSites: buildConstructionSites,
 	name:'boom'
 };

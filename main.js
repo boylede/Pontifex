@@ -4,7 +4,7 @@ var roleBuilder = require('role.builder');
 var roleDefective = require('role.defective');
 var stageController = require('controller.stage');
 var u = require('utils');
-var s = require('shared.creep');
+var s = require('shared');
 
 var debugStyle = {align: 'left'};
 module.exports.loop = function () {

@@ -20,7 +20,7 @@ var stage = function(room) {
 		case 'seed':
 		if (room.controller) {
 			if (room.controller.my) {
-				if (Memory.rooms[room.name].creeps && Memory.rooms[room.name].creeps.length > 2) {
+				if (Game.creeps.length > 2) {
 					current = change('boom');
 				}
 			} else {
