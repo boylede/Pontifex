@@ -1,15 +1,17 @@
 var s = require('shared');
-var nerf = require('common.NerfHerder');
+var nerf = require('common.nerfHerder');
 
 var getTarget = function(creep) {
 	var targets = creep.room.find(FIND_STRUCTURES, { filter: (structure) => {
 		return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_CONTAINER) &&
 		structure.energy < structure.energyCapacity; }
 	});
-
+	return targets[0];
 };
 var getSource = function(creep) {
-	return creep.room.find(FIND_SOURCES);
+    var sources = creep.room.find(FIND_SOURCES);
+    console.log('found ' + sources.length + ' sources.');
+	return sources[0];
 };
 var roleChange = function(creep, reason) {
 	// function to be overridden by role

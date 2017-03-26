@@ -36,8 +36,7 @@ module.exports.loop = function () {
 		if (err != OK) {
 			s.structErr(spawn, err);
 		}
-	}
-	if(upgraders.length < stageC.desiredUpgraders) {
+	} else if(upgraders.length < stageC.desiredUpgraders) {
        err = spawn.createCreep(stageC.upgrader, undefined, {role: 'upgrader', tenured: true, tenuredRole:'upgrader'});
        if (err != OK) {
            s.structErr(spawn, err);
@@ -47,7 +46,7 @@ module.exports.loop = function () {
 	if(spawn.spawning) {
 		var spawningCreep = Game.creeps[spawn.spawning.name];
 		spawn.room.visual.text(
-			'🛠️' + spawningCreep.memory.role,
+			'::' + spawningCreep.memory.role,
 			spawn.pos.x + 1,
 			spawn.pos.y,
 			{align: 'left', opacity: 0.8});

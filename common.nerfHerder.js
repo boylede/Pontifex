@@ -9,6 +9,7 @@ var nerfHerder = {
 		var source;
 
 		if (m.depositing === true && creep.carry.energy === 0) {
+			creep.say('extract');
 			m.depositing = false;
 			source = getSource(creep);
 			if (source === null) {
@@ -19,6 +20,7 @@ var nerfHerder = {
 				m.source = source.id;
 			}
 		} else if (creep.carry.energy == creep.carryCapacity) {
+			creep.say('deposit');
 			m.depositing = true;
 			target = getTarget(creep);
 			if (target === null) {
@@ -31,10 +33,20 @@ var nerfHerder = {
 		}
 
 		if (source === undefined) {
-			source = Game.getObjectById(m.source);
+			if (m.source === undefined) {
+				source = getSource(creep);
+				m.source = source.id;
+			} else {
+				source = Game.getObjectById(m.source);
+			}
 		}
 		if (target === undefined) {
-			target = Game.getObjectById(m.target);
+			if (m.target === undefined) {
+				target = getSource(creep);
+				m.target = target.id;
+			} else {
+				target = Game.getObjectById(m.target);
+			}
 		}
 
 		if(m.depositing) {
@@ -49,13 +61,14 @@ var nerfHerder = {
 
 			switch (err) {
 				case ERR_NOT_IN_RANGE:
-					creep.moveTo(target, {visualizePathStyle: {stroke: '#0095ff'}});
-					break;
+				creep.moveTo(target, {visualizePathStyle: {stroke: '#0095ff'}});
+				break;
 				case OK:
-					break;
+				break;
 				default:
-					s.creepErr(creep, err);
-					break;
+				console.log('error while depositing');
+				s.creepErr(creep, err);
+				break;
 			}
 		} else {
 			if (source instanceof Source) {
@@ -65,13 +78,14 @@ var nerfHerder = {
 			}
 			switch (err) {
 				case ERR_NOT_IN_RANGE:
-					creep.moveTo(source, {visualizePathStyle: {stroke: '#f1e05a'}});
-					break;
+				creep.moveTo(source, {visualizePathStyle: {stroke: '#f1e05a'}});
+				break;
 				case OK:
-					break;
+				break;
 				default:
-					s.creepErr(creep, err);
-					break;
+				console.log('error while extracting');
+				s.creepErr(creep, err);
+				break;
 			}
 		}
 		return;
