@@ -1,4 +1,4 @@
-var currentVersion = '0.0.0.10';
+var currentVersion = '0.0.0.11';
 var setup = function() {
     if (Memory.setup === undefined) {
         console.log('Setting up environment');
@@ -69,10 +69,15 @@ module.exports = {
     },
     structErr: function(structure, err) {
         var e = 0 - err;
-        structure.room.visual.text(COOLERRORS[e], structure.pos.x + 1, structure.pos.y + 0.25, debugStyle);
+        structure.room.visual.text(ERRORS[e], structure.pos.x, structure.pos.y + 4.5, debugStyle);
+    },
+    structSay: function(structure, err) {
+        //var e = 0 - err;
+        structure.room.visual.text(err, structure.pos.x, structure.pos.y + 3.5, debugStyle);
     },
     getSpawn: getSpawn,
     setup: setup,
     currentVersion: currentVersion,
-    fixCreepsInMemory: fixCreepsInMemory
+    fixCreepsInMemory: fixCreepsInMemory,
+    errors: COOLERRORS
 };

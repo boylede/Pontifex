@@ -1,71 +1,66 @@
-var s = require('shared');
-var nerf = require('common.nerfHerder');
 
-var getTarget = function(creep) {
-	return creep.room.controller;
-};
-
-var getSource = function(creep) {
-	var sources = creep.room.find(FIND_STRUCTURES, {
-		filter: (structure) => {
-			return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_CONTAINER) &&
-				structure.energy > 0;
-			}
-	});
-	return sources[0];
-};
-var roleChange = function(creep, reason) {
-	/* KEEP - do not change roles of tenured creeps!
-	if (creep.memory.tenured === true) {
-		creep.say('tenured');
-	} else {
-		creep.memory.role = role;
-		creep.say('new ' + role);
-	}*/
-};
+var changeRole = function(creep, role) {
+    if (creep.memory.tenured == true) {
+        creep.say('⚡ ' + role);
+    } else {
+        //creep.memory.role = role;
+        creep.say('🔄 ' + role);
+        //creep.memory.upgrading = false;
+        //require('role.' + role).run(creep, undefined);
+    }
+}
 
 var roleUpgrader = {
-	/** @param {Creep} creep **/
-	run: function(creep, stageC) {
-		return nerf.herd(creep, stageC, getSource, getTarget, roleChange);
+    run: function(creep, stageController) {
+        var m = creep.memory;
+
+        if(m.upgrading && creep.carry.energy == 0) {
+            m.upgrading = false;
+            creep.say('🔄 refill');
+	    }
+	    if(!m.upgrading && creep.carry.energy == creep.carryCapacity) {
+	        m.upgrading = true;
+	        creep.say('⚡ upgrade');
+	    }
+
+	    if(m.upgrading) {
+            if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
+            }
+        } else {
+            var sources = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) &&
+                            structure.store[RESOURCE_ENERGY] >= 50;
+                    }
+            });
+            if (sources.length === 0) {
+                sources = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
+                            structure.energy >= 50;
+                    }
+                });
+            }
+            
+            if (sources.length === 0 ) { 
+                return creep.memory.role = 'lost';
+                console.error('upgrader got out of room');
+            }
+            var err;
+            var source = creep.pos.findClosestByRange(sources);
+            if (source.structureType == STRUCTURE_CONTAINER || source.structureType == STRUCTURE_STORAGE) { 
+                err = creep.withdraw(source, RESOURCE_ENERGY);
+            } else {
+                err = source.transferEnergy(creep, creep.carryCapacity);
+            }
+            if(err == ERR_NOT_IN_RANGE) {
+                creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+            } else if (err == ERR_NOT_ENOUGH_ENERGY) {
+                changeRole(creep, 'harvester');
+            } 
+        }
 	}
 };
+
 module.exports = roleUpgrader;
-
-/*
-var roleUpgrader = {
-	run: function(creep, stageController) {
-		var m = creep.memory;
-
-		if(m.upgrading && creep.carry.energy === 0) {
-			m.upgrading = false;
-			creep.say(' refill');
-		}
-		if(!m.upgrading && creep.carry.energy == creep.carryCapacity) {
-			m.upgrading = true;
-			creep.say('upgrade');
-		}
-
-		if(m.upgrading) {
-			if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
-			}
-		} else if (creep.room.find(FIND_CONSTRUCTION_SITES, {filter: {my: true}}).length > 0 && !m.tenured) {
-			changeRole(creep, 'builder');
-		} else {
-			var sources = creep.room.find(FIND_STRUCTURES, {
-					filter: (structure) => {
-						return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_CONTAINER) &&
-							structure.energy > 0;
-					}
-			});
-			var err = sources[0].transferEnergy(creep, creep.carryCapacity);
-			if(err == ERR_NOT_IN_RANGE) {
-				creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-			} else if (err == ERR_NOT_ENOUGH_ENERGY) {
-				changeRole(creep, 'harvester');
-			}
-		}
-	}
-};
-*/

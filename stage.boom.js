@@ -1,8 +1,18 @@
+var deBody = [MOVE, CARRY, WORK, WORK, MOVE];
+var exBody = [MOVE, CARRY, WORK, WORK, WORK, MOVE, MOVE, MOVE];
 module.exports = {
-	tasks: [],
-	desiredHarvesters: 4,
-	desiredDefenders: 10,
-	harvester: [MOVE, MOVE, MOVE, CARRY, WORK, CARRY, WORK],
-	defender: [MOVE, MOVE, ATTACK, MOVE, ATTACK],
-	name:'boom'
+    tasks: [],
+    desiredHarvesters: 2,
+    desiredUpgraders: 1,
+    desiredBuilders: 0,
+    desiredSherpas: 1,
+    desiredDefenders: 0,
+    harvester: exBody,
+    upgrader: deBody,
+    defender: [MOVE, ATTACK, MOVE, ATTACK],
+    builder:deBody,
+    sherpa: [MOVE, CARRY, MOVE, CARRY],
+    hitsWall: 2000,
+    hitsRampart: 2000,
+    name:'boom'
 };
