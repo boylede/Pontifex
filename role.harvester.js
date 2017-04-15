@@ -3,20 +3,20 @@ var getSource = function(creep) {
     var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type = RESOURCE_ENERGY});
     //console.log('found ' + sources.length + ' dropped energy.');
     if (sources.length === 0) {
-	sources = creep.room.find(FIND_SOURCES, {
+    sources = creep.room.find(FIND_SOURCES, {
                     filter: (src) => src.energy > 0
             });
     }
-	return sources[0];
+    return sources[0];
 };
 var roleHarvester = {
     run: function(creep, stageC) {
         var err = OK;
         var m = creep.memory;
         var source = getSource(creep);
-        // if (stageC.name == 'mature') {
+        // if (stageC.name == 'stable') {
         //     m.role = 'builder';
-            
+        //     return;
         // }
         // var source = Game.getObjectById(m.source);
         // if ( source == null) {
@@ -33,7 +33,7 @@ var roleHarvester = {
         //creep.say('harvesting...');
         
         //todo: have creep store target in memory for quicker loops.
-	    if(creep.carry.energy < creep.carryCapacity) {
+        if(creep.carry.energy < creep.carryCapacity) {
             //var sources = creep.room.find(FIND_SOURCES);
             //creep.say(sources.length);
             if (source.resourceType === undefined) {
@@ -91,7 +91,7 @@ var roleHarvester = {
             }
         }
         return OK;
-	}
+    }
 };
 
 module.exports = roleHarvester;
