@@ -79,9 +79,9 @@ module.exports.loop = function () {
       room.visual.text(r, x+0.1, y+0.5, s.debugStyle);
       room.visual.text(stage, x+10.0, y+0.5, s.debugStyle);
       room.visual.text('energy: ' + room.energyAvailable, x+20.0, y+0.5, s.debugStyle);
-      var i = 0;
-      for (var typ in Memory.creepCounter) {
-        room.visual.text(typ + ': ' + Memory.creepCounter[typ], x+0.1, y+1.5 + (i * 0.75), s.debugStyle);
+      let i = 0;
+      for (let typ in creeps) {
+        room.visual.text(typ + ': ' +creeps[typ].length, x+0.1, y+1.5 + (i * 0.75), s.debugStyle);
         i++;
       }
     } else {

@@ -20,7 +20,7 @@ roles.forEach(function(e, i, a) {
 
 function _countRole(role) {
     let creeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
-    Memory.creepCounter[role] = creeps.length;
+    // Memory.creepCounter[role] = creeps.length;
     return creeps;
 }
 
