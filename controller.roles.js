@@ -1,14 +1,14 @@
 var roles = [
-'builder',
 'harvester',
-'upgrader',
-'defender',
-'sherpa',
-'defective',
 'containerHarvester',
+'sherpa',
+'upgrader',
 'containerUpgrader',
+'builder',
+'defender',
 'scout',
-'raider'
+'raider',
+'defective'
 ];
 
 var roleModules = {};
