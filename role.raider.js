@@ -10,7 +10,7 @@ var getTarget = function getTarget(creep) {
     }
     target = creep.pos.findClosestByRange(targets);
     return target;
-}
+};
 
 var raider = {
     run: function(creep, stageC) {
