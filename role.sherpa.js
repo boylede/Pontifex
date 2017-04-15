@@ -146,7 +146,7 @@ var deposit = function(creep, target) {
     }
     return err;
 };
-var roleBuilder= {
+var roleSherpa = {
     run: function(creep) {
         var err = OK;
         var m = creep.memory;
@@ -271,4 +271,4 @@ var roleBuilder= {
     }
 };
     
-module.exports = roleBuilder;
+module.exports = roleSherpa;
