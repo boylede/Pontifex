@@ -60,6 +60,7 @@ module.exports.loop = function () {
         
         
         stage = stageController.stage(room);
+        //console.log(stage);
         let x = 24;
         let y = 11;
         room.visual.text(r, x+0.1, y+0.5, debugStyle);
@@ -102,9 +103,10 @@ module.exports.loop = function () {
     var scouts = countRole('scout');
     var scouts = countRole('raider');
     
-    var stageC = stageController.stages[stage];
+    
+    var stageC = stageController.stages[spawn.room.memory.stage];
     //Memory.creepCounter = {harvesters: harvesters.length, upgraders: upgraders.length, builders: builders.length};
-
+    // console.log(stageC.name);
     if(spawn.spawning) { 
         var spawningCreep = Game.creeps[spawn.spawning.name];
         s.structSay(spawn, 
