@@ -5,7 +5,11 @@ var isNear = function isNear(thing1, thing2) {
 }
 
  var linkLoop = function linkLoop(link) {
-     const m = link.room.memory.links[link.id];
+     const room = link.room.memory;
+     if (room.links === undefined) {
+         room.links = {};
+     }
+     const m = room.links[link.id];
      var receiver;
      //console.log('running loop for Link ' + link.id + ' which is a ' + m.role);
      for (let otherLink in link.room.memory.links) {
