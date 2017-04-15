@@ -7,8 +7,8 @@ stages.forEach(function(e,i,a) {
 var change = function(stage) {
     console.log('changing stage to ' + stage);
     //stageModules[current].buildConstructionSites();
-    return stage;
-};
+    return stage;      
+}
 var stage = function(room) {
     //console.log('checking stage of ' + room.name);
   if ( Memory.rooms[room.name] === undefined) {
@@ -53,7 +53,7 @@ let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structur
         }
             break;
     case 'stable':
-        if ( room.energyAvailable < 200) {
+        if ( false && room.energyAvailable < 200) {
             current = change('mature');
         } else if (false && room.energyAvailable >= 1200 && numExtensions >= 18) {
             current = change('stable');
