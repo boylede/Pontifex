@@ -4,7 +4,7 @@ var roleDefective = {
         var m = creep.memory;
         //var destination = creep.room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_SPAWN } })[0];
         var destination = Game.getObjectById(Memory.spawns['Spawn1'].id);
-        var err = creep.transfer(destination, RESOURCE_ENERGY) 
+        var err = creep.transfer(destination, RESOURCE_ENERGY);
         if(err == ERR_NOT_IN_RANGE) {
             creep.moveTo(destination, {visualizePathStyle: {stroke: '#fa3333'}});
         } else if (err != OK && err != ERR_NOT_ENOUGH_RESOURCES) {
@@ -26,7 +26,7 @@ var roleDefective = {
                 console.log('recycled ' + creep.name);
             }
         }
-	}
+    }
 };
 
 module.exports = roleDefective;
