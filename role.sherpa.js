@@ -1,11 +1,30 @@
 var s = require('shared');
 var NSO = {id:null};
-var getTarget = function(creep) {
-    var targets = creep.room.find(FIND_STRUCTURES, {
+
+var getTarget = function(creep, source) {
+    var targets = [];
+    
+    if (source.structureType == STRUCTURE_LINK) {
+        targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] < 100 && s.isNear(structure.room.controller, structure);
+                        return structure.structureType == STRUCTURE_STORAGE && creep.pos.getRangeTo(structure) < 3 && structure.store[RESOURCE_ENERGY] < structure.storeCapacity;
                     }
                 });
+    }
+    
+    if (_.sum(creep.carry) > creep.carry.RESOURCE_ENERGY) {
+        let home = Game.rooms.E18S84; // todo: what?
+        targets = [home.storage];
+        console.log('found something?!');
+    }
+                
+    if (targets.length === 0) {
+                targets = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] < creep.carryCapacity && s.isNear(structure.room.controller, structure);
+                    }
+                });
+            }
     
     if (targets.length === 0) {
                 targets = creep.room.find(FIND_STRUCTURES, {
@@ -63,7 +82,7 @@ var getTarget = function(creep) {
 };
 
 var getSource = function(creep) {
-    var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type = RESOURCE_ENERGY && resource.amount >= creep.carryCapacity}); // && resource.amount > 249
+    var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type != RESOURCE_ENERGY || resource.amount >= 2000}); // && resource.amount > 249, creep.carryCapacity
     //console.log('found ' + sources.length + ' dropped energy.');
     //if (sources.length === 0) {
        // var sources = creep.room.find(FIND_STRUCTURES, {
@@ -82,7 +101,7 @@ var getSource = function(creep) {
     if (sources.length === 0) {
         sources = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
-                return  structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0 && !s.isNear(structure.room.controller, structure);
+                return  structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > creep.carryCapacity && !s.isNear(structure.room.controller, structure);
             }
          });
     }
@@ -93,6 +112,9 @@ var getSource = function(creep) {
                 return  structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] > 0;
             }
          });
+    }
+    if (sources.length === 0) {
+        sources = creep.room.find(FIND_DROPPED_ENERGY);
     }
     return creep.pos.findClosestByRange(sources);
 };
@@ -167,8 +189,8 @@ var roleSherpa = {
             
         } else {
             //console.log('lets avoid this ever happening to ..........'+ m.role + '.. ' + creep.name);
-            target = getTarget(creep);
-            source = getSource(creep);
+            target = getTarget(creep, false);
+            source = getSource(creep, false);
         }
 
         if (m.depositing) {
@@ -176,7 +198,7 @@ var roleSherpa = {
                 // done depositing, start extraction.
                 creep.say('e^');
                 m.depositing = false;
-                source = getSource(creep);
+                source = getSource(creep, false);
                 if (source === null) {
                     console.log('Can\'t find any ' + m.role + ' sources for ' + creep.name + '.');
                     m.source = null;
@@ -199,7 +221,7 @@ var roleSherpa = {
                     case ERR_FULL:
                         // no target or target no longer valid
                         //m.depositing = false;
-                        target = getTarget(creep);
+                        target = getTarget(creep, source);
                         if (target == null) {
                             console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
                             m.target = null;
@@ -218,7 +240,7 @@ var roleSherpa = {
                 // done extracting, switch to depositing
                 creep.say('dv');
                 m.depositing = true;
-                target = getTarget(creep);
+                target = getTarget(creep, source);
                 if (target == null ) {
                     console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
                     m.target = null;
@@ -239,7 +261,7 @@ var roleSherpa = {
                     case ERR_NOT_ENOUGH_ENERGY:
                     case ERR_NOT_FOUND:
                         console.log(creep.name + ' no energy for extract from ' + source.id + ' to ' + target.id);
-                        source= getSource(creep);
+                        source= getSource(creep, target);
                         if (source == null) {
                             console.log('Can\'t find any ' + m.role + ' sources for ' + creep.name + '.');
                             m.source = null;
@@ -253,7 +275,7 @@ var roleSherpa = {
                 }
             }
         }
-        if (target === undefined) {
+        if (target === undefined || target === null) {
             console.log(creep.name + ' has an issue with its target');
             creep.say('!');
             m.target = null;
@@ -271,4 +293,4 @@ var roleSherpa = {
     }
 };
     
-module.exports = roleSherpa;
+module.exports = roleSherpa;   
