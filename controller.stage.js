@@ -1,4 +1,4 @@
-var stages = ['seed', 'boom', 'mature', 'stable']; // rush
+var stages = ['blank', 'seed', 'boom', 'mature', 'stable']; // rush
 var stageModules = {};
 stages.forEach(function(e,i,a) {
   stageModules[e] = require('stage.' + e );
@@ -15,7 +15,7 @@ var stage = function(room) {
     Memory.rooms[room.name] = {};
   }
   const mroom = Memory.rooms[room.name];
-  var current = mroom.stage || 'seed';
+  var current = mroom.stage || 'blank';
   const stageC = stageModules[current];
   if (stageC.levelUp) {
     current = stageModules[current].levelUp(room);

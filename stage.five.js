@@ -2,17 +2,17 @@ var work = [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, CARRY];
 var build = [WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY, MOVE, CARRY, MOVE,];
 var heavy = [WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, WORK, WORK, WORK, WORK, CARRY];
 var extract = [MOVE, WORK, WORK, WORK, WORK, WORK, CARRY];
-var logistic = [CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
+var logistic = [CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE];
 var defend = [MOVE, MOVE, ATTACK, ATTACK, ATTACK, ATTACK];
 var scout = [MOVE]; // , CLAIM, MOVE, CLAIM
 var raider = [MOVE, ATTACK];
 
 var levelUp = function levelUp(room) {
-    //let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
-    //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
+    let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
+    let numLinks = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_LINK}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (room.storage !== undefined && room.energyAvailable >= 1300 && room.controller.level > 4) {
-        return 'five';
+    if (numTowers >= 2 && numLinks >= 2 && room.energyAvailable >= 1800 && room.controller.level > 5) {
+        return 'stable';
     } else {
         return 'stable';
     }
@@ -57,25 +57,7 @@ module.exports = {
             body: raider
         }
     },
-    // desiredHarvesters: 0,
-    // desiredFatHarvesters: 2,
-    // desiredFatUpgraders: 1,
-    // desiredUpgraders: 0,
-    // desiredBuilders: 1,
-    // desiredSherpas: 4,
-    // desiredDefenders: 0,
-    // desiredScouts: 0,
-    // desiredRaiders: 0,
-    // harvester: work,
-    // scout: scout,
-    // raider: raider,
-    // fatHarvester: extract,
-    // fatUpgrader: heavy,
-    // upgrader: work,
-    // defender: defend,
-    // builder: build,
-    // sherpa: logistic,
     hitsWall: 250000,
     hitsRampart: 250000,
-    name:'stable'
+    name:'five'
 };

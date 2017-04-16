@@ -1,9 +1,9 @@
 var deBody = [MOVE, WORK, MOVE, WORK, CARRY];
 var exBody = [MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY];
 var levelUp = function levelUp(room) {
-    //let spawns = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_SPAWN});
-    let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
-    if (numExtensions > 5 && room.controller.level > 4) {
+//    let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
+    let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
+    if (room.energyAvailable >= 500 && numContainers >= 3 && room.controller.level > 2) {
         return 'mature';
     } else {
         return 'boom';
@@ -49,5 +49,6 @@ module.exports = {
     // sherpa: [MOVE, CARRY, MOVE, CARRY],
     hitsWall: 2000,
     hitsRampart: 2000,
-    name:'boom'
+    name:'boom',
+    levelUp: levelUp
 };
