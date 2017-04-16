@@ -31,7 +31,7 @@ function countRole(role, room) {
 function countRoles(room) {
   let creeps = {};
   roles.forEach((e, i, a) => {
-    roles[e] = countRole(e, room);
+    creeps[e] = countRole(e, room);
   });
 	return creeps;
 }
