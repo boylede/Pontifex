@@ -15,7 +15,7 @@ var roleModules = {};
 
 roles.forEach(function(e, i, a) {
   roleModules[e] = require('role.' + e);
-    console.log('loaded ' + e + ' role.');
+    //console.log('loaded ' + e + ' role.');
   });
 
 function _countRole(role) {

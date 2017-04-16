@@ -59,9 +59,9 @@ module.exports.loop = function () {
           s.structSay(spawn, spawningCreep.memory.role);
         } else {
           for (let role in creeps) {
-            console.log('found ' + creeps[role].length + ' ' + role + ' creeps, wanted ' + stageC.creeps[role].desired);
+            //console.log('found ' + creeps[role].length + ' ' + role + ' creeps, wanted ' + stageC.creeps[role].desired);
             if(creeps[role].length < stageC.creeps[role].desired) {
-              console.log('lacking ' + role + 'creeps, building one');
+              //console.log('lacking ' + role + 'creeps, building one');
               err = spawn.createCreep(stageC.creeps[role].body, undefined, {role: role});
               if (err != OK) {
                 s.structErr(spawn, err);
