@@ -5,11 +5,11 @@ var roleUpgrader = {
 
         if(m.upgrading && creep.carry.energy === 0) {
             m.upgrading = false;
-            creep.say('🔄 refill');
+            creep.say('refill');
         }
         if(!m.upgrading && creep.carry.energy == creep.carryCapacity) {
             m.upgrading = true;
-            creep.say('⚡ upgrade');
+            creep.say('upgrade');
         }
 
         if(m.upgrading) {
@@ -31,10 +31,24 @@ var roleUpgrader = {
                     }
                 });
             }
+            if (sources.length === 0) {
+                sources = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE)
+                    }
+                });
+            }
+            if (sources.length === 0) {
+                sources = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN)
+                    }
+                });
+            }
             
             if (sources.length === 0 ) {
-                console.log('upgrader got out of room');
-                creep.memory.role = 'lost';
+                console.log('upgrader lost');
+                creep.memory.role = 'defective';
                 return;
             }
             var err;
