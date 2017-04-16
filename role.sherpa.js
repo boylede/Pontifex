@@ -4,7 +4,7 @@ var NSO = {id:null};
 var getTarget = function(creep, source) {
     var targets = [];
     
-    if (source.structureType == STRUCTURE_LINK) {
+    if (source && source.structureType == STRUCTURE_LINK) {
         targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return structure.structureType == STRUCTURE_STORAGE && creep.pos.getRangeTo(structure) < 3 && structure.store[RESOURCE_ENERGY] < structure.storeCapacity;
