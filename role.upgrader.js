@@ -33,7 +33,7 @@ var roleUpgrader = {
             }
             
             if (sources.length === 0 ) {
-                console.error('upgrader got out of room');
+                console.log('upgrader got out of room');
                 creep.memory.role = 'lost';
                 return;
             }
