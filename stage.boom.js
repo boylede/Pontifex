@@ -1,5 +1,14 @@
-var deBody = [MOVE, CARRY, WORK, WORK, MOVE];
-var exBody = [MOVE, CARRY, WORK, WORK, WORK, MOVE, MOVE, MOVE];
+var deBody = [MOVE, WORK, MOVE, WORK, CARRY];
+var exBody = [MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY];
+var levelUp = function levelUp(room) {
+    //let spawns = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_SPAWN});
+    let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
+    if (numExtensions > 5 && room.controller.level > 4) {
+        return 'mature';
+    } else {
+        return 'boom';
+    }
+};
 module.exports = {
     tasks: [],
     creeps: {
@@ -20,11 +29,11 @@ module.exports = {
             body: [MOVE, ATTACK, MOVE, ATTACK]
         },
         sherpa: {
-            desired: 1,
+            desired: 0,
             body: [MOVE, CARRY, MOVE, CARRY]
         },
         builder: {
-            desired: 0,
+            desired: 2,
             body: deBody
         }
     },
