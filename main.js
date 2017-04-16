@@ -58,7 +58,7 @@ module.exports.loop = function () {
         s.structSay(spawn, spawningCreep.memory.role);
       } else {
         for (let role in creeps) {
-          if(creeps[role].length < stageC[desired + role]) {
+          if(creeps[role].length < stageC['desired' + role]) {
             err = spawn.createCreep(stageC[role], undefined, {role: role});
             if (err != OK) {
               s.structErr(spawn, err);
