@@ -53,12 +53,14 @@ module.exports.loop = function () {
       let stageC = stageController.stages[room.memory.stage];
       let err = OK;
 
-      if(spawn.spawning) {
+      if(spawn && spawn.spawning) {
         let spawningCreep = Game.creeps[spawn.spawning.name];
         s.structSay(spawn, spawningCreep.memory.role);
       } else {
         for (let role in creeps) {
+          console.log('found ' + creeps[role].length + ' ' + role + ' creeps, wanted ' + stageC['desired' + role]);
           if(creeps[role].length < stageC['desired' + role]) {
+            console.log('lacking ' + role + 'creeps, building one');
             err = spawn.createCreep(stageC[role], undefined, {role: role});
             if (err != OK) {
               s.structErr(spawn, err);
@@ -70,7 +72,7 @@ module.exports.loop = function () {
       for (let role in creeps) {
         for (let i = 0; i < creeps[role].length; i++) {
           let creep = creeps[role][i];
-          rolesController.run(creeps[i], stageC);
+          rolesController.run(creep, stageC);
         }
       }
 
