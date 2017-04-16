@@ -7,24 +7,62 @@ var defend = [MOVE, MOVE, ATTACK, ATTACK, ATTACK, ATTACK];
 var scout = [MOVE]; // , CLAIM, MOVE, CLAIM
 var raider = [MOVE, ATTACK];
 module.exports = {
-    desiredHarvesters: 0,
-    desiredFatHarvesters: 2,
-    desiredFatUpgraders: 1,
-    desiredUpgraders: 0,
-    desiredBuilders: 1,
-    desiredSherpas: 4,
-    desiredDefenders: 0,
-    desiredScouts: 0,
-    desiredRaiders: 0,
-    harvester: work,
-    scout: scout,
-    raider: raider,
-    fatHarvester: extract,
-    fatUpgrader: heavy,
-    upgrader: work,
-    defender: defend,
-    builder: build,
-    sherpa: logistic,
+    creeps: {
+        harvester: {
+            desired: 0,
+            body: work
+        },
+        containerHarvester: {
+            desired: 2,
+            body: extract
+        },
+        upgrader: {
+            desired: 0,
+            body: work
+        },
+        containerUpgrader: {
+            desired: 1,
+            body: heavy
+        },
+        defender: {
+            desired: 0,
+            body: defend
+        },
+        sherpa: {
+            desired: 4,
+            body: logistic
+        },
+        builder: {
+            desired: 1,
+            body: build
+        },
+        scout: {
+            desired: 0,
+            body: scout
+        },
+        raider: {
+            desired: 0,
+            body: raider
+        }
+    },
+    // desiredHarvesters: 0,
+    // desiredFatHarvesters: 2,
+    // desiredFatUpgraders: 1,
+    // desiredUpgraders: 0,
+    // desiredBuilders: 1,
+    // desiredSherpas: 4,
+    // desiredDefenders: 0,
+    // desiredScouts: 0,
+    // desiredRaiders: 0,
+    // harvester: work,
+    // scout: scout,
+    // raider: raider,
+    // fatHarvester: extract,
+    // fatUpgrader: heavy,
+    // upgrader: work,
+    // defender: defend,
+    // builder: build,
+    // sherpa: logistic,
     hitsWall: 250000,
     hitsRampart: 250000,
     name:'stable'

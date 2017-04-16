@@ -1,16 +1,28 @@
 var body = [MOVE, CARRY, WORK, WORK];
 module.exports = {
     tasks: [],
-    desiredHarvesters: 2,
-    desiredUpgraders: 1,
-    desiredBuilders: 0,
-    desiredSherpas: 0,
-    desiredDefenders:0,
-    harvester: body,
-    upgrader: body,
-    defender: [MOVE, ATTACK],
-    sherpa: [MOVE, CARRY],
-    builder:body,
+    creeps: {
+        harvester: {
+            desired: 2,
+            body: body
+        },
+        upgrader: {
+            desired: 1,
+            body: body
+        },
+        defender: {
+            desired: 0,
+            body: [MOVE, ATTACK]
+        },
+        sherpa: {
+            desired: 0,
+            body: [MOVE, CARRY]
+        },
+        builder: {
+            desired: 0,
+            body: body
+        }
+    },
     hitsWall: 1000,
     hitsRampart: 1000,
     name:'seed'
