@@ -82,7 +82,7 @@ var getTarget = function(creep, source) {
 };
 
 var getSource = function(creep) {
-    var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type != RESOURCE_ENERGY || resource.amount >= 2000}); // && resource.amount > 249, creep.carryCapacity
+    var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type != RESOURCE_ENERGY}); // && resource.amount > 249, creep.carryCapacity
     //console.log('found ' + sources.length + ' dropped energy.');
     //if (sources.length === 0) {
        // var sources = creep.room.find(FIND_STRUCTURES, {
@@ -91,6 +91,11 @@ var getSource = function(creep) {
     //         }
     //      });
     //}
+    if (sources.length === 0) {
+        sources = creep.room.find(FIND_DROPPED_ENERGY, {
+            filter: (resource) => resource.amount >= 2000
+        });
+    }
     if (sources.length === 0) {
         sources = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
