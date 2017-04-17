@@ -107,7 +107,7 @@ var extract = function(creep, source) {
 	    err = creep.pickup(source);
 	} else {
 		err = creep.withdraw(source, RESOURCE_ENERGY);
-		if (err === OK && source.store[RESOURCE_ENERGY] === 0) {
+		if ((err === OK && source.energy === 0) || (err === OK && source.store && source.store[RESOURCE_ENERGY] === 0)) {
 		    creep.say('drained');
 		    err = ERR_NOT_FOUND
 		}
