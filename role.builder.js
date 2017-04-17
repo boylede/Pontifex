@@ -55,7 +55,7 @@ var getTarget = function(creep) {
 };
 
 var getSource = function(creep) {
-    // var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type = RESOURCE_ENERGY});
+    var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type = RESOURCE_ENERGY && creep.pos.getRangeTo(resource) < 6});
     //console.log('found ' + sources.length + ' dropped energy.');
     //if (sources.length === 0) {
     // let target = Game.getObjectById(creep.memory.target);
@@ -64,13 +64,20 @@ var getSource = function(creep) {
     //         return structure.structureType == STRUCTURE_CONTAINER  && structure.store[RESOURCE_ENERGY] > 0 && isNear(target, structure);
     //     }
     // });
-    // if (sources.length === 0) {
-	var sources = creep.room.find(FIND_STRUCTURES, {
+    if (sources.length === 0) {
+	sources = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_STORAGE || structure.structureType == STRUCTURE_CONTAINER) && structure.store[RESOURCE_ENERGY] > 0;
                     }
             });
-//     }
+    }
+    if (sources.length === 0) {
+	sources = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_EXTENSION) && structure.energy > 0;
+                    }
+            });
+    }
 //     if (sources.length === 0) {
 // 	sources = creep.room.find(FIND_STRUCTURES, {
 //                     filter: (structure) => {

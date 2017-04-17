@@ -42,18 +42,18 @@ var getTarget = function(creep, source) {
 //                     }
 //             });
             
-            if (targets.length === 0) {
-                targets = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] < structure.storeCapacity && s.isNear(structure.room.controller, structure);
-                    }
-                });
-            }
             
             if (targets.length === 0) {
                 targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return  (structure.structureType == STRUCTURE_TOWER) && structure.energy < structure.energyCapacity;
+                    }
+                });
+            }
+            if (targets.length === 0) {
+                targets = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] < structure.storeCapacity && s.isNear(structure.room.controller, structure);
                     }
                 });
             }
