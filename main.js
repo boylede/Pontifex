@@ -81,14 +81,12 @@ module.exports.loop = function () {
         }
       }
 
-      let x = 24;
-      let y = 11;
-      room.visual.text(r, x+0.1, y+0.5, s.debugStyle);
-      room.visual.text(stage, x+10.0, y+0.5, s.debugStyle);
-      room.visual.text('energy: ' + room.energyAvailable, x+20.0, y+0.5, s.debugStyle);
+      room.visual.text(r, 0.1, 0.5, s.debugStyle);
+      room.visual.text(stage, 10.0, 0.5, s.debugStyle);
+      room.visual.text('energy: ' + room.energyAvailable, 20.0, 0.5, s.debugStyle);
       let i = 0;
       for (let typ in creeps) {
-        room.visual.text(typ + ': ' +creeps[typ].length, x+0.1, y+1.5 + (i * 0.75), s.debugStyle);
+        room.visual.text(typ + ': ' +creeps[typ].length, 0.1, 1.5 + (i * 0.75), s.debugStyle);
         i++;
       }
     } else {
