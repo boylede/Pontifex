@@ -50,8 +50,12 @@ var getTarget = function(creep) {
 	}
 	//targets = _.sortBy(targets, [(v)=> v.progressTotal - v.progress]);
 	let target = creep.pos.findClosestByRange(targets);
-	creep.memory.targetWas = target.structureType + ' at ' + target.pos.x + ',' + target.pos.y;
-	return target;
+	if (target) {
+	    creep.memory.targetWas = target.structureType + ' at ' + target.pos.x + ',' + target.pos.y;
+	    return target;
+	} else {
+	    return null;
+	}
 };
 
 var getSource = function(creep) {
@@ -169,7 +173,7 @@ var roleBuilder= {
 		} else {
 		    console.log(' ........'+ m.role + creep.name + ' lost its target.' );
 			target = getTarget(creep);
-			 m.target = target.id;
+			  if (target) m.target = target.id;
 		}
 		if (m.source !== null) {
 			source = Game.getObjectById(m.source);
@@ -214,7 +218,7 @@ var roleBuilder= {
 					    // no target or target no longer valid
 					    //m.depositing = false;
 					    target = getTarget(creep);
-					    if (target === null) {
+					    if (!target) {
 					        console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
 					        m.target = null;
 					    } else {
@@ -233,7 +237,7 @@ var roleBuilder= {
 				creep.say('dv');
 				m.depositing = true;
 				target = getTarget(creep);
-				if (target === null ) {
+				if (!target) {
 					console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
 					m.target = null;
 				} else {
