@@ -53,13 +53,18 @@ var roleUpgrader = {
             }
             var err;
             var source = creep.pos.findClosestByRange(sources);
-            if (source.structureType == STRUCTURE_CONTAINER || source.structureType == STRUCTURE_STORAGE) {
-                err = creep.withdraw(source, RESOURCE_ENERGY);
-            } else {
-                err = source.transferEnergy(creep, creep.carryCapacity);
-            }
-            if(err == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+            if (source) {
+                if (src.energy > 0) {
+                    err = creep.harvest(source);
+                } else if (source.structureType == STRUCTURE_CONTAINER || source.structureType == STRUCTURE_STORAGE) {
+                    err = creep.withdraw(source, RESOURCE_ENERGY);
+                } else {
+                    err = source.transferEnergy(creep, creep.carryCapacity);
+                }
+
+                if(err == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+                }
             }
             // else if (err == ERR_NOT_ENOUGH_ENERGY) {
             //     changeRole(creep, 'harvester');
