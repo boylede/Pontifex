@@ -54,7 +54,7 @@ var roleUpgrader = {
             var err;
             var source = creep.pos.findClosestByRange(sources);
             if (source) {
-                if (src.energy > 0) {
+                if (source.energy > 0) {
                     err = creep.harvest(source);
                 } else if (source.structureType == STRUCTURE_CONTAINER || source.structureType == STRUCTURE_STORAGE) {
                     err = creep.withdraw(source, RESOURCE_ENERGY);
