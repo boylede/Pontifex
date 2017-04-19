@@ -48,6 +48,11 @@ var getTarget = function(creep) {
 			filter: (str) => { return str.structureType == STRUCTURE_WALL && str.hits < 250000;}
 		});
 	}
+	if (targets.length === 0) {
+		targets = creep.room.find(FIND_STRUCTURES, {
+			filter: (str) =>  str.hits < str.hitsMax
+		});
+	}
 	//targets = _.sortBy(targets, [(v)=> v.progressTotal - v.progress]);
 	let target = creep.pos.findClosestByRange(targets);
 	if (target) {
