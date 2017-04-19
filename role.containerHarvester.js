@@ -17,9 +17,9 @@ var freeSpace = function(src) {
     var area = src.room.lookForAtArea(LOOK_STRUCTURES, src.pos.y - 1, src.pos.x - 1, src.pos.y + 1, src.pos.x + 1, true);
     var free = _.filter(area, (str) => {
         let st = str.structure;
-        console.log('looking for fat asses at ' + st.id);
+        console.log('looking for fat asses at ' + st.id + ' ' + st.structureType);
         let fatHarvesters = st.room.find(FIND_MY_CREEPS, {filter: (creep) => {
-            return creep.memory.role == 'fatHarvester' && creep.memory.container !== undefined && creep.memory.container == st.id;
+            return creep.memory.role == 'containerHarvester' && creep.memory.container !== undefined && creep.memory.container == st.id;
         } });
         console.log('found ' + fatHarvesters.length);
         let result = st.structureType == STRUCTURE_CONTAINER && fatHarvesters.length === 0;
