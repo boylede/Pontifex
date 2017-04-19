@@ -5,12 +5,14 @@ var freeSpace = function(src) {
     var area = src.room.lookForAtArea(LOOK_STRUCTURES, src.pos.y - 1, src.pos.x - 1, src.pos.y + 1, src.pos.x + 1, true);
     var free = _.filter(area, (str) => {
         let st = str.structure;
+        /*
         console.log('looking for fat asses at ' + st.id);
         let fatUpgraders = st.room.find(FIND_MY_CREEPS, {filter: (creep) => {
             return creep.memory.role == 'fatUpgrader' && creep.memory.container !== undefined && creep.memory.container == st.id;
         } });
         console.log('found ' + fatUpgraders.length);
-        let result = st.structureType == STRUCTURE_CONTAINER && fatUpgraders.length === 0;
+        */
+        let result = st.structureType == STRUCTURE_CONTAINER;// && fatUpgraders.length === 0;
         return result;
     });
     var free_containers = [];
