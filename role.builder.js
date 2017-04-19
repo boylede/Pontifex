@@ -83,7 +83,7 @@ var getSource = function(creep) {
     if (sources.length === 0) {
 	sources = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_EXTENSION) && structure.energy > 0;
+                        return (structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_EXTENSION) && structure.energy > creep.carryCapacity;
                     }
             });
     }
