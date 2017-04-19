@@ -19,7 +19,7 @@ module.exports.loop = function () {
     let stage = '';
     const spawn = room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_SPAWN } })[0];
     if (room.setup !== true) {
-      if (room.controller.my && spawn) {
+      if (room.controller && room.controller.my && spawn) {
         Memory.spawns[spawn.name] = {
           id:spawn.id
         };
@@ -44,7 +44,7 @@ module.exports.loop = function () {
     let err = OK;
     var role = '';
 
-    if (room.controller.my) {
+    if (room.controller && room.controller.my) {
       stage = stageController.stage(room);
 
       let towers = room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_TOWER } });
@@ -88,7 +88,7 @@ module.exports.loop = function () {
         i++;
       }
     } else {
-      console.log('not my room');
+      console.log('not my room ' + r);
     }
     for (role in creeps) {
         for (var i = 0; i < creeps[role].length; i++) {
