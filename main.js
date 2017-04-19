@@ -26,7 +26,7 @@ module.exports.loop = function () {
       }
       room.memory.sources = [];
       let roomSources = room.find(FIND_SOURCES);
-      for (let sourceId in roomSources) {
+      for (var sourceId in roomSources) {
         let src = roomSources[sourceId];
         let source = {id: src.id};
         let area = room.lookForAtArea(LOOK_TERRAIN, src.pos.y - 1, src.pos.x - 1, src.pos.y + 1, src.pos.x + 1, true);
@@ -38,6 +38,11 @@ module.exports.loop = function () {
       }
       room.setup = true;
     }
+
+    let creeps = rolesController.countRoles(room);
+    let stageC = stageController.stages[room.memory.stage];
+    let err = OK;
+    var role = '';
 
     if (room.controller.my) {
       stage = stageController.stage(room);
@@ -51,16 +56,16 @@ module.exports.loop = function () {
         immobileLink.run(links[link]);
       }
 
-      let creeps = rolesController.countRoles(room);
-      let stageC = stageController.stages[room.memory.stage];
-      let err = OK;
+      // let creeps = rolesController.countRoles(room);
+      // let stageC = stageController.stages[room.memory.stage];
+      // let err = OK;
 
       if (spawn) {
         if(spawn.spawning) {
           let spawningCreep = Game.creeps[spawn.spawning.name];
           s.structSay(spawn, spawningCreep.memory.role);
         } else {
-          for (let role in creeps) {
+          for (role in creeps) {
             if (creeps.hasOwnProperty(role)) {
               if(stageC.creeps[role] && creeps[role].length < stageC.creeps[role].desired) {
                 err = spawn.createCreep(stageC.creeps[role].body, undefined, {role: role});
@@ -78,15 +83,15 @@ module.exports.loop = function () {
       room.visual.text(stage, 10.0, 0.5, s.debugStyle);
       room.visual.text('energy: ' + room.energyAvailable, 20.0, 0.5, s.debugStyle);
       let i = 0;
-      for (let typ in creeps) {
+      for (var typ in creeps) {
         room.visual.text(typ + ': ' +creeps[typ].length, 0.1, 1.5 + (i * 0.75), s.debugStyle);
         i++;
       }
     } else {
       console.log('not my room');
     }
-    for (let role in creeps) {
-        for (let i = 0; i < creeps[role].length; i++) {
+    for (role in creeps) {
+        for (var i = 0; i < creeps[role].length; i++) {
           let creep = creeps[role][i];
           rolesController.run(creep, stageC);
         }
