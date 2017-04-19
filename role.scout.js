@@ -29,6 +29,8 @@ var scout = {
                 } else {
                     err = creep.reserveController(creep.room.controller);
                 }
+            } else {
+                creep.memory.role = 'builder';
             }
         } else {
             err = creep.moveTo(destination, path);
