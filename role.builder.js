@@ -85,6 +85,15 @@ var getSource = function(creep) {
 //                     }
 //             });
 //     }
+
+	if (sources.length === 0) {
+        sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type = RESOURCE_ENERGY});
+    }
+    if (sources.length === 0) {
+        sources = creep.room.find(FIND_SOURCES, {
+            filter: (src) => src.energy > 0
+        });
+    }
     let source = creep.pos.findClosestByRange(sources);
     //creep.memory.sourceWas = source.structureType + ' at ' + source.pos.x + ',' + source.pos.y;
 	return source;
