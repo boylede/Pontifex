@@ -7,7 +7,7 @@ var getSource = function(creep) {
         });
     }
     if (sources.length > 0) {
-        return creep.pos.getClosestByRange(sources);
+        return creep.pos.findClosestByRange(sources);
     } else {
         console.log('no source here');
         return {};
