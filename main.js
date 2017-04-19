@@ -74,13 +74,6 @@ module.exports.loop = function () {
         }
       }
 
-      for (let role in creeps) {
-        for (let i = 0; i < creeps[role].length; i++) {
-          let creep = creeps[role][i];
-          rolesController.run(creep, stageC);
-        }
-      }
-
       room.visual.text(r, 0.1, 0.5, s.debugStyle);
       room.visual.text(stage, 10.0, 0.5, s.debugStyle);
       room.visual.text('energy: ' + room.energyAvailable, 20.0, 0.5, s.debugStyle);
@@ -92,5 +85,11 @@ module.exports.loop = function () {
     } else {
       console.log('not my room');
     }
+    for (let role in creeps) {
+        for (let i = 0; i < creeps[role].length; i++) {
+          let creep = creeps[role][i];
+          rolesController.run(creep, stageC);
+        }
+      }
   }
 };
