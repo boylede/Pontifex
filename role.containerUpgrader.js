@@ -14,13 +14,13 @@ var freeSpace = function(src) {
         return result;
     });
     var free_containers = [];
-    for (name in free) {
+    for (var name in free) {
         free_containers.push(free[name].structure);
     }
     console.log('found ' + free_containers.length + ' free containers at ' + src.id);
     // return free[0].structure;
     return free_containers;
-}
+};
 
 
 function onTop(creep, container) {

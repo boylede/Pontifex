@@ -26,7 +26,7 @@ var getTarget = function(creep) {
 	
 	if (targets.length === 0) {
 		targets = creep.room.find(FIND_STRUCTURES, {
-			filter: (str) => { return str.hits < str.hitsMax && str.structureType != STRUCTURE_WALL && str.structureType != STRUCTURE_RAMPART}
+			filter: (str) => str.hits < str.hitsMax && str.structureType != STRUCTURE_WALL && str.structureType != STRUCTURE_RAMPART
 		});
 	}
 	
@@ -109,7 +109,7 @@ var extract = function(creep, source) {
 		err = creep.withdraw(source, RESOURCE_ENERGY);
 		if ((err === OK && source.energy === 0) || (err === OK && source.store && source.store[RESOURCE_ENERGY] === 0)) {
 		    creep.say('drained');
-		    err = ERR_NOT_FOUND
+		    err = ERR_NOT_FOUND;
 		}
 	}
 	return err;
@@ -135,7 +135,7 @@ var deposit = function(creep, target) {
 	    err = creep.transfer(target, RESOURCE_ENERGY);
 	    if (err === OK && target.storeCapacity == _.sum(target.store)) {
 	        creep.say('done');
-		    err = ERR_NOT_FOUND
+		    err = ERR_NOT_FOUND;
 		}
 	} else {
 	    err = ERR_NOT_FOUND;
@@ -152,9 +152,9 @@ var roleBuilder= {
 		var source = NSO;
 		//console.log('running role for ' + creep.name + ' : ' + m.role + ' : ' + m.last);
 
-		if (m.target != null) {
+		if (m.target !== null) {
 			target = Game.getObjectById(m.target);
-			if (target == null) {
+			if (target === null) {
 			    m.target = null;
 			}
 		} else {
@@ -164,7 +164,7 @@ var roleBuilder= {
 		}
 		if (m.source !== null) {
 			source = Game.getObjectById(m.source);
-			if (source == null) {
+			if (source === null) {
 			    m.source = null;
 			}
 		} else {
@@ -200,11 +200,12 @@ var roleBuilder= {
 					break;
 					case ERR_NOT_ENOUGH_ENERGY:
 				        console.log(creep.name + ' no energy for ' + target.id + ' from ' + source.id);
+				        break;
 					case ERR_NOT_FOUND:
 					    // no target or target no longer valid
 					    //m.depositing = false;
 					    target = getTarget(creep);
-					    if (target == null) {
+					    if (target === null) {
 					        console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
 					        m.target = null;
 					    } else {
@@ -223,7 +224,7 @@ var roleBuilder= {
 				creep.say('dv');
 				m.depositing = true;
 				target = getTarget(creep);
-				if (target == null ) {
+				if (target === null ) {
 					console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
 					m.target = null;
 				} else {
@@ -239,12 +240,12 @@ var roleBuilder= {
 					case OK:
 					break;
 					case ERR_BUSY:
-					break
+					break;
 					case ERR_NOT_ENOUGH_ENERGY:
 					case ERR_NOT_FOUND:
 				        console.log(creep.name + ' no energy for extract from ' + source.id + ' to ' + target.id);
 				        source= getSource(creep);
-					    if (source == null) {
+					    if (source === null) {
 					        console.log('Can\'t find any ' + m.role + ' sources for ' + creep.name + '.');
 					        m.source = null;
 					    } else {

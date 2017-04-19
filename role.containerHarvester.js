@@ -10,7 +10,7 @@ var findNearby = function(src, typ, filter){
     } else {
         return false;
     }
-}
+};
 
 var freeSpace = function(src) {
     //todo: make this source-agnostic
@@ -26,13 +26,13 @@ var freeSpace = function(src) {
         return result;
     });
     var free_containers = [];
-    for (name in free) {
+    for (var name in free) {
         free_containers.push(free[name].structure);
     }
     console.log('found ' + free_containers.length + ' free containers at ' + src.id);
     // return free[0].structure;
     return free_containers;
-}
+};
 
 
 function onTop(creep, container) {
@@ -49,7 +49,7 @@ var immobileHarvester = {
         //m.source = undefined;
         if ( m.source === undefined || m.container === undefined) {
             let index = -1;
-            let sources = creep.room.find(FIND_SOURCES, {})
+            let sources = creep.room.find(FIND_SOURCES, {});
             while ( container === undefined && index < sources.length) {
                 index++;
                 console.log('trying source ' + (index) + ' for ' + creep.name );

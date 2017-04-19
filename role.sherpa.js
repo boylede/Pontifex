@@ -134,7 +134,7 @@ var extract = function(creep, source) {
         err = creep.withdraw(source, RESOURCE_ENERGY);
         if (err === OK && source.store && source.store[RESOURCE_ENERGY] === 0) {
             creep.say('drained');
-            err = ERR_NOT_FOUND
+            err = ERR_NOT_FOUND;
         }
     }
     return err;
@@ -143,13 +143,13 @@ var deposit = function(creep, target) {
     var err;
     // todo: distinguish store types and energy-only types - for "finished" analysis
     if (target instanceof StructureSpawn || target instanceof StructureExtension || target instanceof StructureStorage || target instanceof StructureContainer || target instanceof StructureTower) {
-        err = creep.transfer(target, RESOURCE_ENERGY)
+        err = creep.transfer(target, RESOURCE_ENERGY);
         if (err == OK && target.energy == target.energyCapacity) {
             err = ERR_NOT_FOUND;
         }
     } else if (target instanceof ConstructionSite) {
         if (creep.pos == target.pos) {
-            err = ERR_NOT_IN_RANGE
+            err = ERR_NOT_IN_RANGE;
         } else {
             err = creep.drop(RESOURCE_ENERGY);   
         }
@@ -182,10 +182,10 @@ var roleSherpa = {
         var source = NSO;
         //console.log('running role for ' + creep.name + ' : ' + m.role + ' : ' + m.last);
 
-        if (m.target != null && m.source !== null) {
+        if (m.target !== null && m.source !== null) {
             target = Game.getObjectById(m.target);
             source = Game.getObjectById(m.source);
-            if (target == null || source == null) {
+            if (target === null || source === null) {
                 //console.log('eff..');
                 m.target = null;
                 m.source = null;
@@ -227,7 +227,7 @@ var roleSherpa = {
                         // no target or target no longer valid
                         //m.depositing = false;
                         target = getTarget(creep, source);
-                        if (target == null) {
+                        if (target === null) {
                             console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
                             m.target = null;
                         } else {
@@ -246,7 +246,7 @@ var roleSherpa = {
                 creep.say('dv');
                 m.depositing = true;
                 target = getTarget(creep, source);
-                if (target == null ) {
+                if (target === null ) {
                     console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
                     m.target = null;
                 } else {
@@ -267,7 +267,7 @@ var roleSherpa = {
                     case ERR_NOT_FOUND:
                         console.log(creep.name + ' no energy for extract from ' + source.id + ' to ' + target.id);
                         source= getSource(creep, target);
-                        if (source == null) {
+                        if (source === null) {
                             console.log('Can\'t find any ' + m.role + ' sources for ' + creep.name + '.');
                             m.source = null;
                         } else {

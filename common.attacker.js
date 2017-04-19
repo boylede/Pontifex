@@ -65,9 +65,9 @@ var attacker = {
 		} else {
 		// todo: something that allows healers to heal, 
 		// non-attacking variants to get a callback;
-		}
-		return;
 	}
+	return;
+}
 };
 
 module.exports = attacker;

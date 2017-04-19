@@ -14,10 +14,10 @@ module.exports.loop = function () {
     Memory.fixedCreeps = true;
     console.log('fixed creeps');
   }
-  for (let r in Game.rooms) {
-    let room = Game.rooms[r];
+  for (var r in Game.rooms) {
+    const room = Game.rooms[r];
     let stage = '';
-    let spawn = room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_SPAWN } })[0];
+    const spawn = room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_SPAWN } })[0];
     if (room.setup !== true) {
       if (room.controller.my && spawn) {
         Memory.spawns[spawn.name] = {
@@ -28,9 +28,11 @@ module.exports.loop = function () {
       let roomSources = room.find(FIND_SOURCES);
       for (let sourceId in roomSources) {
         let src = roomSources[sourceId];
-        let source = {id: src.id}
+        let source = {id: src.id};
         let area = room.lookForAtArea(LOOK_TERRAIN, src.pos.y - 1, src.pos.x - 1, src.pos.y + 1, src.pos.x + 1, true);
-        let freeCount = _.filter(area, (look) => {return look.terrain == 'plain'}).length;
+        let freeCount = _.filter(area, (look) => {
+          return look.terrain == 'plain';
+        }).length;
         source.area = freeCount;
         room.memory.sources.push(source);
       }

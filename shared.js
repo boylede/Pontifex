@@ -52,6 +52,11 @@ module.exports = {
             Memory.creeps = {};
             Memory.setup = true;
         }
+        if ( Memory.fixedCreeps === false) {
+            s.fixCreepsInMemory();
+            Memory.fixedCreeps = true;
+            console.log('fixed creeps');
+        }
     },
     fixCreepsInMemory:  function fixCreepsInMemory() {
         var contain = {};
@@ -85,7 +90,7 @@ module.exports = {
         const len = arr.length;
         let targets = [];
         for (let i = 0; i < len; i++){
-            const filter = {filter:arr[i]}
+            const filter = {filter:arr[i]};
             targets = creep.room.find(typ, filter);
             if (targets.length !== 0) {
                 break;

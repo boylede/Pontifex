@@ -18,7 +18,7 @@ var roleDefender = {
             err = creep.moveTo(targets[0]);
             return;
         }
-        var target = targets[0]
+        var target = targets[0];
         //console.log(target.name);
         var err = creep.attack(target); 
         if(err == ERR_NOT_IN_RANGE) {
@@ -26,7 +26,7 @@ var roleDefender = {
         } else if (err != OK) {
             creep.say(err);
         }
-	}
+    }
 };
 
 module.exports = roleDefender;

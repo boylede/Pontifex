@@ -74,51 +74,6 @@ var nerfHerder = {
 				}
 			}
 		}
-
-		// if (source === undefined) {
-		// 	if (m.source === undefined) {
-		// 		source = getSource(creep);
-		// 		m.source = source.id;
-		// 	} else {
-		// 		source = Game.getObjectById(m.source);
-		// 	}
-		// }
-		// if (target === undefined) {
-		// 	if (m.target === undefined) {
-		// 		target = getSource(creep);
-		// 		m.target = target.id;
-		// 	} else {
-		// 		target = Game.getObjectById(m.target);
-		// 	}
-		// }
-
-		// if(m.depositing) {
-		// 	err = deposit(creep, target);
-		// 	switch (err) {
-		// 		case ERR_NOT_IN_RANGE:
-		// 		creep.moveTo(target, {visualizePathStyle: {stroke: '#0095ff'}});
-		// 		break;
-		// 		case OK:
-		// 		break;
-		// 		default:
-		// 		console.log(creep.name + ' : could not deposit : ' + s.errors[err]);
-		// 		s.creepErr(creep, err);
-		// 		break;
-		// 	}
-		// } else {
-		// 	err = extract(creep, source);
-		// 	switch (err) {
-		// 		case ERR_NOT_IN_RANGE:
-		// 		creep.moveTo(source, {visualizePathStyle: {stroke: '#f1e05a'}});
-		// 		break;
-		// 		case OK:
-		// 		break;
-		// 		default:
-		// 		console.log(creep.name + ' could not extract');
-		// 		s.creepErr(creep, err);
-		// 		break;
-		// 	}
-		// }
 		return;
 	}
 };
