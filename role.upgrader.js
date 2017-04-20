@@ -45,6 +45,9 @@ var roleUpgrader = {
                     }
                 });
             }
+            if (sources.length === 0) {
+                sources = creep.room.find(FIND_SOURCES);
+            }
             
             if (sources.length === 0 ) {
                 console.log('upgrader lost');
