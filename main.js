@@ -5,6 +5,10 @@ var immobileLink = require('immobile.link');
 
 var s = require('shared');
 
+const attackersPresent = function attackersPresent(creep) { 
+  return !creep.my && (creep.getActiveBodyparts(HEAL) > 0 || creep.getActiveBodyparts(ATTACK) > 0);
+};
+
 module.exports.loop = function () {
   PathFinder.use(true);
   s.setup();
@@ -46,6 +50,14 @@ module.exports.loop = function () {
 
     if (room.controller && room.controller.my) {
       stage = stageController.stage(room);
+      let canSafeMode = !room.controller.safeMode && !room.controller.safeModeCooldown && room.controller.safeModeAvailable > 0;
+      let attackers = room.find(FIND_CREEPS, {
+        filter: attackersPresent
+      });
+      if (canSafeMode && attackers.length > 3) {
+        console.log('safe mode initiated');
+        room.controller.activateSafeMode();
+      }
 
       let towers = room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_TOWER } });
       for (let tower in towers) {
