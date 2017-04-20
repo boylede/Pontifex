@@ -45,6 +45,11 @@ var getTarget = function(creep) {
 	}
 	if (targets.length === 0) {
 	    targets = creep.room.find(FIND_STRUCTURES, {
+			filter: (str) => { return str.structureType == STRUCTURE_WALL && str.hits < 5000;}
+		});
+	}
+	if (targets.length === 0) {
+	    targets = creep.room.find(FIND_STRUCTURES, {
 			filter: (str) => { return str.structureType == STRUCTURE_WALL && str.hits < 250000;}
 		});
 	}
@@ -80,13 +85,6 @@ var getSource = function(creep) {
                     }
             });
     }
-    if (sources.length === 0) {
-	sources = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_EXTENSION) && structure.energy > creep.carryCapacity;
-                    }
-            });
-    }
 //     if (sources.length === 0) {
 // 	sources = creep.room.find(FIND_STRUCTURES, {
 //                     filter: (structure) => {
@@ -102,6 +100,13 @@ var getSource = function(creep) {
         sources = creep.room.find(FIND_SOURCES, {
             filter: (src) => src.energy > 0
         });
+    }
+    if (sources.length === 0) {
+	sources = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_EXTENSION) && structure.energy >= 100;
+                    }
+            });
     }
     let source = creep.pos.findClosestByRange(sources);
     //creep.memory.sourceWas = source.structureType + ' at ' + source.pos.x + ',' + source.pos.y;
