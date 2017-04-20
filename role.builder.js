@@ -59,12 +59,18 @@ var getTarget = function(creep) {
 		});
 	}
 	//targets = _.sortBy(targets, [(v)=> v.progressTotal - v.progress]);
-	let target = creep.pos.findClosestByRange(targets);
-	if (target) {
-	    creep.memory.targetWas = target.structureType + ' at ' + target.pos.x + ',' + target.pos.y;
+	if (targets[0]) {
+		let target;
+		if (targets[0].structureType == ConstructionSite) {
+			target = creep.pos.findClosestByRange(targets);
+		} else {
+			targets.sort((a, b) => a.hits - b.hits);
+			target = targets[0];
+		}
+		creep.memory.targetWas = target.structureType + ' at ' + target.pos.x + ',' + target.pos.y;
 	    return target;
 	} else {
-	    return null;
+		return null;
 	}
 };
 
@@ -166,7 +172,12 @@ var deposit = function(creep, target) {
 	return err;
 };
 var roleBuilder= {
-	/** @param {Creep} creep **/
+	once: function() {
+		// a function to run once per reset
+	},
+	loop: function() {
+		// a function to run once per loop.
+	},
 	run: function(creep) {
 		var err = OK;
 		var m = creep.memory;
