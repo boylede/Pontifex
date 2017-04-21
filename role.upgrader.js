@@ -57,10 +57,10 @@ var roleUpgrader = {
             var err;
             var source = creep.pos.findClosestByRange(sources);
             if (source) {
-                if (source.energy > 0) {
-                    err = creep.harvest(source);
-                } else if (source.structureType == STRUCTURE_CONTAINER || source.structureType == STRUCTURE_STORAGE) {
+                if (source.structureType == STRUCTURE_CONTAINER || source.structureType == STRUCTURE_STORAGE || source.structureType == STRUCTURE_SPAWN || source.structureType == STRUCTURE_EXTENSION) {
                     err = creep.withdraw(source, RESOURCE_ENERGY);
+                } else if (source.energy > 0) {
+                    err = creep.harvest(source);
                 } else {
                     err = source.transferEnergy(creep, creep.carryCapacity);
                 }
