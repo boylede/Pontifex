@@ -22,12 +22,16 @@ module.exports = {
             body: work
         },
         containerHarvester: {
-            desired: 1,
+            desired: 2,
             body: extract
         },
         upgrader: {
-            desired: 1,
+            desired: 0,
             body: work
+        },
+        containerUpgrader: {
+            desired: 1,
+            body: heavy
         },
         defender: {
             desired: 0,
@@ -38,7 +42,7 @@ module.exports = {
             body: logistic
         },
         builder: {
-            desired: 0,
+            desired: 1,
             body: work
         }
     },
