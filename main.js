@@ -54,9 +54,13 @@ module.exports.loop = function () {
       let attackers = room.find(FIND_CREEPS, {
         filter: attackersPresent
       });
-      if (canSafeMode && attackers.length > 3) {
-        console.log('safe mode initiated');
-        room.controller.activateSafeMode();
+      let spawnPriority = false;
+      if (attackers.length > 3) {
+        if (canSafeMode) {
+          room.controller.activateSafeMode();
+        } else {
+          spawnPriority = true;
+        }
       }
 
       let towers = room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_TOWER } });
@@ -76,6 +80,8 @@ module.exports.loop = function () {
         if(spawn.spawning) {
           let spawningCreep = Game.creeps[spawn.spawning.name];
           s.structSay(spawn, spawningCreep.memory.role);
+        } else if (spawnPriority) {
+          err = spawn.createCreep(stageC.creeps.defender.body, undefined, {role: 'defender'});
         } else {
           for (role in creeps) {
             if (creeps.hasOwnProperty(role)) {
