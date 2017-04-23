@@ -48,16 +48,16 @@ var immobileHarvester = {
         //m.container = undefined;
         //m.source = undefined;
         if ( m.source === undefined || m.container === undefined) {
-            let index = -1;
+            let index = 0;
             let sources = creep.room.find(FIND_SOURCES, {});
             while ( container === undefined && index < sources.length) {
-                index++;
+                // index++;
                 console.log('trying source ' + (index) + ' for ' + creep.name );
                 source = sources[index];
                 let containers = freeSpace(source);
                 console.log('found ' + containers.length + ' containers free for ' + creep.name);
                 container = containers[0];
-                //index++;
+                index++;
             }
             
             
