@@ -5,10 +5,15 @@ var isNear = function isNear(thing1, thing2) {
 };
 var getTarget = function(creep) {
     //console.log('getting targets for ' + creep.name);
+    var targets = creep.room.find(FIND_STRUCTURES, {
+		filter: (str) => { return str.structureType == STRUCTURE_RAMPART && str.hits < 1000;}
+	});
 
-    var targets = creep.room.find(FIND_CONSTRUCTION_SITES, {
-			filter: (str) => str.structureType == STRUCTURE_WALL || (str.structureType == STRUCTURE_STORAGE && str.my)
-		});
+	if (targets.length === 0) {
+	    targets = creep.room.find(FIND_CONSTRUCTION_SITES, {
+				filter: (str) => str.structureType == STRUCTURE_WALL || (str.structureType == STRUCTURE_STORAGE && str.my)
+			});
+	}
 		
 // 	if (targets.length === 0) {
 // 		targets = creep.room.find(FIND_STRUCTURES, {
