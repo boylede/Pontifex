@@ -35,7 +35,7 @@ const COOLERRORS = [
 
 const energyAtLocation = function energyAtLocation(location) {
         var energy = src.room.lookForAt(LOOK_ENERGY, location);
-        if (energy !== undefined || energy !== null) {
+        if (energy && energy[0]) {
             return energy[0].amount;
         } else {
             return 0;
