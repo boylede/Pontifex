@@ -28,8 +28,16 @@ var towerLoop = function towerLoop(tower) {
         if (targets.length === 0) {
             targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax && str.hits < 10000 });
         }
-        if (targets.length === 0) {
-            targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax});
+        if (targets.length === 0  && tower.energy > tower.energyCapacity / 2) {
+            if (targets.length === 0) {
+                targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax && str.hits < 250000 });
+            }
+            if (targets.length === 0) {
+                targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_RAMPART && str.hits < str.hitsMax && str.hits < 400000 });
+            }
+            if (targets.length === 0) {
+                targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax});
+            }
         }
         if (targets.length !== 0) {
             targets.sort((a, b) => a.hits - b.hits);
