@@ -1,4 +1,4 @@
-var stages = ['blank', 'seed', 'boom', 'mature', 'stable']; // rush
+var stages = ['blank', 'seed', 'boom', 'rush','mature', 'stable']; // rush
 var stageModules = {};
 stages.forEach(function(e,i,a) {
   stageModules[e] = require('stage.' + e );
