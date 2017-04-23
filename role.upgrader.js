@@ -5,11 +5,11 @@ var roleUpgrader = {
 
         if(m.upgrading && creep.carry.energy === 0) {
             m.upgrading = false;
-            creep.say('refill');
+            // creep.say('refill');
         }
         if(!m.upgrading && creep.carry.energy == creep.carryCapacity) {
             m.upgrading = true;
-            creep.say('upgrade');
+            // creep.say('upgrade');
         }
 
         if(m.upgrading) {
