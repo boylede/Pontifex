@@ -1,17 +1,32 @@
-var deBody = [MOVE, CARRY, WORK, WORK, MOVE];
-var exBody = [MOVE, CARRY, WORK, WORK, WORK, MOVE, MOVE, MOVE];
+var deBody = [MOVE, WORK, MOVE, WORK, CARRY];
+var exBody = [MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY];
+var levelUp = function levelUp(room) {
+//    let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
+    //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
+    if (room.controller.level > 2) {
+        return 'mature';
+    } else if (false ) {
+        //
+    } else {
+        return 'rush';
+    }
+};
 module.exports = {
     tasks: [],
     creeps: {
         harvester: {
-            desired: 3,
+            desired: 0,
             body: exBody
         },
         containerHarvester: {
-            desired: 0,
-            body: [MOVE, CARRY, WORK]
+            desired: 2,
+            body: exBody
         },
         upgrader: {
+            desired: 0,
+            body: deBody
+        },
+        containerUpgrader: {
             desired: 1,
             body: deBody
         },
@@ -20,25 +35,16 @@ module.exports = {
             body: [MOVE, ATTACK, MOVE, ATTACK]
         },
         sherpa: {
-            desired: 0,
+            desired: 2,
             body: [MOVE, CARRY, MOVE, CARRY]
         },
         builder: {
-            desired: 0,
+            desired: 2,
             body: deBody
         }
     },
-    // desiredHarvesters: 3,
-    // desiredUpgraders: 1,
-    // desiredBuilders: 1,
-    // desiredSherpas: 0,
-    // desiredDefenders: 0,
-    // harvester: exBody,
-    // upgrader: deBody,
-    // defender: [MOVE, ATTACK, MOVE, ATTACK],
-    // builder:deBody,
-    // sherpa: [MOVE, CARRY, MOVE, CARRY],
     hitsWall: 2000,
     hitsRampart: 2000,
-    name:'rush'
+    name:'boom',
+    levelUp: levelUp
 };
