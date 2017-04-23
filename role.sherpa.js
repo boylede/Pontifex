@@ -80,7 +80,7 @@ var getTarget = function(creep, source) {
             }
             if (targets.length === 0) {
                 targets = creep.room.find(FIND_CONSTRUCTION_SITES, {
-                    filter: (structure) => structure.my && s.isEnergyEnough(structure)
+                    filter: (structure) => s.isEnergyEnough(structure)
                 });
             }
     return creep.pos.findClosestByRange(targets);
