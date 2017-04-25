@@ -20,15 +20,15 @@ module.exports.loop = function () {
   }
   for (var r in Game.rooms) {
     const room = Game.rooms[r];
-    let stage = '';
+    let roomMem = room.memory;
     const spawn = room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_SPAWN } })[0];
-    if (room.setup !== true) {
+    if (!roomMem.setup) {
       if (room.controller && room.controller.my && spawn) {
         Memory.spawns[spawn.name] = {
           id:spawn.id
         };
       }
-      room.memory.sources = [];
+      roomMem.sources = [];
       let roomSources = room.find(FIND_SOURCES);
       for (var sourceId in roomSources) {
         let src = roomSources[sourceId];
@@ -38,18 +38,18 @@ module.exports.loop = function () {
           return look.terrain == 'plain';
         }).length;
         source.area = freeCount;
-        room.memory.sources.push(source);
+        roomMem.sources.push(source);
       }
-      room.setup = true;
+      roomMem.setup = true;
     }
 
     let creeps = rolesController.countRoles(room);
-    let stageC = stageController.stages[room.memory.stage];
     let err = OK;
     var role = '';
 
     if (room.controller && room.controller.my) {
-      stage = stageController.stage(room);
+      let stage = stageController.levelUp(room);
+      let stageC = stageController.stageModule(stage);
       let canSafeMode = !room.controller.safeMode && !room.controller.safeModeCooldown && room.controller.safeModeAvailable > 0;
       let attackers = room.find(FIND_CREEPS, {
         filter: attackersPresent
@@ -111,7 +111,7 @@ module.exports.loop = function () {
     for (role in creeps) {
         for (var i = 0; i < creeps[role].length; i++) {
           let creep = creeps[role][i];
-          rolesController.run(creep, stageC);
+          rolesController.run(creep);
         }
       }
   }

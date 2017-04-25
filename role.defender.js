@@ -1,5 +1,5 @@
 var roleDefender = {
-    run: function(creep, stageController) {
+    run: function(creep) {
         var m = creep.memory;
         var targets = [];
         //var f = creep.room.find;

@@ -14,7 +14,7 @@ var getSource = function(creep) {
     }
 };
 var roleHarvester = {
-    run: function(creep, stageC) {
+    run: function(creep) {
         var err = OK;
         var m = creep.memory;
         var source = getSource(creep);

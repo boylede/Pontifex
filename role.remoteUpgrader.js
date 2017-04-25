@@ -7,7 +7,7 @@ var remoteUpgrader = {
     loop: function() {
         // a function to run once per loop.
     },
-    run: function(creep, stageC) {
+    run: function(creep) {
         var err = OK;
         const m = creep.memory;
         const myController = Game.getObjectById(m.controller);

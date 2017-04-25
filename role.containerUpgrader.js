@@ -30,7 +30,7 @@ function onTop(creep, container) {
 }
 
 var immobileUpgrader = {
-    run: function(creep, stageC) {
+    run: function(creep) {
         var err = OK;
         var m = creep.memory;
         var controller = creep.room.controller;

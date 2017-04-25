@@ -1,6 +1,6 @@
 var s = require('shared');
 var roleDefective = {
-    run: function(creep, stageController) {
+    run: function(creep) {
         var m = creep.memory;
         //var destination = creep.room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_SPAWN } })[0];
         var destination = Game.getObjectById(Memory.spawns.Spawn1.id);

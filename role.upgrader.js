@@ -1,6 +1,6 @@
 var s = require('shared');
 var roleUpgrader = {
-    run: function(creep, stageController) {
+    run: function(creep) {
         var m = creep.memory;
 
         if(m.upgrading && creep.carry.energy === 0) {

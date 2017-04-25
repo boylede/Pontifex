@@ -13,7 +13,7 @@ var getTarget = function getTarget(creep) {
 };
 
 var raider = {
-    run: function(creep, stageC) {
+    run: function(creep) {
         var err = OK;
         var m = creep.memory;
         var target;

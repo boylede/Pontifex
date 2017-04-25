@@ -1,7 +1,7 @@
 var s = require('shared');
 
 var scout = {
-    run: function(creep, stageC) {
+    run: function(creep) {
         var err = OK;
         var m = creep.memory;
         
