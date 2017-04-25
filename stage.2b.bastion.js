@@ -2,7 +2,7 @@ var deBody = [MOVE, WORK, MOVE, WORK, CARRY];
 var exBody = [MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY];
 var levelUp = function levelUp(room) {
 //    let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
-    //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
+    let numContainers = room.find(FIND_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
     if (room.controller.level > 2 && room.energyAvailable >= 500 && numContainers >= 3) {
         return '3a.fort';
     } else {

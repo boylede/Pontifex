@@ -3,6 +3,7 @@ var stages = [
 '1a.seed',
 '1b.foothold',
 '2a.outpost',
+'2b.bastion',
 '3a.fort',
 '3b.base',
 '4a.settlement',
