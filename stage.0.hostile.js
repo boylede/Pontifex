@@ -31,5 +31,5 @@ module.exports = {
 	// harvester: [MOVE, CARRY, WORK],
 	// upgrader: [MOVE, WORK],
 	// defender: [MOVE, ATTACK],
-	name:'seed'
+	name:'0.hostile'
 };

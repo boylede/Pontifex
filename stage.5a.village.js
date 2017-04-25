@@ -11,10 +11,10 @@ var levelUp = function levelUp(room) {
     //let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (room.storage !== undefined && room.energyAvailable >= 1300 && room.controller.level > 4) {
-        return 'five';
+    if (room.storage !== undefined && room.energyAvailable >= 1300) {
+        return '5b.city';
     } else {
-        return 'stable';
+        return '5a.village';
     }
 };
 
@@ -77,5 +77,5 @@ module.exports = {
     // sherpa: logistic,
     hitsWall: 250000,
     hitsRampart: 250000,
-    name:'stable'
+    name:'5a.village'
 };

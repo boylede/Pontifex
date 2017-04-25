@@ -2,10 +2,10 @@ var body = [MOVE, CARRY, WORK, WORK];
 var levelUp = function levelUp(room) {
     let numSpawns = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_SPAWN}).length;
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
-    if (numSpawns > 0 && room.controller.level > 1 && room.energyAvailable >= 500) {
-        return 'boom';
+    if (room.controller.level > 1 && numSpawns > 0 && room.energyAvailable >= 500) {
+        return '2a.outpost';
     } else {
-        return 'seed';
+        return '1b.foothold';
     }
 };
 module.exports = {
@@ -34,6 +34,6 @@ module.exports = {
     },
     hitsWall: 1000,
     hitsRampart: 1000,
-    name:'seed',
+    name:'1b.foothold',
     levelUp: levelUp
 };

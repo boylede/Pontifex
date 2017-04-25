@@ -11,10 +11,10 @@ var levelUp = function levelUp(room) {
     let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
     let numLinks = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_LINK}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (numTowers >= 2 && numLinks >= 2 && room.energyAvailable >= 1800 && room.controller.level > 5) {
-        return 'stable';
+    if (numTowers >= 2 && numLinks >= 2 && room.energyAvailable >= 1800) {
+        return '6b.principality';
     } else {
-        return 'stable';
+        return '6a.duchy';
     }
 };
 
@@ -59,5 +59,5 @@ module.exports = {
     },
     hitsWall: 250000,
     hitsRampart: 250000,
-    name:'five'
+    name:'6a.duchy'
 };

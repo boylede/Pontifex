@@ -1,8 +1,8 @@
 var levelUp = function levelUp(room) {
     if (room.controller.my) {
-        return 'seed';
+        return '1a.seed';
     } else {
-        return 'blank';
+        return '0.blank';
     }
 };
 module.exports = {
@@ -10,6 +10,6 @@ module.exports = {
     creeps: {},
     hitsWall: 1000,
     hitsRampart: 1000,
-    name:'blank',
+    name: '0.blank',
     levelUp: levelUp
 };

@@ -4,15 +4,9 @@ var levelUp = function levelUp(room) {
 //    let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     let numContainers = room.find(FIND_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
     if (room.energyAvailable >= 500 && numContainers >= 3) {
-        if (room.controller.level > 2) {
-            return 'mature';
-        } else {
-            return 'rush';
-        }
-    } else if (false ) {
-//
+        return '2b.bastion';
     } else {
-        return 'boom';
+        return '2a.outpost';
     }
 };
 module.exports = {
@@ -55,6 +49,6 @@ module.exports = {
     // sherpa: [MOVE, CARRY, MOVE, CARRY],
     hitsWall: 2000,
     hitsRampart: 2000,
-    name:'boom',
+    name: '2a.outpost',
     levelUp: levelUp
 };

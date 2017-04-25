@@ -3,12 +3,10 @@ var exBody = [MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY];
 var levelUp = function levelUp(room) {
 //    let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (room.controller.level > 2) {
-        return 'mature';
-    } else if (false ) {
-        //
+    if (room.controller.level > 2 && room.energyAvailable >= 500 && numContainers >= 3) {
+        return '3a.fort';
     } else {
-        return 'rush';
+        return '2b.bastion';
     }
 };
 module.exports = {
@@ -45,6 +43,6 @@ module.exports = {
     },
     hitsWall: 2000,
     hitsRampart: 2000,
-    name:'boom',
+    name:'2b.bastion',
     levelUp: levelUp
 };
