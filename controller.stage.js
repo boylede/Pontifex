@@ -4,6 +4,7 @@ var stages = [
 '1b.foothold',
 '2a.outpost',
 '2b.bastion',
+'2c.encampment',
 '3a.fort',
 '3b.base',
 '4a.settlement',

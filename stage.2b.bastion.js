@@ -1,10 +1,18 @@
-var deBody = [MOVE, WORK, MOVE, WORK, CARRY];
-var exBody = [MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY];
+/*
+Now that we've built some extenstions we can afford more powerful creeps
+we want to slingshot to RCL 3 but it will take 45k points.
+one of the big time-sinks at this point is slow creeps moving around,
+so let's sidestep that by building containers and letting fast creeps
+carry stuff around for slow workers.
+goal: build 3 containers
+*/
+var upgrader = [WORK, MOVE, CARRY];
+var body = [MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY];
 var levelUp = function levelUp(room) {
 //    let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     let numContainers = room.find(FIND_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (room.controller.level > 2 && room.energyAvailable >= 500 && numContainers >= 3) {
-        return '3a.fort';
+    if (numContainers >= 3 && room.energyAvailable >= 550) {
+        return '2c.encampment';
     } else {
         return '2b.bastion';
     }
@@ -13,32 +21,32 @@ module.exports = {
     tasks: [],
     creeps: {
         harvester: {
-            desired: 0,
-            body: exBody
+            desired: 2,
+            body: body
         },
         containerHarvester: {
-            desired: 2,
-            body: exBody
+            desired: 0,
+            body: body
         },
         upgrader: {
-            desired: 0,
-            body: deBody
+            desired: 1,
+            body: upgrader
         },
         containerUpgrader: {
-            desired: 1,
-            body: deBody
+            desired: 0,
+            body: body
         },
         defender: {
             desired: 0,
             body: [MOVE, ATTACK, MOVE, ATTACK]
         },
         sherpa: {
-            desired: 2,
+            desired: 0,
             body: [MOVE, CARRY, MOVE, CARRY]
         },
         builder: {
             desired: 2,
-            body: deBody
+            body: body
         }
     },
     hitsWall: 2000,

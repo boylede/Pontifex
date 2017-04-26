@@ -1,8 +1,12 @@
+/*
+during this stage the controller is ours but we don't have a spawn yet
+goal: build a spawn
+*/
 var body = [MOVE, CARRY, WORK, WORK];
 var levelUp = function levelUp(room) {
     let numSpawns = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_SPAWN}).length;
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
-    if (numSpawns > 0 && room.energyAvailable >= 500) {
+    if (numSpawns > 0) {
         return '1b.foothold';
     } else {
         return '1a.seed';
@@ -12,11 +16,11 @@ module.exports = {
     tasks: [],
     creeps: {
         harvester: {
-            desired: 2,
+            desired: 0,
             body: body
         },
         upgrader: {
-            desired: 1,
+            desired: 0,
             body: body
         },
         defender: {
@@ -28,7 +32,7 @@ module.exports = {
             body: [MOVE, CARRY]
         },
         builder: {
-            desired: 1,
+            desired: 0,
             body: body
         }
     },
