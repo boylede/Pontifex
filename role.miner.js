@@ -2,6 +2,7 @@ var s = require('shared');
 const moveOpts = {visualizePathStyle: {stroke: '#ffaa00'}};
 
 function errResponse(err, creep, goal) {
+
     var mem = goal.id;
     switch (err) {
         case ERR_NOT_IN_RANGE:
@@ -14,6 +15,7 @@ function errResponse(err, creep, goal) {
         break;
         default:
         creep.say('?');
+        console.log(err);
         break;
     }
     return mem;
@@ -27,11 +29,24 @@ function getTarget(creep) {
     var targets = creep.room.find(FIND_STRUCTURES, {
         filter: (structure) => {
             const stored = structure.store ? _.sum(structure.store) : 0;
-            return (structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) &&
+            return (structure.structureType == STRUCTURE_TERMINAL || structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) &&
             stored < structure.storeCapacity;
         }
     });
-    return creep.pos.findClosestByRange(targets);
+    return creep.pos.findClosestByPath(targets);
+}
+
+function firstOf(obj) {
+    var ret = RESOURCE_ENERGY;
+    for ( var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            if (obj[key]) {
+                ret = key;
+            }
+        }
+    }
+    // console.log('found mineral in creep ' + ret);
+    return ret;
 }
 
 var miner = {
@@ -42,8 +57,9 @@ var miner = {
         var target;
         var extracting =  !m.depositing;
         const carried = _.sum(creep.carry);
+        const firstResource = firstOf(creep.carry);
         if (extracting) {
-            if (carried > creep.carryCapacity) {
+            if (carried >= creep.carryCapacity) {
                 extracting = false;
             }
         } else {
@@ -63,12 +79,15 @@ var miner = {
             }
             if (source) {
                 err = creep.harvest(source);
+                // console.log('harvesting from mineral');
                 m.source = errResponse(err, creep, source);
             }
         } else {
             target = getTarget(creep);
             if (target) {
-                err = creep.transfer(source, RESOURCE_ENERGY);
+                // console.log('storing ' + carried + 'mineral ' + firstResource + ' at ' + target.structureType);
+                // let resources = _.sum(creep.carry);
+                err = creep.transfer(target, firstResource);
                 m.target = errResponse(err, creep, target);
             }
         }
