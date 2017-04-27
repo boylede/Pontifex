@@ -108,10 +108,10 @@ module.exports = {
     },
     structErr: function(structure, err) {
         var e = 0 - err;
-        structure.room.visual.text(ERRORS[e], structure.pos.x, structure.pos.y + 4.5, debugStyle);
+        structure.room.visual.text(ERRORS[e], structure.pos.x + 1, structure.pos.y + 1.5, debugStyle);
     },
     structSay: function(structure, err) {
         //var e = 0 - err;
-        structure.room.visual.text(err, structure.pos.x, structure.pos.y + 3.5, debugStyle);
+        structure.room.visual.text(err, structure.pos.x + 1, structure.pos.y, debugStyle);
     }
 };
