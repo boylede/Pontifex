@@ -87,7 +87,11 @@ module.exports.loop = function () {
             if (creeps.hasOwnProperty(role)) {
               if(stageC.creeps[role] && creeps[role].length < stageC.creeps[role].desired) {
                 err = spawn.createCreep(stageC.creeps[role].body, undefined, {role: role});
-                if (err != OK) {
+                switch (err) {
+                  case OK:
+                  case ERR_NOT_ENOUGH_RESOURCES:
+                  break;
+                  default:
                   s.structErr(spawn, err);
                 }
                 break;
