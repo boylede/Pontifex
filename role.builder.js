@@ -80,7 +80,7 @@ var getTarget = function(creep) {
 };
 
 var getSource = function(creep) {
-    var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type = RESOURCE_ENERGY && creep.pos.getRangeTo(resource) < 6});
+    var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type == RESOURCE_ENERGY && creep.pos.getRangeTo(resource) < 6});
     //console.log('found ' + sources.length + ' dropped energy.');
     //if (sources.length === 0) {
     // let target = Game.getObjectById(creep.memory.target);
@@ -105,7 +105,7 @@ var getSource = function(creep) {
 //     }
 
 	if (sources.length === 0) {
-        sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type = RESOURCE_ENERGY});
+        sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type == RESOURCE_ENERGY});
     }
     if (sources.length === 0) {
         sources = creep.room.find(FIND_SOURCES, {
@@ -123,16 +123,7 @@ var getSource = function(creep) {
     //creep.memory.sourceWas = source.structureType + ' at ' + source.pos.x + ',' + source.pos.y;
 	return source;
 };
-var roleChange = function(creep, reason) {
-	if (reason == ERR_NO_TARGETS) {
-		console.log('can\'t find any construction sites');
-		creep.memory.role = 'upgrader';
-	} else {
-		console.log('not enough energy - harvest!');
-		//creep.memory.role = 'harvester';
-		//creep.say('harvesting');
-	}
-};
+
 var extract = function(creep, source) {
 	var err;
 	if (source instanceof Source) {
@@ -176,6 +167,7 @@ var deposit = function(creep, target) {
 	}
 	return err;
 };
+
 var roleBuilder= {
 	once: function() {
 		// a function to run once per reset
@@ -197,7 +189,7 @@ var roleBuilder= {
 			    m.target = null;
 			}
 		} else {
-		    console.log(' ........'+ m.role + creep.name + ' lost its target.' );
+		    // console.log(' ........'+ m.role + creep.name + ' lost its target.' );
 			target = getTarget(creep);
 			  if (target) m.target = target.id;
 		}
@@ -207,7 +199,7 @@ var roleBuilder= {
 			    m.source = null;
 			}
 		} else {
-		    console.log(' ........'+ m.role + creep.name + ' lost its source.' );
+		    // console.log(' ........'+ m.role + creep.name + ' lost its source.' );
 			source = getSource(creep);
 			if (source === undefined || source === null) {
 			    return;
@@ -222,9 +214,9 @@ var roleBuilder= {
 				m.depositing = false;
 				source = getSource(creep);
 				if (source === null) {
-					console.log('Can\'t find any ' + m.role + ' sources for ' + creep.name + '.');
+					// console.log('Can\'t find any ' + m.role + ' sources for ' + creep.name + '.');
 					m.source = null;
-					//return roleChange(creep, ERR_NO_SOURCE);
+					
 				} else {
 					m.source = source.id;
 				}
@@ -245,7 +237,7 @@ var roleBuilder= {
 					    //m.depositing = false;
 					    target = getTarget(creep);
 					    if (!target) {
-					        console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
+					        // console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
 					        m.target = null;
 					    } else {
 					        m.target = target.id;
@@ -264,7 +256,7 @@ var roleBuilder= {
 				m.depositing = true;
 				target = getTarget(creep);
 				if (!target) {
-					console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
+					// console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
 					m.target = null;
 				} else {
 					m.target = target.id;
@@ -285,7 +277,7 @@ var roleBuilder= {
 				        console.log(creep.name + ' no energy for extract from ' + source.id + ' to ' + target.id);
 				        source= getSource(creep);
 					    if (source === null) {
-					        console.log('Can\'t find any ' + m.role + ' sources for ' + creep.name + '.');
+					        // console.log('Can\'t find any ' + m.role + ' sources for ' + creep.name + '.');
 					        m.source = null;
 					    } else {
 					        m.source = source.id;
@@ -298,14 +290,14 @@ var roleBuilder= {
 			}
 		}
 		if (!target) {
-		    console.log(creep.name + ' has an issue with its target, previously ' + m.targetWas);
+		    // console.log(creep.name + ' has an issue with its target, previously ' + m.targetWas);
 		    creep.say('!');
 		    m.target = null;
 		} else {
 		    m.target = target.id;
 		}
 		if (!source) {
-		    console.log(creep.name + ' has an issue with its source, previously ' + m.sourceWas);
+		    // console.log(creep.name + ' has an issue with its source, previously ' + m.sourceWas);
 		    creep.say('!');
 		    m.source = null;
 		} else {
