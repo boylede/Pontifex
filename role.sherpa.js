@@ -1,5 +1,5 @@
 var s = require('shared');
-var NSO = {id:null};
+const moveOpts = {visualizePathStyle: {stroke: '#0095ff', opacity:0.6}};
 
 var getTarget = function(creep, source) {
     var targets = [];
@@ -142,124 +142,63 @@ var errResponse = function errResponse(err, creep, goal) {
         case ERR_NOT_ENOUGH_ENERGY:
         case ERR_TIRED:
         case ERR_BUSY:
-        break;
+        case ERR_NOT_FOUND:
+            mem = undefined;
+            break;
         default:
-        creep.say('?');
-        break;
+            creep.say('?');
+            break;
     }
     return mem;
 };
 var roleSherpa = {
     run: function(creep) {
         var err = OK;
-        var m = creep.memory;
-        var energy = creep.carry.energy;
-        var target = NSO;
-        var source = NSO;
+        const m = creep.memory;
+        const energy = creep.carry.energy;
+        const carried = _.sum(creep.carry);
+        var target;
+        var source;
+        var extracting = !m.depositing;
 
-        if (m.target !== null && m.source !== null) {
-            target = Game.getObjectById(m.target);
-            source = Game.getObjectById(m.source);
-            if (target === null || source === null) {
-                m.target = null;
-                m.source = null;
-                return;
+        if (extracting) {
+            if (carried == creep.carryCapacity) {
+                extracting = false;
             }
-            
         } else {
-            target = getTarget(creep, false);
-            source = getSource(creep, false);
+            if (carried === 0) {
+                extracting = true;
+            }
         }
 
-        if (m.depositing) {
-            if (energy === 0) {
-                creep.say('e^');
-                m.depositing = false;
-                source = getSource(creep, false);
-                if (source === null) {
-                    console.log('Can\'t find any ' + m.role + ' sources for ' + creep.name + '.');
-                    m.source = null;
-                    return;
-                } else {
-                    m.source = source.id;
-                }
-            } else {
-                err = deposit(creep, target);
-                switch (err) {
-                    case ERR_NOT_IN_RANGE:
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#0095ff', opacity:0.6}});
-                    break;
-                    case OK:
-                    break;
-                    case ERR_NOT_ENOUGH_ENERGY:
-                    case ERR_NOT_FOUND:
-                    case ERR_FULL:
-                    target = getTarget(creep, source);
-                    if (target === null) {
-                        console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
-                        m.target = null;
-                    } else {
-                        m.target = target.id;
-                    }
-                    break;
-                    default:
-                    s.creepErr(creep, err);
-                    break;
-                }
+        m.depositing = !extracting;
+
+        if (extracting) {
+            if (m.source) {
+                source = Game.getObjectById(m.source);
             }
-        } else {
-            if (energy == creep.carryCapacity) {
-                creep.say('dv');
-                m.depositing = true;
-                target = getTarget(creep, source);
-                if (target === null ) {
-                    console.log('Can\'t find any ' + m.role + ' targets for ' + creep.name + '.');
-                    m.target = null;
-                } else {
-                    m.target = target.id;
-                }
-            } else {
+            if (!source) {
+                source = getSource(creep);
+                m.source = undefined;
+            }
+            if (source) {
                 err = extract(creep, source);
-                switch (err) {
-                    case ERR_NOT_IN_RANGE:
-                    creep.moveTo(source, {visualizePathStyle: {stroke: '#f1e05a', opacity:0.6}});
-                    break;
-                    case OK:
-                    break;
-                    case ERR_BUSY:
-                    break;
-                    case ERR_NOT_ENOUGH_ENERGY:
-                    case ERR_NOT_FOUND:
-                    console.log(creep.name + ' no energy for extract from ' + source.id + ' to ' + target.id);
-                    source= getSource(creep, target);
-                    if (source === null) {
-                        console.log('Can\'t find any ' + m.role + ' sources for ' + creep.name + '.');
-                        m.source = null;
-                    } else {
-                        m.source = source.id;
-                    }
-                    break;
-                    default:
-                    s.creepErr(creep, err);
-                    break;
-                }
+                m.source = errResponse(err, creep, source);
+            }
+        } else {
+            if (m.target) {
+                target = Game.getObjectById(m.target);
+            }
+            if (!target) {
+                target = getTarget(creep);
+                m.target = undefined;
+            }
+            if (target) {
+                err = deposit(creep, target);
+                m.target = errResponse(err, creep, target);
             }
         }
-        if (target === undefined || target === null) {
-            console.log(creep.name + ' has an issue with its target');
-            creep.say('!');
-            m.target = null;
-        } else {
-            m.target = target.id;
-        }
-        if (source === undefined || source === null) {
-            console.log(creep.name + ' has an issue with its source');
-            creep.say('!');
-            m.source = null;
-        } else {
-            m.source = source.id;
-        }
-        return;
+        return OK;
     }
 };
 
