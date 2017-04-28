@@ -13,7 +13,7 @@ module.exports.loop = function () {
   PathFinder.use(true);
   s.setup();
 
-  if ( Memory.fixedCreeps === false) {
+  if ( !Memory.fixedCreeps ) {
     s.fixCreepsInMemory();
     Memory.fixedCreeps = true;
     console.log('fixed creeps');

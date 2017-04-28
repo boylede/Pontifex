@@ -12,6 +12,7 @@ function errResponse(err, creep, goal) {
         case ERR_FULL:
         case ERR_NOT_ENOUGH_ENERGY:
         case ERR_TIRED:
+        case ERR_BUSY:
         break;
         default:
         creep.say('?');
@@ -58,6 +59,7 @@ var miner = {
         var extracting =  !m.depositing;
         const carried = _.sum(creep.carry);
         const firstResource = firstOf(creep.carry);
+
         if (extracting) {
             if (carried >= creep.carryCapacity) {
                 extracting = false;
