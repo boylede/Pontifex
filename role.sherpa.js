@@ -3,7 +3,7 @@ const moveOpts = {visualizePathStyle: {stroke: '#0095ff', opacity:0.6}};
 
 var getTarget = function(creep, source) {
     var targets = [];
-    
+
     if (source && source.structureType == STRUCTURE_LINK) {
         targets = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
@@ -11,10 +11,10 @@ var getTarget = function(creep, source) {
             }
         });
     }
-    
+
     if (_.sum(creep.carry) > creep.carry.RESOURCE_ENERGY) {
-        let home = Game.rooms.E18S84; // todo: what?
-        targets = [home.storage];
+        //let home = Game.rooms.E18S84;
+        targets = [creep.room.storage];
         console.log('found something?!');
     }
 
@@ -64,7 +64,7 @@ var getTarget = function(creep, source) {
     return creep.pos.findClosestByRange(targets);
 };
 
-var getSource = function(creep) {
+var getSource = function(creep, target) {
     var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type != RESOURCE_ENERGY}); // && resource.amount > 249, creep.carryCapacity
     if (sources.length === 0) {
         sources = creep.room.find(FIND_DROPPED_ENERGY, {
@@ -75,6 +75,14 @@ var getSource = function(creep) {
         sources = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return  structure.structureType == STRUCTURE_LINK && structure.energy > 0 && s.isNear(structure, creep.room.storage);
+            }
+        });
+    }
+    if (sources.length === 0) {
+        sources = creep.room.find(FIND_STRUCTURES, {
+            filter: (structure) => {
+                var stored = _.sum(structure.store);
+                return  structure.structureType == STRUCTURE_CONTAINER && stored > structure.store.RESOURCE_ENERGY;
             }
         });
     }
@@ -174,11 +182,12 @@ var roleSherpa = {
         m.depositing = !extracting;
 
         if (extracting) {
+            target = Game.getObjectById(m.target);
             if (m.source) {
                 source = Game.getObjectById(m.source);
             }
             if (!source) {
-                source = getSource(creep);
+                source = getSource(creep, target);
                 m.source = undefined;
             }
             if (source) {
@@ -186,11 +195,12 @@ var roleSherpa = {
                 m.source = errResponse(err, creep, source);
             }
         } else {
+            source = Game.getObjectById(m.source);
             if (m.target) {
                 target = Game.getObjectById(m.target);
             }
             if (!target) {
-                target = getTarget(creep);
+                target = getTarget(creep, source);
                 m.target = undefined;
             }
             if (target) {
