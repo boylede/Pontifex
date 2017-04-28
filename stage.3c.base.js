@@ -49,6 +49,6 @@ module.exports = {
     },
     hitsWall: 250000,
     hitsRampart: 250000,
-    name:'3b.base',
+    name:'3c.base',
     levelUp: levelUp
 };
