@@ -3,7 +3,7 @@ var s = require('shared');
 var freeSpace = function(src) {
     var free = _.filter(
         src.room.lookForAtArea(LOOK_STRUCTURES, src.pos.y - 2, src.pos.x - 2, src.pos.y + 2, src.pos.x + 2, true),
-        (str) => str.structure.structureType == STRUCTURE_LINK
+        (str) => str.structure.structureType == STRUCTURE_LINK && str.structure.energy > 0
         );
     if (free.length === 0) {
         free = _.filter(
