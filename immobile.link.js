@@ -1,57 +1,45 @@
 var s = require('shared');
 
 var isNear = function isNear(thing1, thing2) {
-    return thing1.pos.getRangeTo(thing2) < 2;
+    return thing1.pos.getRangeTo(thing2) < 3;
 };
 
 var linkLoop = function linkLoop(link) {
-   const room = link.room.memory;
-   if (room.links === undefined) {
-       room.links = {};
-   }
-   const m = room.links[link.id];
-   var receiver;
-     //console.log('running loop for Link ' + link.id + ' which is a ' + m.role);
-     for (let otherLink in link.room.memory.links) {
-       let oLink = Game.getObjectById(otherLink);
-         //console.log('examining other link ' + oLink.id)
-         if(oLink) {
-            if (isNear(oLink, link.room.storage)) {
-            receiver = oLink;
-            }
-         } else {
-             console.log('link was destroyed');
-             link.room.memory.links[otherLink] = undefined;
-         }
-     }
-     //console.log('found receiver ' + receiver.id);
-     if (!m || !receiver) {
+    var err = OK;
+    const room = link.room.memory;
+    if (room.links === undefined) {
+        room.links = {};
+    }
+    const m = room.links[link.id];
+    var receivers = [];
+    if (!m) {
         link.room.memory.links[link.id] = {
-            role: isNear(link, link.room.storage) ? 'receiver' : 'transmitter'
+            role: (isNear(link, link.room.storage) || isNear(link, link.room.controller) ) ? 'receiver' : 'transmitter'
         };
     } else {
-         //console.log('running loop for Link ' + link.id + ' which is a ' + m.role);
-         
-         switch (m.role) {
-            case 'receiver':
-            // console.log('link is a receiver');
-            break;
-            case 'transmitter':
-            // console.log('link is a transmitter');
+        for (var otherLink in room.links) {
+            let oLink = Game.getObjectById(otherLink);
+            if(oLink) {
+                if (room.links[otherLink].role == 'receiver') {
+                    receivers.push(oLink);
+                }
+            } else {
+               room.links[otherLink] = undefined;
+           }
+       }
+       if (receivers.length > 0) {
+           receivers.sort((a, b) => a.energy - b.energy);
+           if (m.role == 'transmitter') {
             if (link.energy == link.energyCapacity) {
-                let err = link.transferEnergy(receiver);
-                //console.log('transferring energy from link');
-                //console.log(err);
+                err = link.transferEnergy(receivers[0]);
             }
-            break;
-            case '':
-            /* falls through */
-            default:
-            console.log('link has no role?!');
-            break;
         }
     }
-    return;
+}
+if (err != OK) {
+    console.log('error with link ' +link.id + ' : ' + err);
+}
+return;
 };
 
 module.exports = {
