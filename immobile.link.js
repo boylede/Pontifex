@@ -15,9 +15,13 @@ var linkLoop = function linkLoop(link) {
      for (let otherLink in link.room.memory.links) {
        let oLink = Game.getObjectById(otherLink);
          //console.log('examining other link ' + oLink.id)
-         if(isNear(oLink, link.room.storage)) {
-           receiver = oLink;
-             //console.log('found my receiver!');
+         if(oLink) {
+            if (isNear(oLink, link.room.storage)) {
+            receiver = oLink;
+            }
+         } else {
+             console.log('link was destroyed');
+             link.room.memory.links[otherLink] = undefined;
          }
      }
      //console.log('found receiver ' + receiver.id);
