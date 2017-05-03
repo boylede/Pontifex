@@ -1,65 +1,79 @@
 var s = require('shared');
+const moveOpts =  {visualizePathStyle: {stroke: '#ffaa00', opacity: 0.8}};
 
-var remoteUpgrader = {
-    once: function() {
-        // a function to run once per reset
-    },
-    loop: function() {
-        // a function to run once per loop.
-    },
+const errResponse = function errResponse(err, creep, goal, destination) {
+    var mem = goal.id;
+    switch (err) {
+        case ERR_NOT_IN_RANGE:
+        if (!destination) {
+            err = creep.moveTo(goal, moveOpts);
+        } else {
+            err = cree.moveTo(destination, moveOpts);
+        }
+        break;
+        case OK:
+        case ERR_FULL:
+        case ERR_NOT_ENOUGH_ENERGY:
+        case ERR_TIRED:
+        case ERR_BUSY:
+        case ERR_NOT_FOUND:
+        mem = undefined;
+        break;
+        default:
+        creep.say('?');
+        break;
+    }
+    return mem;
+};
+
+var remoteMiner = {
     run: function(creep) {
         var err = OK;
         const m = creep.memory;
-        const myController = Game.getObjectById(m.controller);
-        const path = {visualizePathStyle: {plainCost: 1, swampCost: 1, stroke: '#ffaa00', opacity: 1.0}};
-        if (myController) {
-            err = creep.moveTo(myController, path);
-        }
+        const energy = creep.carry.energy;
+        const carried = _.sum(creep.carry);
+        var goal;
+        var last;
+        var destination = getDestination(creep);
+        var extracting = !m.depositing;
+        var key = 'target';
+        var getGoal = getTarget;
 
-        let thisRoom = creep.room.name;
-        if (Memory.rooms[room].ticksTravelTime === undefined) {
-            Memory.rooms[room].ticksTravelTime = 1500 - creep.ticksToLive;
-        }
-        if (room == Memory.attack) {
-            // creep.moveTo(creep.room.controller);
-            // if (Memory.rooms[room].ticksTravelTime === undefined) {
-            //     Memory.rooms[room] = {ticksTravelTime: 1500 - creep.ticksToLive};
-            // }
-            // Memory.attack = 'E22S83';
-            //err = creep.signController(creep.room.controller, 'Planned Expansion');
-            err = creep.moveTo(creep.room.controller, path);
-            if(creep.pos.getRangeTo(creep.room.controller) < 2) {
-                Memory.rooms[room].ticksTravelTimeToController = 1500 - creep.ticksToLive;
-            }
-            if(creep.getActiveBodyparts(CLAIM) > 0) {
-                if (Game.gcl.level > 1) {
-                    err = creep.claimController(creep.room.controller);
-                } else {
-                    err = creep.reserveController(creep.room.controller);
-                }
-            } else {
-                creep.memory.role = 'builder';
+        if (extracting) {
+            if (carried == creep.carryCapacity) {
+                extracting = false;
             }
         } else {
-            err = creep.moveTo(destination, path);
+            if (carried === 0) {
+                extracting = true;
+            }
         }
 
-        switch (err) {
-            case ERR_FULL:
-            case ERR_NOT_ENOUGH_ENERGY:
-        //    case ERR_NOT_ENOUGH_RESOURCES:
-        case ERR_TIRED:
-        case OK:
-        break;
-        case ERR_NOT_IN_RANGE:
-        creep.moveTo(creep.room.controller, path);
-        break;
-        default:
-        s.creepErr(creep, err);
-        break;
+        m.depositing = !extracting;
+
+        if (extracting) {
+            last = Game.getObjectById(m.target);
+            key = 'source';
+            getGoal = getSource;
+        } else {
+            last = Game.getObjectById(m.source);
+            // getGoal = getTarget;
+        }
+
+        if (m[key]) {
+            goal = Game.getObjectById(m[key]);
+        }
+        if (!goal) {
+            goal = getGoal(creep, last);
+            m[key] = undefined;
+        }
+        if (goal) {
+            err = extract(creep, goal);
+            m[key] = errResponse(err, creep, goal, destination);
+        }
+
+        return OK;
     }
-    return OK;
-}
 };
 
-module.exports = remoteUpgrader;
+module.exports = remoteMiner;
