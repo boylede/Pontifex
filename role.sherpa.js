@@ -13,9 +13,7 @@ var getTarget = function(creep, source) {
     }
 
     if (_.sum(creep.carry) > creep.carry.RESOURCE_ENERGY) {
-        //let home = Game.rooms.E18S84;
         targets = [creep.room.storage];
-        console.log('found something?!');
     }
 
     if (targets.length === 0) {
@@ -65,10 +63,13 @@ var getTarget = function(creep, source) {
 };
 
 var getSource = function(creep, target) {
-    var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type != RESOURCE_ENERGY}); // && resource.amount > 249, creep.carryCapacity
+    var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => {
+        return resource.type != RESOURCE_ENERGY && !PathFinder.search(resource, creep, {ignoreCreeps: true, ignoreRoads:true, maxRooms:1, maxOps: 500}).incomplete;
+        }
+    });
     if (sources.length === 0) {
         sources = creep.room.find(FIND_DROPPED_ENERGY, {
-            filter: (resource) => resource.amount >= 2000
+            filter: (resource) => !PathFinder.search(resource, creep, {ignoreCreeps: true, ignoreRoads:true, maxRooms:1, maxOps: 500}).incomplete
         });
     }
     if (sources.length === 0) {
@@ -82,7 +83,7 @@ var getSource = function(creep, target) {
         sources = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 var stored = _.sum(structure.store);
-                return  structure.structureType == STRUCTURE_CONTAINER && stored > structure.store.RESOURCE_ENERGY;
+                return  structure.structureType == STRUCTURE_CONTAINER && stored > structure.store[RESOURCE_ENERGY];
             }
         });
     }
@@ -111,10 +112,11 @@ var extract = function(creep, source) {
     var err;
     if (source instanceof Resource) {
         err = creep.pickup(source);
+    } else if (source instanceof StructureContainer) {
+        err = creep.withdraw(source, firstResource(source, false));
     } else {
         err = creep.withdraw(source, RESOURCE_ENERGY);
         if (err === OK && source.store && source.store[RESOURCE_ENERGY] === 0) {
-            creep.say('drained');
             err = ERR_NOT_FOUND;
         }
     }
@@ -123,7 +125,7 @@ var extract = function(creep, source) {
 var deposit = function(creep, target) {
     var err;
     // todo: distinguish store types and energy-only types - for "finished" analysis
-    if (target instanceof StructureSpawn || target instanceof StructureExtension || target instanceof StructureStorage || target instanceof StructureContainer || target instanceof StructureTower) {
+    if (target instanceof StructureSpawn || target instanceof StructureExtension || target instanceof StructureContainer || target instanceof StructureTower) {
         err = creep.transfer(target, RESOURCE_ENERGY);
         if (err == OK && target.energy == target.energyCapacity) {
             err = ERR_NOT_FOUND;
@@ -134,6 +136,8 @@ var deposit = function(creep, target) {
         } else {
             err = creep.drop(RESOURCE_ENERGY);   
         }
+    } else if(target instanceof StructureStorage) {
+        err = creep.transfer(target, firstResource(creep, true));
     } else {
         err = ERR_NOT_FOUND;
     }
