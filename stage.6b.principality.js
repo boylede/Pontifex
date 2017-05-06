@@ -62,5 +62,6 @@ module.exports = {
     },
     hitsWall: 1000000,
     hitsRampart: 1000000,
-    name:'6b.principality'
+    name:'6b.principality',
+    levelUp: levelUp
 };

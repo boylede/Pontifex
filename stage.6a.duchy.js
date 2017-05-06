@@ -59,5 +59,6 @@ module.exports = {
     },
     hitsWall: 1000000,
     hitsRampart: 1000000,
-    name:'6a.duchy'
+    name:'6a.duchy',
+    levelUp: levelUp
 };

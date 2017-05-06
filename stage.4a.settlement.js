@@ -63,5 +63,6 @@ module.exports = {
     },
     hitsWall: 250000,
     hitsRampart: 250000,
-    name:'4a.settlement'
+    name:'4a.settlement',
+    levelUp: levelUp
 };

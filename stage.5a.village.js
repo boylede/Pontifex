@@ -63,5 +63,6 @@ module.exports = {
     },
     hitsWall: 1000000,
     hitsRampart: 1000000,
-    name:'5a.village'
+    name:'5a.village',
+    levelUp: levelUp
 };
