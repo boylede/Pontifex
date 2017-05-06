@@ -1,3 +1,8 @@
+/*
+now that we have storage, we are set for level 5 
+goal: accellerate to level 5
+*/
+
 var work = [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, CARRY];
 var build = [WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY, MOVE, CARRY, MOVE,];
 var heavy = [WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, WORK, WORK, WORK, WORK, CARRY];
@@ -33,7 +38,7 @@ module.exports = {
             body: work
         },
         containerUpgrader: {
-            desired: 1,
+            desired: 3,
             body: heavy
         },
         defender: {
@@ -45,7 +50,7 @@ module.exports = {
             body: logistic
         },
         builder: {
-            desired: 1,
+            desired: 0,
             body: build
         },
         scout: {
@@ -57,25 +62,7 @@ module.exports = {
             body: raider
         }
     },
-    // desiredHarvesters: 0,
-    // desiredFatHarvesters: 2,
-    // desiredFatUpgraders: 1,
-    // desiredUpgraders: 0,
-    // desiredBuilders: 1,
-    // desiredSherpas: 4,
-    // desiredDefenders: 0,
-    // desiredScouts: 0,
-    // desiredRaiders: 0,
-    // harvester: work,
-    // scout: scout,
-    // raider: raider,
-    // fatHarvester: extract,
-    // fatUpgrader: heavy,
-    // upgrader: work,
-    // defender: defend,
-    // builder: build,
-    // sherpa: logistic,
-    hitsWall: 250000,
-    hitsRampart: 250000,
+    hitsWall: 500000,
+    hitsRampart: 500000,
     name:'4b.town'
 };

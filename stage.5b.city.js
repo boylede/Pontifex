@@ -11,7 +11,7 @@ var levelUp = function levelUp(room) {
     //let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (room.controller.level > 4 && room.storage !== undefined && room.energyAvailable >= 1300) {
+    if (room.controller.level > 5 && room.energyAvailable >= 1300) {
         return '6a.duchy';
     } else {
         return '5b.city';
@@ -33,7 +33,7 @@ module.exports = {
             body: work
         },
         containerUpgrader: {
-            desired: 1,
+            desired: 3,
             body: heavy
         },
         defender: {
@@ -57,25 +57,7 @@ module.exports = {
             body: raider
         }
     },
-    // desiredHarvesters: 0,
-    // desiredFatHarvesters: 2,
-    // desiredFatUpgraders: 1,
-    // desiredUpgraders: 0,
-    // desiredBuilders: 1,
-    // desiredSherpas: 4,
-    // desiredDefenders: 0,
-    // desiredScouts: 0,
-    // desiredRaiders: 0,
-    // harvester: work,
-    // scout: scout,
-    // raider: raider,
-    // fatHarvester: extract,
-    // fatUpgrader: heavy,
-    // upgrader: work,
-    // defender: defend,
-    // builder: build,
-    // sherpa: logistic,
-    hitsWall: 250000,
-    hitsRampart: 250000,
+    hitsWall: 1000000,
+    hitsRampart: 1000000,
     name:'5b.city'
 };

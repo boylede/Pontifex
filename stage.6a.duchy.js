@@ -57,7 +57,7 @@ module.exports = {
             body: raider
         }
     },
-    hitsWall: 250000,
-    hitsRampart: 250000,
+    hitsWall: 1000000,
+    hitsRampart: 1000000,
     name:'6a.duchy'
 };

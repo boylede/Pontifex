@@ -1,3 +1,8 @@
+/*
+level 4!
+goal: build storage
+*/
+
 var work = [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, CARRY];
 var heavy = [WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, WORK, WORK, WORK, WORK, CARRY];
 var extract = [MOVE, WORK, WORK, WORK, WORK, WORK];
