@@ -1,6 +1,52 @@
 var s = require('shared');
 const moveOpts = {visualizePathStyle: {stroke: '#0095ff', opacity:0.6}};
 
+function onlyThings(item) {
+    const notInterested = [LOOK_FLAGS, LOOK_TERRAIN, LOOK_CREEPS, LOOK_MINERALS];
+    return notInterested.indexOf(item.type) == -1;
+}
+function firstResource(container, isCreep) {
+    const store = container[isCreep? 'carry' : 'store'];
+    for (var key in store) {
+        if (store.hasOwnProperty(key) && key != RESOURCE_ENERGY) {
+            return key;
+        }
+    }
+    return RESOURCE_ENERGY;
+}
+
+var getRoomsTargets = function(room) {
+    var targets = [];
+    var potentials = _.filter(room.lookAtArea(0, 0, 49, 49, true), onlyThings);
+    var i = 0;
+    const bucketNames = [
+    'almostEmptyControllerContainer',
+    'emptyExtensions',
+    'emptyTowers',
+    'emptyControllerContainer',
+    'constructionSites',
+    'roomStorage'
+    ];
+    const buckets = {};
+
+    for (i = 0; i < bucketNames.length; i++) {
+        const bucket = [];
+        buckets[bucketNames[i]] = bucket;
+        targets.push(bucket);
+    }
+
+    for (i = 0; i < potentials.length; i++) {
+        let item = potentials[i];
+        switch (item.type) {
+            default:
+            break;
+        }
+    }
+
+    return targets;
+};
+
+
 var getTarget = function(creep, source) {
     var targets = [];
 
