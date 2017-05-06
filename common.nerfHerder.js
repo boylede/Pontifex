@@ -31,6 +31,7 @@ const nerfHerder = {
 		var extracting = !m.depositing;
 		var key = 'target';
 		var getGoal = getTarget;
+		var queueEvent = deposit;
 
 		if (extracting) {
 			if (carried == creep.carryCapacity) {
@@ -48,9 +49,9 @@ const nerfHerder = {
 			last = Game.getObjectById(m.target);
 			key = 'source';
 			getGoal = getSource;
+			queueEvent = extract;
 		} else {
 			last = Game.getObjectById(m.source);
-			// getGoal = getTarget;
 		}
 
 		if (m[key]) {
@@ -61,7 +62,7 @@ const nerfHerder = {
 			m[key] = undefined;
 		}
 		if (goal) {
-			err = extract(creep, goal);
+			err = queueEvent(extracting, creep, goal);
 			m[key] = errResponse(err, creep, goal);
 		}
 
