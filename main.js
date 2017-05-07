@@ -80,7 +80,7 @@ module.exports.loop = function () {
 
       if (spawn) {
         if (!roomMem.economyAnalysis || roomMem.economyAnalysis.version < economy.version) {
-          roomMem.economyAnalysis = economy.analyize(room);
+          roomMem.economyAnalysis = economy.analyze(room);
         }
 
         if(spawn.spawning) {
@@ -114,6 +114,12 @@ module.exports.loop = function () {
       for (var typ in creeps) {
         room.visual.text(typ + ': ' +creeps[typ].length, 0.1, 1.5 + (i * 0.75), s.debugStyle);
         i++;
+      }
+      for (var econ in room.memory.economyAnalysis) {
+        if (room.memory.economyAnalysis.hasOwnProperty(econ)) {
+          room.visual.text(econ + ' : ' + room.memory.economyAnalysis[econ], 0.1, 1.5 + (i * 0.75), s.debugStyle);
+          i++;
+        }
       }
     } else {
       console.log('not my room ' + r);

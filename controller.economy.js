@@ -1,6 +1,6 @@
 var version = 1;
 var maintenanceCost = function maintenanceCost(room) {
-  var hitsLostPerTick = 0;
+  var hitsLostPerTick = 0.0;
   const structures = room.find(FIND_STRUCTURES);
   for (var i = structures.length - 1; i >= 0; i--) {
     const str = structures[i];
@@ -8,16 +8,16 @@ var maintenanceCost = function maintenanceCost(room) {
       case STRUCTURE_ROAD:
         if (str.hits > 5000) {
           // assume swampy
-          hitsLostPerTick = hitsLostPerTick + (500 / 1000);
+          hitsLostPerTick = hitsLostPerTick + 5; //(500 / 1000)
         } else {
-          hitsLostPerTick = hitsLostPerTick + (100 / 1000);
+          hitsLostPerTick = hitsLostPerTick + 1; //(100 / 1000)
         }
         break;
       case STRUCTURE_RAMPART :
-        hitsLostPerTick = hitsLostPerTick + (300 / 100);
+        hitsLostPerTick = hitsLostPerTick + 30; //(300 / 100)
         break;
       case STRUCTURE_CONTAINER:
-        hitsLostPerTick = hitsLostPerTick + (5000 / 500);
+        hitsLostPerTick = hitsLostPerTick + 100; //(5000 / 500)
         break;
       // case STRUCTURE_WALL:
       // case STRUCTURE_TOWER:
@@ -39,12 +39,12 @@ var maintenanceCost = function maintenanceCost(room) {
         break;
     }
   }
-  return hitsLostPerTick;
+  return hitsLostPerTick /  200; // 20 hits per unit energy * 10 to compensate for JS floating point ugly
 };
 
 var buildCosts = function buildCosts(room) {
   var hits = 0;
-  var sites = room.find(CONSTRUCTION_SITES);
+  var sites = room.find(FIND_CONSTRUCTION_SITES);
   for (var i = sites.length - 1; i >= 0; i--) {
     let site = sites[i];
     hits += site.progressTotal - site.progress;
@@ -109,31 +109,40 @@ var creepsCost = function creepsCost(stageController) {
 };
 
 var simpleRoomMetric = function simpleRoomMetric(room) {
-  const spawn = room.find(FIND_MY_SPAWNs)[0];
+  const spawn = room.find(FIND_MY_SPAWNS)[0];
   const controller = room.controller;
-  const furthestSource = room.find(FIND_SOURCES).sort((a, b) => room.findPath(b, controller).length - room.findPath(a, controller).length)[0];
-  const furthestDistance = [room.findPath(spawn, furthestSource).length, room.findPath(controller.furthestSource)].sort((a, b) => b - a)[0];
+  const furthestSource = room.find(FIND_SOURCES).sort((a, b) => {
+    var bLen = room.findPath(b.pos, controller.pos).length;
+    var aLen = room.findPath(a.pos, controller.pos).length;
+    return bLen - aLen;
+  })[0];
+  const furthestDistance = [room.findPath(spawn.pos, furthestSource.pos).length, room.findPath(controller.pos, furthestSource.pos)].sort((a, b) => b - a)[0];
   return furthestDistance;
 };
 var simpleRoomCost = function simpleRoomCost(room) {
-  // represents the number of ticks it takes creeps to move to thier destinations
-  const metric = simpleRoomMetric(room);
-  console.log(room.name + ' has a simpleMetric of ' + metric);
-  const costsPerTick = creepsCost(require(controller.stage).loadStage(room.stage)) + maintenanceCost(room) + buildCosts(room);
-  console.log(room.name + ' costs ' + costsPerTick + ' per tick.');
+  // const metric = simpleRoomMetric(room);
+  // console.log(room.name + ' has a simpleMetric of ' + metric);
+  const creeps = creepsCost(require('controller.stage').stageModule(room.stage));
+  // console.log('cost of creeps ' + creeps);
+  const buildings =  maintenanceCost(room);
+  // console.log('cost of existing structures ' + buildings);
+  const construction = buildCosts(room);
+  // console.log('cost of new structures ' + construction);
+  const costsPerTick = creeps + buildings + construction;
+  // console.log(room.name + ' costs ' + costsPerTick + ' per tick.');
   return costsPerTick;
 };
 
 var simpleRoomEfficiency = function simpleRoomEfficiency(room) {};
 
 var analyze = function analyze(room) {
-  room.memory.economyAnalysis = {
+  return {
     version: version,
     costsPerTick: simpleRoomCost(room)
   };
 };
 module.exports = {
-  analyze: analyze,
+  'analyze': analyze,
   maintenanceCost: maintenanceCost,
   creepsCost: creepsCost,
   buildCosts: buildCosts,
@@ -141,5 +150,5 @@ module.exports = {
   maxIncome: maxIncome,
   simpleRoomMetric: simpleRoomMetric,
   simpleRoomCost: simpleRoomCost,
-  verstion: version
+  version: version
 };
