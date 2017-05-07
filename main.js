@@ -1,7 +1,9 @@
 var stageController = require('controller.stage');
 var rolesController = require('controller.roles');
+var economy = require('controller.economy');
 var immobileTower = require('immobile.tower');
 var immobileLink = require('immobile.link');
+
 
 var s = require('shared');
 
@@ -77,6 +79,10 @@ module.exports.loop = function () {
       // let err = OK;
 
       if (spawn) {
+        if (!roomMem.economyAnalysis || roomMem.economyAnalysis.version < economy.version) {
+          roomMem.economyAnalysis = economy.analyize(room);
+        }
+
         if(spawn.spawning) {
           let spawningCreep = Game.creeps[spawn.spawning.name];
           s.structSay(spawn, spawningCreep.memory.role);
