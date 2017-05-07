@@ -36,7 +36,7 @@ var linkLoop = function linkLoop(link) {
         }
     }
 }
-if (err != OK) {
+if (err != OK && err != ERR_TIRED) {
     console.log('error with link ' +link.id + ' : ' + err);
 }
 return;
