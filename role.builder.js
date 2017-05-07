@@ -1,5 +1,7 @@
 var s = require('shared');
 var NSO = {id:null};
+const moveOpts = {visualizePathStyle: {stroke: '#0095ff', opacity:0.6, lineStyle:'dotted'}};
+
 var isNear = function isNear(thing1, thing2) {
     return thing1.pos.getRangeTo(thing2) < 2;
 };
@@ -136,9 +138,78 @@ var deposit = function(creep, target) {
 	}
 	return err;
 };
-
+var errResponse = function errResponse(err, creep, goal) {
+    var mem = goal.id;
+    switch (err) {
+        case ERR_NOT_IN_RANGE:
+        err = creep.moveTo(goal, moveOpts);
+        break;
+        case OK:
+        case ERR_FULL:
+        case ERR_NOT_ENOUGH_ENERGY:
+        case ERR_TIRED:
+        case ERR_BUSY:
+        case ERR_NOT_FOUND:
+            mem = undefined;
+            break;
+        default:
+            creep.say('?');
+            break;
+    }
+    return mem;
+};
 var roleBuilder= {
 	run: function(creep) {
+        var err = OK;
+        const m = creep.memory;
+        const energy = creep.carry.energy;
+        const carried = _.sum(creep.carry);
+        var target;
+        var source;
+        var extracting = !m.depositing;
+
+        if (extracting) {
+            if (carried == creep.carryCapacity) {
+                extracting = false;
+            }
+        } else {
+            if (carried === 0) {
+                extracting = true;
+            }
+        }
+
+        m.depositing = !extracting;
+
+        if (extracting) {
+            target = Game.getObjectById(m.target);
+            if (m.source && !m.lowPriority) {
+                source = Game.getObjectById(m.source);
+            }
+            if (!source) {
+                source = getSource(creep, target);
+                m.source = undefined;
+            }
+            if (source) {
+                err = extract(creep, source);
+                m.source = errResponse(err, creep, source);
+            }
+        } else {
+            source = Game.getObjectById(m.source);
+            if (m.target) {
+                target = Game.getObjectById(m.target);
+            }
+            if (!target) {
+                target = getTarget(creep, source);
+                m.target = undefined;
+            }
+            if (target) {
+                err = deposit(creep, target);
+                m.target = errResponse(err, creep, target);
+            }
+        }
+        return OK;
+    },
+	oldRun: function(creep) {
 		var err = OK;
 		var m = creep.memory;
 		var energy = creep.carry.energy;
