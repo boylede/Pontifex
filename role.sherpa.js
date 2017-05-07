@@ -58,7 +58,7 @@ var getTarget = function(creep, source) {
         });
     }
 
-    if (_.sum(creep.carry) > creep.carry.RESOURCE_ENERGY) {
+    if (_.sum(creep.carry) > creep.carry[RESOURCE_ENERGY]) {
         targets = [creep.room.storage];
     }
 
@@ -109,22 +109,23 @@ var getTarget = function(creep, source) {
 };
 
 var getSource = function(creep, target) {
-    var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => {
-        return resource.type != RESOURCE_ENERGY && !PathFinder.search(resource, creep, {ignoreCreeps: true, ignoreRoads:true, maxRooms:1, maxOps: 500}).incomplete;
-        }
-    });
-    if (sources.length === 0) {
-        sources = creep.room.find(FIND_DROPPED_ENERGY, {
-            filter: (resource) => !PathFinder.search(resource, creep, {ignoreCreeps: true, ignoreRoads:true, maxRooms:1, maxOps: 500}).incomplete
-        });
-    }
-    if (sources.length === 0) {
-        sources = creep.room.find(FIND_STRUCTURES, {
+    creep.memory.lowPriority = false;
+    // var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => {
+    //     return resource.type != RESOURCE_ENERGY && !PathFinder.search(resource, creep, {ignoreCreeps: true, ignoreRoads:true, maxRooms:1, maxOps: 500}).incomplete;
+    //     }
+    // });
+    // if (sources.length === 0) {
+    //     sources = creep.room.find(FIND_DROPPED_ENERGY, {
+    //         filter: (resource) => !PathFinder.search(resource, creep, {ignoreCreeps: true, ignoreRoads:true, maxRooms:1, maxOps: 500}).incomplete
+    //     });
+    // }
+    // if (sources.length === 0) {
+        var sources = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return  structure.structureType == STRUCTURE_LINK && structure.energy > 0 && s.isNear(structure, creep.room.storage);
             }
         });
-    }
+    // }
     if (sources.length === 0) {
         sources = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
@@ -150,6 +151,7 @@ var getSource = function(creep, target) {
     }
     if (sources.length === 0) {
         sources = creep.room.find(FIND_DROPPED_ENERGY);
+        creep.memory.lowPriority = true;
     }
     return creep.pos.findClosestByRange(sources);
 };
@@ -233,7 +235,7 @@ var roleSherpa = {
 
         if (extracting) {
             target = Game.getObjectById(m.target);
-            if (m.source) {
+            if (m.source && !m.lowPriority) {
                 source = Game.getObjectById(m.source);
             }
             if (!source) {
