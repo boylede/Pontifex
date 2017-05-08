@@ -55,6 +55,34 @@ var buildCosts = function buildCosts(room) {
   }
 };
 
+var roleCosts = function roleCosts(room) {
+  var roles = {};
+  var energyPerTick = 0;
+  room.find(FIND_MY_CREEPS, {filter:(creep) => {
+    if (!roles[creep.memory.role]) {
+      roles[creep.memory.role] = 0;
+    }
+    roles[creep.memory.role] += creep.getActiveBodyparts(WORK);
+    }
+  });
+  for (var role in roles) {
+    if (roles.hasOwnProperty(role)) {
+      switch(role) {
+        case 'builder':
+          energyPerTick += 5 * roles[role];
+          break;
+        case 'upgrader':
+          energyPerTick += roles[role];
+          break;
+        case 'containerUpgrader':
+          energyPerTick += roles[role];
+          break;
+      }
+    }
+  }
+  return energyPerTick;
+};
+
 var maxIncome = function maxIncome(room) {
   return room.find(FIND_SOURCES).length * 10;
 };
@@ -155,6 +183,7 @@ var analyze = function analyze(room) {
   return {
     next: Game.time + 1500,
     costsPerTick: simpleRoomCost(room),
+    productionPerTick: roleCosts(room),
     incomePerTick: incomePerTick(room)
   };
 };
