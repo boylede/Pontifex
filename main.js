@@ -79,7 +79,7 @@ module.exports.loop = function () {
       // let err = OK;
 
       if (spawn) {
-        if (!roomMem.economyAnalysis || roomMem.economyAnalysis.version < economy.version) {
+        if (!roomMem.economyAnalysis || roomMem.economyAnalysis.next < Game.time) {
           roomMem.economyAnalysis = economy.analyze(room);
         }
 
@@ -115,6 +115,7 @@ module.exports.loop = function () {
         room.visual.text(typ + ': ' +creeps[typ].length, 0.1, 1.5 + (i * 0.75), s.debugStyle);
         i++;
       }
+      i++;
       for (var econ in room.memory.economyAnalysis) {
         if (room.memory.economyAnalysis.hasOwnProperty(econ)) {
           room.visual.text(econ + ' : ' + room.memory.economyAnalysis[econ], 0.1, 1.5 + (i * 0.75), s.debugStyle);

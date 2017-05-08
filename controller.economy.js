@@ -1,4 +1,3 @@
-var version = 1;
 var maintenanceCost = function maintenanceCost(room) {
   var hitsLostPerTick = 0.0;
   const structures = room.find(FIND_STRUCTURES);
@@ -58,6 +57,23 @@ var buildCosts = function buildCosts(room) {
 
 var maxIncome = function maxIncome(room) {
   return room.find(FIND_SOURCES).length * 10;
+};
+
+var incomePerTick = function incomePerTick(room) {
+    var minerParts = 0;
+    var miners = room.find(FIND_MY_CREEPS, {filter:(creep) => {
+        if(creep.memory.role == 'harvester' || creep.memory.role == 'containerHarvester') {
+            minerParts += creep.getActiveBodyparts(WORK);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    });
+    if (minerParts >= 10) {
+        minerParts = 10;
+    }
+    return minerParts * 2;
 };
 
 var creepCost = function creepCost(body) {
@@ -137,8 +153,9 @@ var simpleRoomEfficiency = function simpleRoomEfficiency(room) {};
 
 var analyze = function analyze(room) {
   return {
-    version: version,
-    costsPerTick: simpleRoomCost(room)
+    next: Game.time + 1500,
+    costsPerTick: simpleRoomCost(room),
+    incomePerTick: incomePerTick(room)
   };
 };
 module.exports = {
@@ -149,6 +166,5 @@ module.exports = {
   creepCost: creepCost,
   maxIncome: maxIncome,
   simpleRoomMetric: simpleRoomMetric,
-  simpleRoomCost: simpleRoomCost,
-  version: version
+  simpleRoomCost: simpleRoomCost
 };
