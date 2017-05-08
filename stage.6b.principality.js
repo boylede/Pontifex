@@ -1,8 +1,7 @@
 /*
 */
-var work = [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, CARRY];
+var work = [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY];
 var build = [WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY, MOVE, CARRY, MOVE,];
-var heavy = [WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, WORK, WORK, WORK, WORK, CARRY];
 var extract = [MOVE, WORK, WORK, WORK, WORK, WORK, CARRY];
 var logistic = [CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE];
 var defend = [MOVE, MOVE, ATTACK, ATTACK, ATTACK, ATTACK];
@@ -36,8 +35,8 @@ module.exports = {
             body: work
         },
         containerUpgrader: {
-            desired: 3,
-            body: heavy
+            desired: 1,
+            body: work
         },
         defender: {
             desired: 0,

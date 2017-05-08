@@ -38,7 +38,7 @@ module.exports = {
             body: work
         },
         containerUpgrader: {
-            desired: 3,
+            desired: 2,
             body: heavy
         },
         defender: {
