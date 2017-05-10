@@ -15,10 +15,13 @@ module.exports.loop = function () {
   PathFinder.use(true);
   s.setup();
 
-  if ( !Memory.fixedCreeps ) {
+  if ( Memory.fixedCreeps ) {
+  	Memory.fixedCreeps = undefined;
+  	Memory.resetCreeps = Game.time;
+  } else if (Memory.resetCreeps < Game.time) {
     s.fixCreepsInMemory();
-    Memory.fixedCreeps = true;
-    console.log('fixed creeps');
+    Memory.resetCreeps = Game.time + 3000;
+    console.log('reset creeps');
   }
   for (var r in Game.rooms) {
     const room = Game.rooms[r];
