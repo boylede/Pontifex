@@ -16,6 +16,8 @@ var levelUp = function levelUp(room) {
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
     if (room.controller.level > 5 && room.energyAvailable >= maxEnergy) {
         return '6a.duchy';
+    } else if (room.controller.level < level) {
+        return '4a.settlement';
     } else {
         return '5b.city';
     }

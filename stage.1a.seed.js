@@ -8,7 +8,9 @@ var levelUp = function levelUp(room) {
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     if (numSpawns > 0) {
         return '1b.foothold';
-    } else {
+    } else  if (room.controller.level < 1) {
+        return '0.blank';
+    } else{
         return '1a.seed';
     }
 };

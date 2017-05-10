@@ -13,6 +13,8 @@ var levelUp = function levelUp(room) {
     // let numContainers = room.find(FIND_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
     if (room.energyAvailable >= maxEnergy) {
         return '2b.bastion';
+    } else if (room.controller.level < level) {
+        return '1a.seed';
     } else {
         return '2a.outpost';
     }

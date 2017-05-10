@@ -18,6 +18,8 @@ var levelUp = function levelUp(room) {
     if (room.controller.level > 6 && numLinks >= 3 && room.energyAvailable >= maxEnergy) {
         console.log('construct additional pylons'); // need to make more levels
         return '6b.principality';
+    } else if (room.controller.level < 6) {
+        return '5a.village';
     } else {
         return '6b.principality';
     }

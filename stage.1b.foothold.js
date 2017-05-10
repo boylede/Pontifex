@@ -8,6 +8,8 @@ var levelUp = function levelUp(room) {
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     if (room.controller.level > 1 && numSpawns > 0 && room.energyAvailable >= 300) {
         return '2a.outpost';
+    } else if (room.controller.level < 1) {
+        return '0.blank';
     } else {
         return '1b.foothold';
     }

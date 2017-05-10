@@ -16,6 +16,8 @@ var levelUp = function levelUp(room) {
     let numContainers = room.find(FIND_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
     if (room.controller.level > 2 && numContainers >= 3 && room.energyAvailable >= maxEnergy) {
         return '3a.fort';
+    } else if (room.controller.level < level) {
+        return '1a.seed';
     } else {
         return '2c.encampment';
     }

@@ -18,6 +18,8 @@ var levelUp = function levelUp(room) {
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
     if (numLinks >= 3 && numExt >= 1 && numTerm >= 3 && room.energyAvailable >= maxEnergy) {
         return '6b.principality';
+    } else if (room.controller.level < level) {
+        return '5a.village';
     } else {
         return '6a.duchy';
     }
