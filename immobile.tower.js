@@ -36,7 +36,7 @@ var towerLoop = function towerLoop(tower) {
                 targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_RAMPART && str.hits < str.hitsMax && str.hits < 400000 });
             }
             if (targets.length === 0) {
-                targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax});
+                targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.hits < 1000000});
             }
         }
         if (targets.length !== 0) {
