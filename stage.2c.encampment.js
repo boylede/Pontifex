@@ -7,10 +7,14 @@ var harvester = [MOVE, WORK, WORK, WORK, WORK, WORK];
 var body = [WORK, MOVE, CARRY];
 var upgrader = [MOVE, WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY];
 var carry = [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
+
+const level = 2;
+const maxEnergy = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][level] * EXTENSION_ENERGY_CAPACITY[level];
+
 var levelUp = function levelUp(room) {
 //    let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     let numContainers = room.find(FIND_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (room.controller.level > 2 && numContainers >= 3 && room.energyAvailable >= 550) {
+    if (room.controller.level > 2 && numContainers >= 3 && room.energyAvailable >= maxEnergy) {
         return '3a.fort';
     } else {
         return '2c.encampment';

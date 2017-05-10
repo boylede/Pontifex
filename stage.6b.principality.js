@@ -8,11 +8,14 @@ var defend = [MOVE, MOVE, ATTACK, ATTACK, ATTACK, ATTACK];
 var scout = [MOVE]; // , CLAIM, MOVE, CLAIM
 var raider = [MOVE, ATTACK];
 
+const level = 6;
+const maxEnergy = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][level] * EXTENSION_ENERGY_CAPACITY[level];
+
 var levelUp = function levelUp(room) {
     let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
     let numLinks = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_LINK}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (room.controller.level > 5 && numTowers >= 2 && numLinks >= 2 && room.energyAvailable >= 1800) {
+    if (room.controller.level > 6 && numLinks >= 3 && room.energyAvailable >= maxEnergy) {
         console.log('construct additional pylons'); // need to make more levels
         return '6b.principality';
     } else {

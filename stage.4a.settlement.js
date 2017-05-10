@@ -11,11 +11,14 @@ var defend = [MOVE, MOVE, ATTACK, ATTACK, ATTACK, ATTACK];
 var scout = [MOVE];
 var raider = [MOVE, MOVE, ATTACK, ATTACK];
 
+const level = 4;
+const maxEnergy = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][level] * EXTENSION_ENERGY_CAPACITY[level];
+
 var levelUp = function levelUp(room) {
     //let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (room.storage !== undefined && room.energyAvailable >= 1300) {
+    if (room.storage !== undefined && room.energyAvailable >= maxEnergy) {
         return '4b.town';
     } else {
         return '4a.settlement';

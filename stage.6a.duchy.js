@@ -7,11 +7,16 @@ var defend = [MOVE, MOVE, ATTACK, ATTACK, ATTACK, ATTACK];
 var scout = [MOVE]; // , CLAIM, MOVE, CLAIM
 var raider = [MOVE, ATTACK];
 
+const level = 6;
+const maxEnergy = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][level] * EXTENSION_ENERGY_CAPACITY[level];
+
 var levelUp = function levelUp(room) {
-    let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
-    let numLinks = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_LINK}).length;
+    // let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
+    const numLinks = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_LINK}).length;
+    const numExt = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTRACTOR}).length;
+    const numTerm = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TERMINAL}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (numTowers >= 2 && numLinks >= 2 && room.energyAvailable >= 1800) {
+    if (numLinks >= 3 && numExt >= 1 && numTerm >= 3 && room.energyAvailable >= maxEnergy) {
         return '6b.principality';
     } else {
         return '6a.duchy';

@@ -9,11 +9,14 @@ var upgrader = [MOVE, WORK, MOVE, WORK, WORK, WORK, WORK, MOVE, WORK, CARRY];
 var carry = [MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
 var defend = [MOVE, MOVE, ATTACK, ATTACK, ATTACK, ATTACK];
 
+const level = 3;
+const maxEnergy = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][level] * EXTENSION_ENERGY_CAPACITY[level];
+
 var levelUp = function levelUp(room) {
     let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (room.controller.level > 3 && room.energyAvailable >= 800 && numTowers >= 1) {
+    if (room.controller.level > 3 && room.energyAvailable >= maxEnergy && numTowers >= 1) {
         return '4a.settlement';
     } else {
         return '3c.base';
