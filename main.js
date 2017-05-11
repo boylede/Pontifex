@@ -108,7 +108,7 @@ module.exports.loop = function () {
               }
             }
           }
-          if(!spawned && room.energyAvailable > 2000 && roomMem.charter && roomMem.charter.ready) {
+          if(!spawned && room.energyAvailable > 2000 && roomMem.charter && roomMem.charter.ready && roomMem.charter.count <= roomMem.charter.desired) {
 
             err = spawn.createCreep(roomMem.charter.body, undefined, {role:roomMem.charter.role, home: r});
             switch (err) {

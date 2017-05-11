@@ -1,5 +1,5 @@
 var s = require('shared');
-var moveOpts = {ignoreCreeps: true, plainCost: 1, swampCost: 1, visualizePathStyle: {stroke: '#ffaa00', opacity: 1.0}};
+var moveOpts = {ignoreCreeps: true, ignoreDestructibleStructures:true, visualizePathStyle: {stroke: '#ffaa00', opacity: 1.0}};
 
 var errResponse = function errResponse(err, creep, goal) {
   var mem = goal.id;

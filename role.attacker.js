@@ -22,6 +22,7 @@ var errResponse = function errResponse(err, creep, goal) {
     err = creep.moveTo(goal, moveOpts);
     break;
     case OK:
+    break;
     case ERR_FULL:
     case ERR_NOT_ENOUGH_ENERGY:
     case ERR_TIRED:
