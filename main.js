@@ -112,14 +112,20 @@ module.exports.loop = function () {
 
             err = spawn.createCreep(roomMem.charter.body, undefined, {role:roomMem.charter.role, home: r});
             switch (err) {
-                  case OK:
-                    roomMem.charter.count++;
-                    break;
-                  case ERR_NOT_ENOUGH_RESOURCES:
-                    break;
-                  default:
-                    s.structErr(spawn, err);
-                }
+              case ERR_RCL_NOT_ENOUGH:
+              case ERR_NOT_OWNER:
+              case ERR_NAME_EXISTS:
+              case ERR_BUSY:
+              break;
+              case ERR_NOT_ENOUGH_ENERGY:
+              case ERR_INVALID_ARGS:
+                s.structErr(spawn, err);
+              break;
+              default:
+                roomMem.charter.count++;
+                console.log('spawning pilgrim #' + roomMem.charter.count + ': ' + err + ' for ' + roomMem.charter.name);
+                break;
+            }
           }
         }
       }
