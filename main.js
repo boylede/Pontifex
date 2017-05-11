@@ -4,7 +4,6 @@ var economy = require('controller.economy');
 var immobileTower = require('immobile.tower');
 var immobileLink = require('immobile.link');
 
-
 var s = require('shared');
 
 const attackersPresent = function attackersPresent(creep) { 
@@ -92,9 +91,11 @@ module.exports.loop = function () {
         } else if (spawnPriority) {
           err = spawn.createCreep(stageC.creeps.defender.body, undefined, {role: 'defender'});
         } else {
+          let spawned = false;
           for (role in creeps) {
             if (creeps.hasOwnProperty(role)) {
               if(stageC.creeps[role] && creeps[role].length < stageC.creeps[role].desired) {
+                spawned = true;
                 err = spawn.createCreep(stageC.creeps[role].body, undefined, {role: role});
                 switch (err) {
                   case OK:
@@ -106,6 +107,19 @@ module.exports.loop = function () {
                 break;
               }
             }
+          }
+          if(!spawned && room.energyAvailable > 2000 && roomMem.charter && roomMem.charter.ready) {
+
+            err = spawn.createCreep(roomMem.charter.body, undefined, {role:roomMem.charter.role, home: r});
+            switch (err) {
+                  case OK:
+                    roomMem.charter.count++;
+                    break;
+                  case ERR_NOT_ENOUGH_RESOURCES:
+                    break;
+                  default:
+                    s.structErr(spawn, err);
+                }
           }
         }
       }
@@ -125,8 +139,6 @@ module.exports.loop = function () {
           i++;
         }
       }
-    } else {
-      console.log('not my room ' + r);
     }
     for (role in creeps) {
         for (var i = 0; i < creeps[role].length; i++) {

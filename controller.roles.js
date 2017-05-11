@@ -8,7 +8,9 @@ var roles = [
 'defender',
 'scout',
 'raider',
-'defective'
+'defective',
+'attacker',
+'pilgrim'
 ];
 
 var roleModules = {};
