@@ -12,11 +12,11 @@ const maxEnergy = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][level] * EXTENSION_
 
 var levelUp = function levelUp(room) {
     // let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
-    const numLinks = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_LINK}).length;
+    //const numLinks = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_LINK}).length;
     const numExt = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTRACTOR}).length;
     const numTerm = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TERMINAL}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (numLinks >= 3 && numExt >= 1 && numTerm >= 3 && room.energyAvailable >= maxEnergy) {
+    if (numExt >= 1 && numTerm >= 1 && room.energyAvailable >= maxEnergy) {
         return '6b.principality';
     } else if (room.controller.level < level) {
         return '5a.village';

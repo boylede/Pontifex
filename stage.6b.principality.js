@@ -59,9 +59,9 @@ module.exports = {
             desired: 0,
             body: scout
         },
-        raider: {
-            desired: 0,
-            body: raider
+        miner: {
+            desired: 1,
+            body: [MOVE, WORK, CARRY]
         }
     },
     hitsWall: 1000000,

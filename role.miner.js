@@ -30,7 +30,7 @@ function getTarget(creep) {
     var targets = creep.room.find(FIND_STRUCTURES, {
         filter: (structure) => {
             const stored = structure.store ? _.sum(structure.store) : 0;
-            return (structure.structureType == STRUCTURE_TERMINAL || structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_STORAGE) &&
+            return (structure.structureType == STRUCTURE_TERMINAL || structure.structureType == STRUCTURE_STORAGE) &&
             stored < structure.storeCapacity;
         }
     });

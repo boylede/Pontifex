@@ -7,7 +7,7 @@ var roles = [
 'builder',
 'defender',
 'scout',
-'raider',
+'miner',
 'defective',
 'attacker',
 'pilgrim'
