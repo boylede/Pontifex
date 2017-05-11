@@ -35,6 +35,7 @@ var pilgrim = {
     if (home && home.memory.charter) {
       charter = home.memory.charter;
       if (creep.room.name == charter.destination) {
+        creep.moveTo(creep.room.controller, moveOpts);
         creep.memory = charter.pilgrim;
       } else if (creep.room == home && charter.supply && carried < creep.carryCapacity) {
         goal = home.storage;

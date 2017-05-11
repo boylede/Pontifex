@@ -6,8 +6,8 @@ var claim = {
     var err = OK;
     const m = creep.memory;
 
+    creep.moveTo(creep.room.controller, moveOpts);
     err = creep.claim(creep.room.controller);
-    creep.moveTo(goal, moveOpts);
 
     return OK;
   }
