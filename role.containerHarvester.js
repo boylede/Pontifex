@@ -96,7 +96,7 @@ var immobileHarvester = {
         let link = findNearby(creep, LOOK_STRUCTURES, (str) => str.structure.structureType == STRUCTURE_LINK);
         //console.log(link);
 
-        if (creep.pos.x == container.pos.x && creep.pos.y == container.pos.y) {
+        if (creep && container && creep.pos.x == container.pos.x && creep.pos.y == container.pos.y) {
             err = creep.harvest(source);
             if (link) {
                 //console.log('tying to use link ' + link.id);
