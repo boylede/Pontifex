@@ -12,7 +12,10 @@ var getTarget = function(creep) {
     if (targets.length === 0) {
         targets = creep.room.find(FIND_HOSTILE_CONSTRUCTION_SITES);
     }
-    return targets[0];
+    if (targets.length === 0 ) {
+        targets = creep.room.find(FIND_STRUCTURES, {filter: (str) => str.structureType != STRUCTURE_CONTROLLER});
+    }
+    return creep.pos.findClosestByRange(targets);
 };
 
 var errResponse = function errResponse(err, creep, goal) {
@@ -22,7 +25,7 @@ var errResponse = function errResponse(err, creep, goal) {
     err = creep.moveTo(goal, moveOpts);
     break;
     case OK:
-    break;
+        break;
     case ERR_FULL:
     case ERR_NOT_ENOUGH_ENERGY:
     case ERR_TIRED:
@@ -41,8 +44,7 @@ var attacker = {
     var err = OK;
     const m = creep.memory;
     var target;
-
-    if (m.target) {
+    if ( m.target) {
       target = Game.getObjectById(m.target);
     }
     if (!target && !m.singleTarget) {
