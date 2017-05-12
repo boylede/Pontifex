@@ -1,5 +1,4 @@
 var getTarget = function(creep) {
-   // return Game.getObjectById( '58b88c59009566021e2cf455');
   var targets = creep.room.find(FIND_CREEPS, {filter: (cre) => !cre.my && cre.getActiveBodyparts(HEAL) > 0});
   if (targets.length === 0 ) {
         targets = creep.room.find(FIND_HOSTILE_CREEPS, {
@@ -21,16 +20,19 @@ var getTarget = function(creep) {
 
 var roleDefender = {
     run: function(creep) {
+        var err = OK;
         var m = creep.memory;
         var target = getTarget(creep);
-        //var f = creep.room.find;
-        // targets = ;
-        //console.log(target.name);
-        var err = creep.attack(target); 
-        if(err == ERR_NOT_IN_RANGE) {
-            creep.moveTo(target, {visualizePathStyle: {stroke: '#FF0303', fill:'#ff0505'}});
-        } else if (err != OK) {
-            creep.say(err);
+
+        if (target) {
+            err = creep.attack(target); 
+            if(err == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target, {visualizePathStyle: {stroke: '#FF0303', fill:'#ff0505'}});
+            } else if (err != OK) {
+                creep.say(err);
+            }
+        } else {
+            err = creep.moveTo(creep.room.controller);
         }
     }
 };
