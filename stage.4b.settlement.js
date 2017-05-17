@@ -1,6 +1,6 @@
 /*
 level 4!
-goal: build exTENsions!
+goal: build storage!
 */
 
 var work = [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, CARRY];
@@ -18,12 +18,12 @@ var levelUp = function levelUp(room) {
     //let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (room.energyAvailable >= maxEnergy) {
-        return '4b.town';
+    if (room.storage !== undefined && room.energyAvailable >= maxEnergy) {
+        return '4c.town';
     } else if (room.controller.level < level) {
         return '3a.fort';
     } else {
-        return '4a.settlement';
+        return '4b.settlement';
     }
 };
 
@@ -68,6 +68,6 @@ module.exports = {
     },
     hitsWall: 250000,
     hitsRampart: 250000,
-    name:'4a.settlement',
+    name:'4b.settlement',
     levelUp: levelUp
 };
