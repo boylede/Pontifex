@@ -84,7 +84,7 @@ module.exports = {
         return required <= energyAtLocation(constructionSite);
     },
     isNear:  function isNear(thing1, thing2) {
-        return thing1.pos.getRangeTo(thing2) < 2;
+        return thing1.pos.getRangeTo(thing2) < 3;
     },
     carousel:  function carousel(creep, typ, arr) {
         const len = arr.length;
