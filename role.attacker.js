@@ -15,7 +15,7 @@ var getTarget = function(creep) {
     if (targets.length === 0 ) {
         targets = creep.room.find(FIND_STRUCTURES, {filter: (str) => str.structureType != STRUCTURE_CONTROLLER});
     }
-    return creep.pos.findClosestByRange(targets);
+    return targets.sort( (a, b) => a.hits - b.hits)[0];
 };
 
 var errResponse = function errResponse(err, creep, goal) {

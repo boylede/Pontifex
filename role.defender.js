@@ -22,7 +22,15 @@ var roleDefender = {
     run: function(creep) {
         var err = OK;
         var m = creep.memory;
-        var target = getTarget(creep);
+        var target;
+        
+        if (m.target) {
+            target = Game.getObjectById(m.target);
+        }
+        if (!target) {
+        target = getTarget(creep);
+        m.target = undefined;
+        }
 
         if (target) {
             err = creep.attack(target); 
