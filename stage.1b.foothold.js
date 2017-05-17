@@ -6,9 +6,11 @@ var body = [MOVE, CARRY, WORK, WORK];
 var levelUp = function levelUp(room) {
     let numSpawns = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_SPAWN}).length;
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
+    let numFarmers = room.find(FIND_MY_CREEPS, (creep) => creep.memory.role == 'containerHarvester' || creep.memory.role == 'harvester' ).length;
+
     if (room.controller.level > 1 && numSpawns > 0 && room.energyAvailable >= 300) {
         return '2a.outpost';
-    } else if (room.controller.level < 1) {
+    } else if (room.controller.level < 1 || !(numFarmers >= 1 )) {
         return '0.blank';
     } else {
         return '1b.foothold';

@@ -14,9 +14,11 @@ var levelUp = function levelUp(room) {
     //let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
+    let numFarmers = room.find(FIND_MY_CREEPS, (creep) => creep.memory.role == 'containerHarvester' || creep.memory.role == 'harvester' ).length;
+
     if (room.controller.level > 5 && room.energyAvailable >= maxEnergy) {
         return '6a.duchy';
-    } else if (room.controller.level < level) {
+    } else if (room.controller.level < level || !(numFarmers >= 1 )) {
         return '4a.settlement';
     } else {
         return '5b.city';

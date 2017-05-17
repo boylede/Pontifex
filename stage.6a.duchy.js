@@ -15,10 +15,12 @@ var levelUp = function levelUp(room) {
     //const numLinks = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_LINK}).length;
     const numExt = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTRACTOR}).length;
     const numTerm = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TERMINAL}).length;
+    let numFarmers = room.find(FIND_MY_CREEPS, (creep) => creep.memory.role == 'containerHarvester' || creep.memory.role == 'harvester' ).length;
+
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
     if (numExt >= 1 && numTerm >= 1 && room.energyAvailable >= maxEnergy) {
         return '6b.principality';
-    } else if (room.controller.level < level) {
+    } else if (room.controller.level < level || !(numFarmers >= 1 )) {
         return '5a.village';
     } else {
         return '6a.duchy';

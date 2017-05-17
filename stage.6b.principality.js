@@ -12,13 +12,15 @@ const level = 6;
 const maxEnergy = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][level] * EXTENSION_ENERGY_CAPACITY[level];
 
 var levelUp = function levelUp(room) {
-    let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
+    // let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
     let numLinks = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_LINK}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
+    let numFarmers = room.find(FIND_MY_CREEPS, (creep) => creep.memory.role == 'containerHarvester' || creep.memory.role == 'harvester' ).length;
+
     if (room.controller.level > 6 && numLinks >= 3 && room.energyAvailable >= maxEnergy) {
         console.log('construct additional pylons'); // need to make more levels
         return '6b.principality';
-    } else if (room.controller.level < 6) {
+    } else if (room.controller.level < 6 || !(numFarmers >= 1 )) {
         return '5a.village';
     } else {
         return '6b.principality';

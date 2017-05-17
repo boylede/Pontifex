@@ -23,9 +23,11 @@ var levelUp = function levelUp(room) {
     let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
+    let numFarmers = room.find(FIND_MY_CREEPS, (creep) => creep.memory.role == 'containerHarvester' || creep.memory.role == 'harvester' ).length;
+
     if (room.energyAvailable >= maxEnergy && numTowers >= 1) {
         return '3c.base';
-    } else if (room.controller.level < level) {
+    } else if (room.controller.level < level || !(numFarmers >= 1 )) {
         return '2a.outpost';
     } else {
         return '3b.barracks';

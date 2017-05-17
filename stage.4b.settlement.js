@@ -18,9 +18,11 @@ var levelUp = function levelUp(room) {
     //let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
     //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
+    let numFarmers = room.find(FIND_MY_CREEPS, (creep) => creep.memory.role == 'containerHarvester' || creep.memory.role == 'harvester' ).length;
+
     if (room.storage !== undefined && room.energyAvailable >= maxEnergy) {
         return '4c.town';
-    } else if (room.controller.level < level) {
+    } else if (room.controller.level < level || !(numFarmers >= 1 )) {
         return '3a.fort';
     } else {
         return '4b.settlement';
