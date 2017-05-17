@@ -23,10 +23,10 @@ var levelUp = function levelUp(room) {
 
     if (room.controller.level > 4 && room.storage !== undefined && room.energyAvailable >= maxEnergy) {
         return '5a.village';
-    } else if (room.controller.level < level|| !(numFarmers >= 1 )) {
+    } else if (room.controller.level < level || !(numFarmers >= 1 )) {
         return '3a.fort';
     } else {
-        return '4b.town';
+        return '4c.town';
     }
 };
 
@@ -71,6 +71,6 @@ module.exports = {
     },
     hitsWall: 500000,
     hitsRampart: 500000,
-    name:'4b.town',
+    name:'4c.town',
     levelUp: levelUp
 };

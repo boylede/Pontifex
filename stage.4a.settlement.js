@@ -21,7 +21,7 @@ var levelUp = function levelUp(room) {
     let numFarmers = room.find(FIND_MY_CREEPS, (creep) => creep.memory.role == 'containerHarvester' || creep.memory.role == 'harvester' ).length;
 
     if (room.energyAvailable >= maxEnergy) {
-        return '4b.town';
+        return '4b.settlement';
     } else if (room.controller.level < level || !(numFarmers >= 1 )) {
         return '3a.fort';
     } else {
