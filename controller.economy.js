@@ -170,9 +170,9 @@ var simpleRoomCost = function simpleRoomCost(room) {
   // console.log('cost of creeps ' + creeps);
   const buildings =  maintenanceCost(room);
   // console.log('cost of existing structures ' + buildings);
-  const construction = buildCosts(room);
+  // const construction = buildCosts(room);
   // console.log('cost of new structures ' + construction);
-  const costsPerTick = creeps + buildings + construction;
+  const costsPerTick = creeps + buildings;
   // console.log(room.name + ' costs ' + costsPerTick + ' per tick.');
   return costsPerTick;
 };
