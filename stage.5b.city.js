@@ -1,3 +1,7 @@
+/*
+built all our stuff, lets race to level 6.
+*/
+
 var work = [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, CARRY];
 var build = [WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY, MOVE, CARRY, MOVE,];
 var heavy = [WORK, MOVE, WORK, MOVE, WORK, MOVE, WORK, WORK, WORK, WORK, WORK, CARRY];
@@ -52,7 +56,7 @@ module.exports = {
             body: logistic
         },
         builder: {
-            desired: 1,
+            desired: 0,
             body: build
         },
         scout: {

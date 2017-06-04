@@ -1,6 +1,6 @@
 /*
 level 5!
-goal: build storage
+goal: build links, extra tower, and more extensions.
 */
 var work = [WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, CARRY];
 var build = [WORK, MOVE, WORK, MOVE, WORK, MOVE, CARRY, MOVE, CARRY, MOVE,];
@@ -15,12 +15,12 @@ const level = 5;
 const maxEnergy = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][level] * EXTENSION_ENERGY_CAPACITY[level];
 
 var levelUp = function levelUp(room) {
-    //let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
+    let numLinks = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_LINK}).length;
     //let numExtensions = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length;
-    //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
+    let numTowers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_TOWER}).length;
     let numFarmers = room.find(FIND_MY_CREEPS, (creep) => creep.memory.role == 'containerHarvester' || creep.memory.role == 'harvester' ).length;
 
-    if (room.storage !== undefined && room.energyAvailable >= maxEnergy) {
+    if (numLinks >= 2 && numTowers >= 2 && room.energyAvailable >= maxEnergy) {
         return '5b.city';
     } else if (room.controller.level < level || !(numFarmers >= 1 )) {
         return '4a.settlement';
@@ -44,7 +44,7 @@ module.exports = {
             body: work
         },
         containerUpgrader: {
-            desired: 2,
+            desired: 1,
             body: heavy
         },
         defender: {
@@ -56,7 +56,7 @@ module.exports = {
             body: logistic
         },
         builder: {
-            desired: 1,
+            desired: 2,
             body: build
         },
         scout: {
