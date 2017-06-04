@@ -10,7 +10,8 @@ var roles = [
 'miner',
 'defective',
 'attacker',
-'pilgrim'
+'pilgrim',
+'claim'
 ];
 
 var roleModules = {};
