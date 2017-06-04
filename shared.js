@@ -110,6 +110,10 @@ module.exports = {
         var e = 0 - err;
         structure.room.visual.text(ERRORS[e], structure.pos.x + 1, structure.pos.y + 1.5, debugStyle);
     },
+    logErr: function(err, prefix) {
+        var e = 0 - err;
+        console.log(prefix + ' : ' + ERRORS[e]);
+    },
     structSay: function(structure, err) {
         //var e = 0 - err;
         structure.room.visual.text(err, structure.pos.x + 1, structure.pos.y, debugStyle);
