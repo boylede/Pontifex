@@ -110,22 +110,11 @@ var getTarget = function(creep, source) {
 
 var getSource = function(creep, target) {
     creep.memory.lowPriority = false;
-    // var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => {
-    //     return resource.type != RESOURCE_ENERGY && !PathFinder.search(resource, creep, {ignoreCreeps: true, ignoreRoads:true, maxRooms:1, maxOps: 500}).incomplete;
-    //     }
-    // });
-    // if (sources.length === 0) {
-    //     sources = creep.room.find(FIND_DROPPED_ENERGY, {
-    //         filter: (resource) => !PathFinder.search(resource, creep, {ignoreCreeps: true, ignoreRoads:true, maxRooms:1, maxOps: 500}).incomplete
-    //     });
-    // }
-    // if (sources.length === 0) {
         var sources = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return  structure.structureType == STRUCTURE_LINK && structure.energy > 0 && s.isNear(structure, creep.room.storage);
             }
         });
-    // }
     if (sources.length === 0) {
         sources = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
@@ -141,17 +130,19 @@ var getSource = function(creep, target) {
             }
         });
     }
-    
+    if (sources.length === 0 && creep.room.memory && creep.room.memory.terminal && creep.room.memory.terminal.energyRequired < room.terminal.store[RESOURCE_ENERGY]) {
+        sources = [creep.room.terminal];
+    }
+    if (sources.length === 0) {
+        sources = creep.room.find(FIND_DROPPED_ENERGY);
+        creep.memory.lowPriority = true;
+    }
     if (sources.length === 0) {
         sources = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return  structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] > 0;
             }
         });
-    }
-    if (sources.length === 0) {
-        sources = creep.room.find(FIND_DROPPED_ENERGY);
-        creep.memory.lowPriority = true;
     }
     return creep.pos.findClosestByRange(sources);
 };
