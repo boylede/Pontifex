@@ -33,7 +33,10 @@ var roleDefender = {
         }
 
         if (target) {
-            err = creep.attack(target); 
+            err = creep.attack(target);
+            if (err == ERR_NO_BODYPART) {
+                err = creep.rangedAttack(target);
+            } 
             if(err == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#FF0303', fill:'#ff0505'}});
             } else if (err != OK) {
