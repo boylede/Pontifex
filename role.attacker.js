@@ -53,6 +53,9 @@ var attacker = {
     }
     if (target) {
       err = creep.attack(target);
+      if (err == ERR_NO_BODYPART) {
+          err = creep.rangedAttack(target);
+      }
       m.target = errResponse(err, creep, target);
     }
     return OK;
