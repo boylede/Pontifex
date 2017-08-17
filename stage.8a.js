@@ -8,17 +8,14 @@ var defend = [MOVE, MOVE, ATTACK, ATTACK, ATTACK, ATTACK];
 var scout = [MOVE]; // , CLAIM, MOVE, CLAIM
 var raider = [MOVE, ATTACK];
 
-const level = 7;
+const level = 8;
 const maxEnergy = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][level] * EXTENSION_ENERGY_CAPACITY[level];
 
 var levelUp = function levelUp(room) {
-    //let numContainers = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length;
-    if (room.controller.level > level && room.energyAvailable >= maxEnergy) {
-        return '8a';
-    } else if (room.controller.level < level) {
-        return '6a.duchy';
+	if (room.controller.level < level) {
+        return '7a';
     } else {
-        return '7b';
+        return '8a';
     }
 };
 
@@ -49,7 +46,7 @@ module.exports = {
             body: logistic
         },
         builder: {
-            desired: 1,
+            desired: 2,
             body: build
         },
         scout: {
@@ -57,12 +54,12 @@ module.exports = {
             body: scout
         },
         miner: {
-            desired: 1,
+            desired: 0,
             body: [MOVE, WORK, CARRY]
         }
     },
     hitsWall: 1000000,
     hitsRampart: 1000000,
-    name:'7b',
+    name:'8a',
     levelUp: levelUp
 };
