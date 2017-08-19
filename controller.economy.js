@@ -104,53 +104,53 @@ var incomePerTick = function incomePerTick(room) {
     return minerParts * 2;
 };
 
-var creepCost = function creepCost(body) {
-  var cost = 0;
-  var life = 1500;
-  for (var i = body.length - 1; i >= 0; i--) {
-    switch(body[i]) {
-      case WORK:
-        cost += 100;
-        break;
-      case MOVE:
-        cost += 50;
-        break;
-      case CARRY:
-        cost += 50;
-        break;
-      case ATTACK:
-        cost += 80;
-        break;
-      case RANGED_ATTACK:
-        cost += 150;
-        break;
-      case HEAL:
-        cost += 250;
-        break;
-      case CLAIM:
-        cost += 600;
-        life = 500;
-        break;
-      case TOUGH:
-        cost += 10;
-        break;
-      default:
-      break;
-    }
-  }
-  return cost / life;
-};
+// var creepCost = function creepCost(body) {
+//   var cost = 0;
+//   var life = 1500;
+//   for (var i = body.length - 1; i >= 0; i--) {
+//     switch(body[i]) {
+//       case WORK:
+//         cost += 100;
+//         break;
+//       case MOVE:
+//         cost += 50;
+//         break;
+//       case CARRY:
+//         cost += 50;
+//         break;
+//       case ATTACK:
+//         cost += 80;
+//         break;
+//       case RANGED_ATTACK:
+//         cost += 150;
+//         break;
+//       case HEAL:
+//         cost += 250;
+//         break;
+//       case CLAIM:
+//         cost += 600;
+//         life = 500;
+//         break;
+//       case TOUGH:
+//         cost += 10;
+//         break;
+//       default:
+//       break;
+//     }
+//   }
+//   return cost / life;
+// };
 
-var creepsCost = function creepsCost(stageController) {
-  var creepsCostPerTick = 0;
-  for (var role in stageController.creeps) {
-    if (stageController.hasOwnProperty(role)) {
-      const creep = stageController.creeps[role].body;
-      creepsCostPerTick = creepsCostPerTick + creepCost(creep);
-    }
-  }
-  return creepsCostPerTick;
-};
+// var creepsCost = function creepsCost(stageController) {
+//   var creepsCostPerTick = 0;
+//   for (var role in stageController.creeps) {
+//     if (stageController.hasOwnProperty(role)) {
+//       const creep = stageController.creeps[role].body;
+//       creepsCostPerTick = creepsCostPerTick + creepCost(creep);
+//     }
+//   }
+//   return creepsCostPerTick;
+// };
 
 var simpleRoomMetric = function simpleRoomMetric(room) {
   const spawn = room.find(FIND_MY_SPAWNS)[0];
@@ -166,13 +166,13 @@ var simpleRoomMetric = function simpleRoomMetric(room) {
 var simpleRoomCost = function simpleRoomCost(room) {
   // const metric = simpleRoomMetric(room);
   // console.log(room.name + ' has a simpleMetric of ' + metric);
-  const creeps = creepsCost(require('controller.stage').stageModule(room.stage));
+//  const creeps = creepsCost(require('controller.stage').stageModule(room.stage));
   // console.log('cost of creeps ' + creeps);
   const buildings =  maintenanceCost(room);
   // console.log('cost of existing structures ' + buildings);
   // const construction = buildCosts(room);
   // console.log('cost of new structures ' + construction);
-  const costsPerTick = creeps + buildings;
+  const costsPerTick = buildings;
   // console.log(room.name + ' costs ' + costsPerTick + ' per tick.');
   return costsPerTick;
 };
@@ -192,7 +192,7 @@ module.exports = {
   maintenanceCost: maintenanceCost,
   creepsCost: creepsCost,
   buildCosts: buildCosts,
-  creepCost: creepCost,
+  // creepCost: creepCost,
   maxIncome: maxIncome,
   simpleRoomMetric: simpleRoomMetric,
   simpleRoomCost: simpleRoomCost

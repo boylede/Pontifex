@@ -14,7 +14,6 @@ we will replace these methods with new logic:
 4. determine which creep type is needed most/next, if any
 5. use a linear function to determine rampart & wall hits. 
 
-
 finished so far: 
 #1 - body descriptions = now a function
 #2 - determine what building to build next, if any
@@ -114,7 +113,7 @@ const MAX_HARVESTER_WORK_PARTS = SOURCE_ENERGY_CAPACITY / (HARVEST_POWER * ENERG
 // CONTROLLER_MAX_UPGRADE_PER_TICK: 15,
 // MAX_CREEP_SIZE 
 
-function nextCreep(role, level, cost) {
+function nextCreepBody(role, level, cost) {
     var maxEnergy = (CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][level] * EXTENSION_ENERGY_CAPACITY[level]) + (CONTROLLER_STRUCTURES[STRUCTURE_SPAWN][level] * SPAWN_ENERGY_CAPACITY);
     if (cost !== undefined && cost < maxEnergy) {
         maxEnergy = cost;
@@ -207,6 +206,41 @@ const nextBuilding = function nextBuilding(room) {
 };
 
 /*
+#4 - creep priority
+*/
+
+const nextCreepRole = function nextCreepRole(room, creeps) {
+	var role = false;
+	if (creeps.sherpa > 3) {
+		if (creeps.harvester + creeps.containerHarvester < 2) {
+			role = 'containerHarvester';
+		} else if (creeps.upgrader + creeps.containerUpgrader < 1) {
+			role = 'containerUpgrader';
+		} else if (creeps.builder < 1) {
+			role = 'builder';
+		}
+	} else if (creeps.sherpa == 3) {
+		role = 'sherpa';
+	} else {
+		if (creeps.harvester < 2) {
+			role = 'harvester';
+		} else if (creeps.upgrader < 1) {
+			role = 'upgrader';
+		} else if (creeps.builder < 1) {
+			role = 'builder';
+		} else {
+			role = 'sherpa';
+		}
+	}
+	return role;
+};
+// current harvest power vs sources -> have enough sherpas
+// current sherpa power vs dependant creeps move speed
+// current upgrade power vs level and economy status -> have enough sherpas
+// current builder power vs unbuilt structures & unmaintained structures
+// current mining power vs needed minerals / storage space
+
+/*
 #5 - hitpoints
 */
 function cube(base) {
@@ -246,5 +280,6 @@ const hitpoints = function hitpoints(level) {
 
 module.exports = {
     nextBuilding: nextBuilding,
-    nextCreep: nextCreep
+    nextCreepBody: nextCreepBody,
+    nextCreepRole: nextCreepRole,
 };

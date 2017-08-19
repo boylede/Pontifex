@@ -20,7 +20,7 @@ var errResponse = function errResponse(err, creep, goal) {
 };
 
 var scout = {
-    run: function(creep, stageC) {
+    run: function(creep) {
         var err = OK;
         var m = creep.memory;
         var destination;

@@ -1,4 +1,4 @@
-var stageController = require('controller.stage');
+var roomStage = require('stageless');
 var rolesController = require('controller.roles');
 var economy = require('controller.economy');
 var immobileTower = require('immobile.tower');
@@ -59,8 +59,6 @@ module.exports.loop = function () {
     var role = '';
 
     if (room.controller && room.controller.my) {
-      let stage = stageController.levelUp(room);
-      let stageC = stageController.stageModule(stage);
       let canSafeMode = !room.controller.safeMode && !room.controller.safeModeCooldown && room.controller.safeModeAvailable > 0;
       let attackers = room.find(FIND_CREEPS, {
         filter: attackersPresent
@@ -86,9 +84,22 @@ module.exports.loop = function () {
           let spawningCreep = Game.creeps[spawn.spawning.name];
           s.structSay(spawn, spawningCreep.memory.role);
         } else if (spawnPriority) {
-          err = spawn.createCreep(stageC.creeps.defender.body, undefined, {role: 'defender'});
+          err = spawn.createCreep(roomStage.nextCreepBody('defender', room.controller.level, room.energyAvailable), undefined, {role: 'defender'});
         } else {
           let spawned = false;
+          let nextRole = roomStage.nextCreepRole(room, creeps);
+          if (nextRole) {
+            spawned = true;
+            err = spawn.createCreep(roomStage.nextCreepBody(nextRole, room.controller.level, room.energyAvailable), undefined, {role: nextRole});
+            switch (err) {
+                  case OK:
+                  case ERR_NOT_ENOUGH_RESOURCES:
+                  break;
+                  default:
+                  s.structErr(spawn, err);
+                }
+          }
+          /*
           for (role in creeps) {
             if (creeps.hasOwnProperty(role)) {
               if(stageC.creeps[role] && creeps[role].length < stageC.creeps[role].desired) {
@@ -105,6 +116,7 @@ module.exports.loop = function () {
               }
             }
           }
+          */
           if(!spawned && roomMem.charter) {
             // temp conditional to patch running game
             if (!(roomMem.charter instanceof Array)) {
@@ -117,7 +129,6 @@ module.exports.loop = function () {
       }
 
       room.visual.text(r, 0.1, 0.5, s.debugStyle);
-      room.visual.text(stage, 10.0, 0.5, s.debugStyle);
       room.visual.text('energy: ' + room.energyAvailable, 20.0, 0.5, s.debugStyle);
       let i = 0;
       for (var typ in creeps) {

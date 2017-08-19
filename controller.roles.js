@@ -39,10 +39,10 @@ function countRoles(room) {
 	return creeps;
 }
 
-var run = function (creep, stageC) {
+var run = function (creep) {
 	let roleC = roleModules[creep.memory.role];
 	if (roleC) {
-		return roleC.run(creep, stageC);
+		return roleC.run(creep);
 	} else {
 		return;
 	}

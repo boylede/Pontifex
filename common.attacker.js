@@ -1,7 +1,7 @@
 var s = require('shared');
 
 var attacker = {
-	run: function(creep, stageC, getRally, getTarget, getroleChange, action) {
+	run: function(creep, getRally, getTarget, getroleChange, action) {
 		var err = OK;
 		var m = creep.memory;
 		var rally;

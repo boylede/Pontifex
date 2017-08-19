@@ -26,7 +26,7 @@ var errResponse = function errResponse(err, creep, goal) {
 };
 
 var pilgrim = {
-  run: function(creep, stageC) {
+  run: function(creep) {
     var err = OK;
     var m = creep.memory;
     var home = Game.rooms[m.home];
