@@ -18,6 +18,7 @@ we will replace these methods with new logic:
 finished so far: 
 #1 - body descriptions = now a function
 #2 - determine what building to build next, if any
+#5 - hitpoints for walls / ramparts
 
 */
 
@@ -204,6 +205,40 @@ const nextBuilding = function nextBuilding(room) {
     }
     return priority;
 };
+
+/*
+#5 - hitpoints
+*/
+function cube(base) {
+	return Math.pow(base, 3);
+}
+const hitpoints = function hitpoints(level) {
+	// return Math.pow((level - starting_level) * multiplier, 3) + starting_hits;
+	// return Math.pow((level - 3) * 134, 3) + 1000;
+	var value = 100;
+	switch(level) {
+		case 1:
+		break;
+		case 2:
+		value = 200;
+		break;
+		case 3:
+		value = 1000;
+		break;
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8: 
+		value = Math.pow((level - 3) * 134, 3) + 1000;
+		break;
+		default:
+		break;
+	}
+	return value;
+};
+
+
 
 /*
  module exports
