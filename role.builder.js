@@ -69,7 +69,7 @@ var getTarget = function(creep) {
 };
 
 var getSource = function(creep) {
-    var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type == RESOURCE_ENERGY && creep.pos.getRangeTo(resource) < 6});
+    var sources = creep.room.find(FIND_DROPPED_RESOURCES, {filter: (resource) => resource.type == RESOURCE_ENERGY && creep.pos.getRangeTo(resource) < 6});
     if (sources.length === 0) {
 	sources = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
@@ -78,7 +78,7 @@ var getSource = function(creep) {
             });
     }
 	if (sources.length === 0) {
-        sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type == RESOURCE_ENERGY});
+        sources = creep.room.find(FIND_DROPPED_RESOURCES, {filter: (resource) => resource.type == RESOURCE_ENERGY});
     }
     if (sources.length === 0) {
         sources = creep.room.find(FIND_SOURCES, {

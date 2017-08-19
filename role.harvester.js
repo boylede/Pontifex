@@ -1,6 +1,6 @@
 var s = require('shared');
 var getSource = function(creep) {
-    var sources = creep.room.find(FIND_DROPPED_ENERGY, {filter: (resource) => resource.type = RESOURCE_ENERGY});
+    var sources = creep.room.find(FIND_DROPPED_RESOURCES, {filter: (resource) => resource.type = RESOURCE_ENERGY});
     if (sources.length === 0) {
         sources = creep.room.find(FIND_SOURCES, {
             filter: (src) => src.energy > 0

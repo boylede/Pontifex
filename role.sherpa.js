@@ -134,7 +134,7 @@ var getSource = function(creep, target) {
         sources = [creep.room.terminal];
     }
     if (sources.length === 0) {
-        sources = creep.room.find(FIND_DROPPED_ENERGY);
+        sources = creep.room.find(FIND_DROPPED_RESOURCES);
         creep.memory.lowPriority = true;
     }
     if (sources.length === 0) {

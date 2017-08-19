@@ -13,7 +13,7 @@ const attackersPresent = function attackersPresent(creep) {
 
 function runController(room, filter, controller) {
   var items = room.find(FIND_MY_STRUCTURES, { filter: filter });
-  for (var i = items.length - 1; v >= 0; i--) {
+  for (var i = items.length - 1; i >= 0; i--) {
     controller.run(items[i]);
   }
 }
