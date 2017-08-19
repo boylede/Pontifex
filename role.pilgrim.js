@@ -1,5 +1,7 @@
 var s = require('shared');
-var moveOpts = {ignoreCreeps: true, ignoreDestructibleStructures:true, visualizePathStyle: {stroke: '#ffaa00', opacity: 1.0}};
+var moveOpts = {visualizePathStyle: {stroke: '#ffaa00', opacity: 1.0}};
+// todo: let creeps attack/move in hostile territory if they have attack parts
+var attackMoveOpts = {ignoreCreeps: true, ignoreDestructibleStructures:true, visualizePathStyle: {stroke: '#ffaa00', opacity: 1.0}};
 
 var errResponse = function errResponse(err, creep, goal) {
   var mem = goal.id;
@@ -28,12 +30,13 @@ var pilgrim = {
     var err = OK;
     var m = creep.memory;
     var home = Game.rooms[m.home];
+    var charterId = m.charter;
     var charter;
     var goal;
     const carried = _.sum(creep.carry);
 
-    if (home && home.memory.charter) {
-      charter = home.memory.charter;
+    if (home && home.memory.charter && home.memory.charter[charterId]) {
+      charter = home.memory.charter[charterId];
       if (creep.room.name == charter.destination) {
         creep.moveTo(creep.room.controller, moveOpts);
         creep.memory = charter.pilgrim;
@@ -43,6 +46,11 @@ var pilgrim = {
         errResponse(err, creep, goal);
       } else {
         goal = charter.route[creep.room.name];
+        // first scout to room finds best exit
+        if (goal.x === undefined) {
+          goal = creep.pos.findClosestByPath(goal);
+          charter.route[creep.room.name] = goal;
+        }
         err = creep.moveTo(goal.x, goal.y, moveOpts);
         errResponse(err, creep, goal);
       }

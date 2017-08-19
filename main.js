@@ -3,6 +3,7 @@ var rolesController = require('controller.roles');
 var economy = require('controller.economy');
 var immobileTower = require('immobile.tower');
 var immobileLink = require('immobile.link');
+var charterController = require('controller.charter');
 
 var s = require('shared');
 
@@ -10,8 +11,14 @@ const attackersPresent = function attackersPresent(creep) {
   return !creep.my && (creep.getActiveBodyparts(HEAL) > 0 || creep.getActiveBodyparts(ATTACK) > 0);
 };
 
+function runController(room, filter, controller) {
+  var items = room.find(FIND_MY_STRUCTURES, { filter: filter });
+  for (var i = items.length - 1; v >= 0; i--) {
+    controller.run(items[i]);
+  }
+}
+
 module.exports.loop = function () {
-  PathFinder.use(true);
   s.setup();
 
   if ( Memory.fixedCreeps ) {
@@ -67,18 +74,8 @@ module.exports.loop = function () {
         }
       }
 
-      let towers = room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_TOWER } });
-      for (let tower in towers) {
-        immobileTower.run(towers[tower]);
-      }
-      let links = room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_LINK } });
-      for (let link in links) {
-        immobileLink.run(links[link]);
-      }
-
-      // let creeps = rolesController.countRoles(room);
-      // let stageC = stageController.stages[room.memory.stage];
-      // let err = OK;
+      runController(room, { structureType: STRUCTURE_TOWER }, immobileTower);
+      runController(room, { structureType: STRUCTURE_LINK }, immobileLink);
 
       if (spawn) {
         if (!roomMem.economyAnalysis || roomMem.economyAnalysis.next < Game.time) {
@@ -108,24 +105,13 @@ module.exports.loop = function () {
               }
             }
           }
-          if(!spawned && room.energyAvailable > 2000 && roomMem.charter && roomMem.charter.ready && roomMem.charter.count <= roomMem.charter.desired) {
-
-            err = spawn.createCreep(roomMem.charter.body, undefined, {role:roomMem.charter.role, home: r});
-            switch (err) {
-              case ERR_RCL_NOT_ENOUGH:
-              case ERR_NOT_OWNER:
-              case ERR_NAME_EXISTS:
-              case ERR_BUSY:
-              break;
-              case ERR_NOT_ENOUGH_ENERGY:
-              case ERR_INVALID_ARGS:
-                s.structErr(spawn, err);
-              break;
-              default:
-                roomMem.charter.count++;
-                console.log('spawning pilgrim #' + roomMem.charter.count + ': ' + err + ' for ' + roomMem.charter.name);
-                break;
+          if(!spawned && roomMem.charter) {
+            // temp conditional to patch running game
+            if (!(roomMem.charter instanceof Array)) {
+              roomMem.charter = [roomMem.charter];
             }
+            if (roomMem.charter.length > 0)
+            charterController.run(spawn, room, roomMem);
           }
         }
       }
