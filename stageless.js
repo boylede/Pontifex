@@ -32,9 +32,9 @@ function newCreepBody(maxCost, walkSpeed, carryWorkRatio, maxWork, workPart) {
 	var workParts = 0;
 	var carryParts = 0;
 	while (maxCost >= cost + nextCost && body.length <= MAX_CREEP_SIZE ) {
-	    console.log('adding a ' + nextPart + ' part');
+	    // console.log('adding a ' + nextPart + ' part');
 		cost = cost + nextCost;
-		console.log('creep costs ' + cost);
+		// console.log('creep costs ' + cost);
 		body.push(nextPart);
 		if (determineWalkSpeed(body) > walkSpeed) {
 			nextPart = MOVE;
@@ -48,11 +48,11 @@ function newCreepBody(maxCost, walkSpeed, carryWorkRatio, maxWork, workPart) {
 		    nextPart = TOUGH;
 		}
 		nextCost = creepCost([nextPart]);
-		console.log('want to add ' + nextPart);
-		console.log(body);
+		// console.log('want to add ' + nextPart);
+		// console.log(body);
 		
 	}
-	console.log('final cost: ' + cost);
+	// console.log('final cost: ' + cost);
 	return body;
 }
 
@@ -66,7 +66,7 @@ function determineWalkSpeed(body) {
 	if (speed < 0) {
 	    speed = 0;
 	}
-	console.log('creep will rest for ' + speed + ' ticks');
+	// console.log('creep will rest for ' + speed + ' ticks');
 	return speed;
 }
 
@@ -98,7 +98,7 @@ function countCreep(body) {
     const hits = determineHitPoints(body);
     const works = countParts(body, WORK);
     const carryCap = countParts(body, CARRY) * CARRY_CAPACITY;
-    console.log(cost, fat, hits, works, carryCap);
+    // console.log(cost, fat, hits, works, carryCap);
     return {
         cost: cost,
         fatigue: fat,
@@ -207,6 +207,89 @@ const nextBuilding = function nextBuilding(room) {
 };
 
 /*
+#3 - spend rate 
+*/
+
+var ledgerPage = {};
+const logEntry = function(room, amount) {
+	const m = room.memory;
+	if (ledgerPage[room.name] === undefined) {
+		ledgerPage[room.name] = [0, 0, 0];
+	}
+	var ledger = ledgerPage[room.name];
+	if (amount > 0) {
+		ledger[0] += amount;
+	} else {
+		ledger[1] -= amount;
+	}
+	ledger[2]++;
+};
+
+const logRotate = function(room) {
+	const m = room.memory;
+	if (m.ledger) {
+		m.ledger.push(ledgerPage);
+		if (m.ledger.length > CREEP_CLAIM_LIFE_TIME) {
+			m.ledger.splice(0, m.ledger.length - CREEP_CLAIM_LIFE_TIME);
+		}
+	}
+};
+
+function sumNegative(a, e, i) {
+	a += e[1];
+	return a;
+}
+function sumPositive(a, e, i) {
+	a += e[0];
+	return a;
+}
+function sum(a, e, i) {
+	return a + e[0] - e[1];
+}
+
+const spendRate = function(room) {
+	const m = room.memory;
+	if (m.ledger) {
+		return m.ledger.reduce(sumNegative, 0);
+	}
+};
+
+const incomeRate = function(room) {
+	const m = room.memory;
+	if (m.ledger) {
+		return m.ledger.reduce(sumPositive, 0);
+	}
+};
+
+const logDelta = function(room) {
+	const m = room.memory;
+	if (m.ledger) {
+		return m.ledger.reduce(sum, 0);
+	}
+};
+
+const maxSpend = function(room) {
+	//
+};
+
+
+/*
+
+budgeting:
+maintenance cost per tick (repairs + ramparts)
+max income based on source count
+number of sherpas required based on distance to storage unit OR to furthest building
+
+sample budget:
+building costs per tick: 15% = 3
+savings if storage exists = 20% = 4
+costs of creeps = ((max_energy* num_creeps) / 1500) / 20 
+upgrading per tick = max remaining 
+
+*/
+
+
+/*
 #4 - creep priority
 */
 
@@ -295,4 +378,7 @@ module.exports = {
     nextBuilding: nextBuilding,
     nextCreepBody: nextCreepBody,
     nextCreepRole: nextCreepRole,
+    logEntry: logEntry,
+    logRotate: logRotate,
+    logDelta: logDelta,
 };
