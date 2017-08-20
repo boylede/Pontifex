@@ -4,27 +4,27 @@ var isNear = function isNear(thing1, thing2) {
     return thing1.pos.getRangeTo(thing2) < 3;
 };
 
-var linkLoop = function linkLoop(link) {
+var linkLoop = function linkLoop(room, link) {
     var err = OK;
-    const room = link.room.memory;
-    if (room.links === undefined) {
-        room.links = {};
+    const roomMem = room.memory;
+    if (roomMem.links === undefined) {
+        roomMem.links = {};
     }
-    const m = room.links[link.id];
+    const m = roomMem.links[link.id];
     var receivers = [];
     if (!m) {
-        link.room.memory.links[link.id] = {
-            role: (isNear(link, link.room.storage) || isNear(link, link.room.controller) ) ? 'receiver' : 'transmitter'
+        room.memory.links[link.id] = {
+            role: (isNear(link, room.storage) || isNear(link, room.controller) ) ? 'receiver' : 'transmitter'
         };
     } else {
-        for (var otherLink in room.links) {
+        for (var otherLink in roomMem.links) {
             let oLink = Game.getObjectById(otherLink);
             if(oLink) {
-                if (room.links[otherLink].role == 'receiver') {
+                if (roomMem.links[otherLink].role == 'receiver') {
                     receivers.push(oLink);
                 }
             } else {
-               room.links[otherLink] = undefined;
+               roomMem.links[otherLink] = undefined;
            }
        }
        if (receivers.length > 0) {

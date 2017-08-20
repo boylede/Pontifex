@@ -1,42 +1,42 @@
 var s = require('shared');
 
-var towerLoop = function towerLoop(tower) {
+var towerLoop = function towerLoop(room, tower) {
     var targets = [];
     var err = OK;
-    targets = tower.room.find(FIND_CREEPS, {filter: (cre) => !cre.my && cre.getActiveBodyparts(HEAL) > 0});
+    targets = room.find(FIND_CREEPS, {filter: (cre) => !cre.my && cre.getActiveBodyparts(HEAL) > 0});
     if (targets.length === 0 ) {
-        targets = tower.room.find(FIND_HOSTILE_CREEPS);
+        targets = room.find(FIND_HOSTILE_CREEPS);
     }
     if (targets.length === 0 ) {
-        targets = tower.room.find(FIND_HOSTILE_STRUCTURES);
+        targets = room.find(FIND_HOSTILE_STRUCTURES);
     }
     if (targets.length === 0) {
-        targets = tower.room.find(FIND_HOSTILE_CONSTRUCTION_SITES);
+        targets = room.find(FIND_HOSTILE_CONSTRUCTION_SITES);
     }
     if (targets.length !== 0) {
         err = tower.attack(targets[0]);
     } else {
         if (targets.length === 0) {
-            targets = tower.room.find(FIND_MY_STRUCTURES, {filter: (str) => str.hits < str.hitsMax && str.structureType != STRUCTURE_RAMPART});
+            targets = room.find(FIND_MY_STRUCTURES, {filter: (str) => str.hits < str.hitsMax && str.structureType != STRUCTURE_RAMPART});
         }
         if (targets.length === 0) {
-            targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax && str.structureType != STRUCTURE_RAMPART && str.structureType != STRUCTURE_WALL});
+            targets = room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax && str.structureType != STRUCTURE_RAMPART && str.structureType != STRUCTURE_WALL});
         }
         if (targets.length === 0) {
-            targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_RAMPART && str.hits < str.hitsMax && str.hits < 100000 });
+            targets = room.find(FIND_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_RAMPART && str.hits < str.hitsMax && str.hits < 100000 });
         }
         if (targets.length === 0) {
-            targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax && str.hits < 10000 });
+            targets = room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax && str.hits < 10000 });
         }
         if (targets.length === 0  && tower.energy > tower.energyCapacity / 2) {
             if (targets.length === 0) {
-                targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax && str.hits < 250000 });
+                targets = room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax && str.hits < 250000 });
             }
             if (targets.length === 0) {
-                targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_RAMPART && str.hits < str.hitsMax && str.hits < 400000 });
+                targets = room.find(FIND_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_RAMPART && str.hits < str.hitsMax && str.hits < 400000 });
             }
             if (targets.length === 0) {
-                targets = tower.room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax && str.hits < 1000000});
+                targets = room.find(FIND_STRUCTURES, {filter: (str) => str.hits < str.hitsMax && str.hits < 1000000});
             }
         }
         if (targets.length !== 0) {
