@@ -190,7 +190,7 @@ var analyze = function analyze(room) {
 module.exports = {
   'analyze': analyze,
   maintenanceCost: maintenanceCost,
-  creepsCost: creepsCost,
+//  creepsCost: creepsCost,
   buildCosts: buildCosts,
   // creepCost: creepCost,
   maxIncome: maxIncome,
