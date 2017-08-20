@@ -4,6 +4,7 @@ var economy = require('controller.economy');
 var immobileTower = require('immobile.tower');
 var immobileLink = require('immobile.link');
 var charterController = require('controller.charter');
+var immobileLab = require('immobile.lab');
 
 var s = require('shared');
 
@@ -14,7 +15,7 @@ const attackersPresent = function attackersPresent(creep) {
 function runController(room, filter, controller) {
   var items = room.find(FIND_MY_STRUCTURES, { filter: filter });
   for (var i = items.length - 1; i >= 0; i--) {
-    controller.run(items[i]);
+    controller.run(room, items[i]);
   }
 }
 
@@ -74,6 +75,7 @@ module.exports.loop = function () {
 
       runController(room, { structureType: STRUCTURE_TOWER }, immobileTower);
       runController(room, { structureType: STRUCTURE_LINK }, immobileLink);
+      runController(room, { structureType: STRUCTURE_LAB }, immobileLab);
 
       if (spawn) {
         if (!roomMem.economyAnalysis || roomMem.economyAnalysis.next < Game.time) {
