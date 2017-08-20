@@ -118,7 +118,7 @@ function nextCreepBody(role, level, cost) {
     if (cost !== undefined && cost < maxEnergy) {
         maxEnergy = cost;
     }
-	var body = [MOVE];
+	var body = false;
 	// newCreepBody = function(maxCost, walkSpeed, carryWorkRatio, maxWork, workPart) {
 		switch (role) {
 			case 'harvester':
@@ -144,6 +144,7 @@ function nextCreepBody(role, level, cost) {
 			body = newCreepBody(maxEnergy, 1, 1, 50, WORK);
 			break;
 			case 'scout':
+			body = [MOVE];
 			break;
 			case 'raider':
 			body = newCreepBody(maxEnergy, 1, 0, 50, ATTACK);
@@ -211,26 +212,38 @@ const nextBuilding = function nextBuilding(room) {
 
 const nextCreepRole = function nextCreepRole(room, creeps) {
 	var role = false;
+	var energyRequired = 50;
 	if (creeps.sherpa > 3) {
 		if (creeps.harvester + creeps.containerHarvester < 2) {
 			role = 'containerHarvester';
+			energyRequired = 600;
 		} else if (creeps.upgrader + creeps.containerUpgrader < 1) {
 			role = 'containerUpgrader';
+			energyRequired = 600;
 		} else if (creeps.builder < 1) {
 			role = 'builder';
+			energyRequired = 600;
 		}
 	} else if (creeps.sherpa == 3) {
 		role = 'sherpa';
+		energyRequired = 100;
 	} else {
 		if (creeps.harvester < 2) {
 			role = 'harvester';
+			energyRequired = 200;
 		} else if (creeps.upgrader < 1) {
 			role = 'upgrader';
+			energyRequired = 200;
 		} else if (creeps.builder < 1) {
 			role = 'builder';
+			energyRequired = 200;
 		} else {
 			role = 'sherpa';
+			energyRequired = 200;
 		}
+	}
+	if (room.energyAvailable < energyRequired) {
+		role = false;
 	}
 	return role;
 };
