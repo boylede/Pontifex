@@ -184,9 +184,19 @@ var analyze = function analyze(room) {
     next: Game.time + 1500,
     costsPerTick: simpleRoomCost(room),
     productionPerTick: roleCosts(room),
-    incomePerTick: incomePerTick(room)
+    incomePerTick: incomePerTick(room),
+    sourcesContained: containerCheck(room)
   };
 };
+
+var containerCheck = function(room) {
+	// const containers = room.find(FIND_STRUCTURES, {filter: (str) => str.type == STRUCTURE_CONTAINER});
+	const sources = room.find(FIND_SOURCES);
+	const contained_sources = sources.filter((source) => source.pos.findInRange(FIND_STRUCTURES, 2, {filter: (str) => str.type == STRUCTURE_CONTAINER}));
+	return sources.length() == contained_sources.length();
+
+}
+
 module.exports = {
   'analyze': analyze,
   maintenanceCost: maintenanceCost,
