@@ -296,6 +296,7 @@ upgrading per tick = max remaining
 const nextCreepRole = function nextCreepRole(room, creeps) {
 	var role = false;
 	var energyRequired = 50;
+	var containers = room.memory.economyAnalysis.sourcesContained;
 	if (creeps.sherpa > 3) {
 		if (creeps.harvester + creeps.containerHarvester < 2) {
 			role = 'containerHarvester';
@@ -320,7 +321,7 @@ const nextCreepRole = function nextCreepRole(room, creeps) {
 		} else if (creeps.builder < 1) {
 			role = 'builder';
 			energyRequired = 200;
-		} else if (creeps.containerUpgrader == 1) {
+		} else if (containers) {
 			role = 'sherpa';
 			energyRequired = 200;
 		} else {
