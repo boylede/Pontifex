@@ -107,7 +107,7 @@ function countCreep(body) {
         capacity: carryCap
     };
 }
-
+/** max effective work parts on harvesters */
 const MAX_HARVESTER_WORK_PARTS = SOURCE_ENERGY_CAPACITY / (HARVEST_POWER * ENERGY_REGEN_TIME);
 //     HARVEST_MINERAL_POWER: 1,
 // CONTROLLER_MAX_UPGRADE_PER_TICK: 15,
@@ -320,9 +320,11 @@ const nextCreepRole = function nextCreepRole(room, creeps) {
 		} else if (creeps.builder < 1) {
 			role = 'builder';
 			energyRequired = 200;
-		} else {
+		} else if (creeps.containerUpgrader == 1) {
 			role = 'sherpa';
 			energyRequired = 200;
+		} else {
+			role = false;
 		}
 	}
 	if (room.energyAvailable < energyRequired) {
