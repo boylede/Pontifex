@@ -179,20 +179,25 @@ var simpleRoomCost = function simpleRoomCost(room) {
 
 var simpleRoomEfficiency = function simpleRoomEfficiency(room) {};
 
+var maxRoomEnergy = function(room) {
+  return (room.find(FIND_MY_SPAWNS).length * SPAWN_ENERGY_CAPACITY) +  (room.find(FIND_MY_STRUCTURES, {filter: (str) => str.structureType == STRUCTURE_EXTENSION}).length * EXTENSION_ENERGY_CAPACITY[room.controller.level])
+}
+
 var analyze = function analyze(room) {
   return {
     next: Game.time + 1500,
     costsPerTick: simpleRoomCost(room),
     productionPerTick: roleCosts(room),
     incomePerTick: incomePerTick(room),
-    sourcesContained: containerCheck(room)
+    sourcesContained: containerCheck(room),
+    maxRoomEnergy: maxRoomEnergy(room)
   };
 };
 
 var containerCheck = function(room) {
 	// const containers = room.find(FIND_STRUCTURES, {filter: (str) => str.type == STRUCTURE_CONTAINER});
 	const sources = room.find(FIND_SOURCES);
-	const contained_sources = sources.filter((source) => source.pos.findInRange(FIND_STRUCTURES, 2, {filter: (str) => str.type == STRUCTURE_CONTAINER}).length != 0);
+	const contained_sources = sources.filter((source) => source.pos.findInRange(FIND_STRUCTURES, 2, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length > 0);
 	return sources.length == contained_sources.length;
 
 }

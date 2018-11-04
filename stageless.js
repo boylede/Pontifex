@@ -289,16 +289,37 @@ upgrading per tick = max remaining
 */
 
 
+
+const countRoles = function(creepList) {
+	let objMap = {};
+	for (var role in creepList) {
+        if (creepList.hasOwnProperty(role)) {
+        	objMap[role] = creepList[role].length;
+        }
+    }
+    return objMap;
+}
+
+
+
 /*
 #4 - creep priority
 */
 
-const nextCreepRole = function nextCreepRole(room, creeps) {
+
+
+const nextCreepRole = function nextCreepRole(room, creepList) {
 	var role = false;
 	var energyRequired = 50;
 	var containers = room.memory.economyAnalysis.sourcesContained;
-	if (creeps.sherpa > 3) {
-		if (creeps.harvester + creeps.containerHarvester < 2) {
+	var maxEnergy = room.memory.economyAnalysis.maxRoomEnergy;
+
+	var creeps = countRoles(creepList);
+	if (containers && maxEnergy >= 600) {
+		if (creeps.sherpa < 3) {
+			role = 'containerHarvester';
+			energyRequired = 200;
+		} else if (creeps.harvester + creeps.containerHarvester < 2) {
 			role = 'containerHarvester';
 			energyRequired = 600;
 		} else if (creeps.upgrader + creeps.containerUpgrader < 1) {
@@ -308,9 +329,6 @@ const nextCreepRole = function nextCreepRole(room, creeps) {
 			role = 'builder';
 			energyRequired = 600;
 		}
-	} else if (creeps.sherpa == 3) {
-		role = 'sherpa';
-		energyRequired = 100;
 	} else {
 		if (creeps.harvester < 2) {
 			role = 'harvester';
@@ -324,8 +342,6 @@ const nextCreepRole = function nextCreepRole(room, creeps) {
 		} else if (containers) {
 			role = 'sherpa';
 			energyRequired = 200;
-		} else {
-			role = false;
 		}
 	}
 	if (room.energyAvailable < energyRequired) {
