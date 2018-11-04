@@ -1,4 +1,4 @@
-var maintenanceCost = function maintenanceCost(room) {
+var maintenanceCostOld = function maintenanceCost(room) {
   var hitsLostPerTick = 0.0;
   const structures = room.find(FIND_STRUCTURES);
   for (var i = structures.length - 1; i >= 0; i--) {
@@ -40,6 +40,30 @@ var maintenanceCost = function maintenanceCost(room) {
   }
   return hitsLostPerTick /  200; // 20 hits per unit energy * 10 to compensate for JS floating point ugly
 };
+
+var maintenanceCost = function(room) {
+  return room.find(FIND_STRUCTURES).reduce((cost, str) => {
+    switch (str) {
+      case STRUCTURE_ROAD:
+        if (str.hits > 5000) {
+          // assume swampy
+          cost = cost + 5; //(500 / 1000)
+        } else {
+          cost = cost + 1; //(100 / 1000)
+        }
+        break;
+      case STRUCTURE_RAMPART :
+        cost = cost + 30; //(300 / 100)
+        break;
+      case STRUCTURE_CONTAINER:
+        cost = cost + 100; //(5000 / 500)
+        break;
+      default:
+        break;
+    }
+    return cost;
+  } , 0.0) / 200;
+}
 
 var buildCosts = function buildCosts(room) {
   var hits = 0;
@@ -141,17 +165,6 @@ var incomePerTick = function incomePerTick(room) {
 //   return cost / life;
 // };
 
-// var creepsCost = function creepsCost(stageController) {
-//   var creepsCostPerTick = 0;
-//   for (var role in stageController.creeps) {
-//     if (stageController.hasOwnProperty(role)) {
-//       const creep = stageController.creeps[role].body;
-//       creepsCostPerTick = creepsCostPerTick + creepCost(creep);
-//     }
-//   }
-//   return creepsCostPerTick;
-// };
-
 var simpleRoomMetric = function simpleRoomMetric(room) {
   const spawn = room.find(FIND_MY_SPAWNS)[0];
   const controller = room.controller;
@@ -164,16 +177,8 @@ var simpleRoomMetric = function simpleRoomMetric(room) {
   return furthestDistance;
 };
 var simpleRoomCost = function simpleRoomCost(room) {
-  // const metric = simpleRoomMetric(room);
-  // console.log(room.name + ' has a simpleMetric of ' + metric);
-//  const creeps = creepsCost(require('controller.stage').stageModule(room.stage));
-  // console.log('cost of creeps ' + creeps);
   const buildings =  maintenanceCost(room);
-  // console.log('cost of existing structures ' + buildings);
-  // const construction = buildCosts(room);
-  // console.log('cost of new structures ' + construction);
   const costsPerTick = buildings;
-  // console.log(room.name + ' costs ' + costsPerTick + ' per tick.');
   return costsPerTick;
 };
 
@@ -195,7 +200,6 @@ var analyze = function analyze(room) {
 };
 
 var containerCheck = function(room) {
-	// const containers = room.find(FIND_STRUCTURES, {filter: (str) => str.type == STRUCTURE_CONTAINER});
 	const sources = room.find(FIND_SOURCES);
 	const contained_sources = sources.filter((source) => source.pos.findInRange(FIND_STRUCTURES, 2, {filter: (str) => str.structureType == STRUCTURE_CONTAINER}).length > 0);
 	return sources.length == contained_sources.length;

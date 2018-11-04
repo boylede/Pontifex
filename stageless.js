@@ -24,18 +24,22 @@ finished so far:
 /*
 #1 - next creep
 */
+/** 
+* Returns an array of body parts matching the parameters. The array is ordered so that while the creep is under attack, it should maintain usefullness & ability to flee. 
+* @param {int} maxCost - maximum energy cost.
+* @param {int} walkSpeed - desired ratio of workparts and move parts.
+* @param {int} carryWorkRatio - ratio of work parts to carry parts.
+* @param {int} maxWork - maximum workparts needed. (some tasks are not benefited by many workparts)
+* @param {string} workPart - the string/enum "WORK" or some combat part, as desired
+* @return {array} array of bodyparts strings.
+*/
 function newCreepBody(maxCost, walkSpeed, carryWorkRatio, maxWork, workPart) {
-	var body = [];
 	var nextPart = MOVE;
-	var cost = 0;
-	var nextCost = creepCost([nextPart]);
+	var body = [nextPart];
+	var cost = BODYPART_COST[nextPart];
 	var workParts = 0;
 	var carryParts = 0;
-	while (maxCost >= cost + nextCost && body.length <= MAX_CREEP_SIZE ) {
-	    // console.log('adding a ' + nextPart + ' part');
-		cost = cost + nextCost;
-		// console.log('creep costs ' + cost);
-		body.push(nextPart);
+	while (maxCost >= cost && body.length <= MAX_CREEP_SIZE ) {
 		if (determineWalkSpeed(body) > walkSpeed) {
 			nextPart = MOVE;
 		} else if (carryParts / workParts < carryWorkRatio) {
@@ -47,12 +51,9 @@ function newCreepBody(maxCost, walkSpeed, carryWorkRatio, maxWork, workPart) {
 		} else {
 		    nextPart = TOUGH;
 		}
-		nextCost = creepCost([nextPart]);
-		// console.log('want to add ' + nextPart);
-		// console.log(body);
-		
+		cost = cost + BODYPART_COST[nextPart];
+		body.push(nextPart);
 	}
-	// console.log('final cost: ' + cost);
 	return body;
 }
 
@@ -80,20 +81,12 @@ function countParts(body, part) {
 	return parts;
 }
 
-function creepCost(body) {
-	var cost = 0;
-	for (var i = body.length - 1; i >= 0; i--) {
-		cost += BODYPART_COST[body[i]];
-	}
-	return cost;
-}
-
 function determineHitPoints(body) {
     return body.length * 100;
 }
 
 function countCreep(body) {
-    const cost = creepCost(body);
+    const cost = body.reduce((a, p) => a + BODYPART_COST[p], 0);
     const fat = determineWalkSpeed(body);
     const hits = determineHitPoints(body);
     const works = countParts(body, WORK);
